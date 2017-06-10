@@ -15,7 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from blogSystem import views as blog_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
+    url(r'^index/?$', blog_views.index, name='index'),
+    url(r'^no_sidebar/?$', blog_views.no_sidebar, name='no_sidebar'),
+
+    url(r'^showdown/?$', blog_views.showdown, name='showdown'),
+
+    url(r'^send_mail/', blog_views.send_mail, name='send_mail'),
+
+    url(r'^list1/', blog_views.list1, name='list1'),
 ]

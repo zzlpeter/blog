@@ -1,0 +1,354 @@
+<!DOCTYPE HTML>
+<!--
+	Horizons by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+        {% load staticfiles %}
+		<title>Horizons by TEMPLATED</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="{% static 'css/ie/html5shiv.js' %}"></script><![endif]-->
+		<script src="{% static 'js/jquery.min.js' %}"></script>
+		<script src="{% static 'js/jquery.dropotron.min.js' %}"></script>
+		<script src="{% static 'js/skel.min.js' %}"></script>
+		<script src="{% static 'js/skel-layers.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+
+        <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
+
+		<!--[if lte IE 8]><link rel="stylesheet" href="{% static 'css/ie/v8.css' %}" /><![endif]-->
+	</head>
+	<body class="homepage">
+
+		<!-- Header -->
+			<div id="header">
+				<div class="container">
+
+					<!-- Logo -->
+						<h1><a href="#" id="logo">Horizons</a></h1>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="index.html">首页</a></li>
+								<li>
+									<a href="">生活笔记</a>
+									<ul>
+										<li><a href="#">Lorem ipsum dolor</a></li>
+										<li><a href="#">Magna phasellus</a></li>
+										<li><a href="#">Etiam dolore nisl</a></li>
+										<li>
+											<a href="">Phasellus consequat</a>
+											<ul>
+												<li><a href="#">Lorem ipsum dolor</a></li>
+												<li><a href="#">Phasellus consequat</a></li>
+												<li><a href="#">Magna phasellus</a></li>
+												<li><a href="#">Etiam dolore nisl</a></li>
+												<li><a href="#">Veroeros feugiat</a></li>
+											</ul>
+										</li>
+										<li><a href="#">Veroeros feugiat</a></li>
+									</ul>
+								</li>
+								<li><a href="left-sidebar.html">技术杂谈</a></li>
+								<li><a href="right-sidebar.html">福利专区</a></li>
+								<li><a href="no-sidebar.html">关于自己</a></li>
+                                {% if user.is_authenticated %}
+{#                                <li>#}
+{#									<a href="">{{ user.username }}</a>#}
+{#									<ul>#}
+{#										<li><a href="#">权限设置</a></li>#}
+{#										<li><a href="#">首页设置</a></li>#}
+{#										<li><a href="#">修改密码</a></li>#}
+{#										<li>#}
+{#											<a href="">Phasellus consequat</a>#}
+{#											<ul>#}
+{#												<li><a href="#">Lorem ipsum dolor</a></li>#}
+{#												<li><a href="#">Phasellus consequat</a></li>#}
+{#												<li><a href="#">Magna phasellus</a></li>#}
+{#												<li><a href="#">Etiam dolore nisl</a></li>#}
+{#												<li><a href="#">Veroeros feugiat</a></li>#}
+{#											</ul>#}
+{#										</li>#}
+{#										<li><a href="#">退出登录</a></li>#}
+{#									</ul>#}
+{#								</li>#}
+{#                                {% else %}#}
+                                <li><a href="no-sidebar.html">{{ user.username }}</a></li>
+                                {% endif %}
+							</ul>
+						</nav>
+
+
+					<!-- Banner -->
+						<div id="banner">
+							<div class="container">
+								<section>
+									<header class="major">
+										<h2>Welcome to Horizons!</h2>
+										<span class="byline">&hellip; a responsive HTML5 site template freebie by <a href="http://templated.co">TEMPLATED</a>. Released for free under the <a href="http://templated.co/license">Creative Commons Attribution</a> license, so use it for whatever (personal or commercial) &ndash; just give us credit!</span>
+									</header>
+									<a href="javascript:;" class="button alt" onclick="showLoginForm()">Sign Up</a>
+								</section>
+							</div>
+						</div>
+
+				</div>
+			</div>
+
+		<!-- Featured -->
+			<div class="wrapper style2">
+				<section class="container">
+					<header class="major">
+						<h2>Nulla luctus eleifend</h2>
+						<span class="byline">Mauris vulputate dolor sit amet nibh</span>
+					</header>
+					<div class="row no-collapse-1">
+						<section class="4u">
+							<a href="#" class="image feature"><img src="{% static 'images/pic02.jpg' %}" alt=""></a>
+							<p>Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat.</p>
+						</section>
+						<section class="4u">
+							<a href="#" class="image feature"><img src="{% static 'images/pic03.jpg' %}" alt=""></a>
+							<p>Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis. Donec magna.</p>
+						</section>
+						<section class="4u">
+							<a href="#" class="image feature"><img src="{% static 'images/pic04.jpg' %}" alt=""></a>
+							<p>Curabitur sem urna, consequat vel, suscipit convallis sem leo, mattis placerat, nulla. Sed ac leo.</p>
+						</section>
+	
+					</div>
+				</section>
+			</div>
+
+		<!-- Main -->
+			<div id="main" class="wrapper style1">
+				<section class="container">
+					<header class="major">
+						<h2>Nulla luctus eleifend</h2>
+						<span class="byline">Mauris vulputate dolor sit amet nibh</span>
+					</header>
+					<div class="row">
+					
+						<!-- Content -->
+							<div class="6u">
+								<section>
+									<ul class="style">
+										<li>
+											<span class="fa fa-wrench"></span>
+											<h3>Integer ultrices</h3>
+											<span>In posuere eleifend odio. Quisque semper augue mattis wisi. Maecenas ligula. Pellentesque viverra vulputate enim.</span>
+										</li>
+										<li>
+											<span class="fa fa-cloud"></span>
+											<h3>Aliquam luctus</h3>
+											<span>Pellentesque viverra vulputate enim. Aliquam erat volutpat. Maecenas condimentum enim tincidunt risus accumsan.</span>
+										</li>
+									</ul>
+								</section>
+							</div>
+							<div class="6u">
+								<section>
+									<ul class="style">
+										<li>
+											<span class="fa fa-cogs"></span>
+											<h3>Integer ultrices</h3>
+											<span>In posuere eleifend odio. Quisque semper augue mattis wisi. Maecenas ligula. Pellentesque viverra vulputate enim.</span>
+										</li>
+										<li>
+											<span class="fa fa-leaf"></span>
+											<h3>Aliquam luctus</h3>
+											<span>Pellentesque viverra vulputate enim. Aliquam erat volutpat. Maecenas condimentum enim tincidunt risus accumsan.</span>
+										</li>
+									</ul>
+								</section>
+							</div>
+
+					</div>
+				</section>
+			</div>
+
+		<!-- Footer -->
+{#			<div id="footer">#}
+{#				<div class="container">#}
+{##}
+{#					<!-- Lists -->#}
+{#						<div class="row">#}
+{#							<div class="8u">#}
+{#								<section>#}
+{#									<header class="major">#}
+{#										<h2>Donec dictum metus</h2>#}
+{#										<span class="byline">Quisque semper augue mattis wisi maecenas ligula</span>#}
+{#									</header>#}
+{#									<div class="row">#}
+{#										<section class="6u">#}
+{#											<ul class="default">#}
+{#												<li><a href="#">Pellentesque elit non gravida blandit.</a></li>#}
+{#												<li><a href="#">Lorem ipsum dolor consectetuer elit.</a></li>#}
+{#												<li><a href="#">Phasellus nibh pellentesque congue.</a></li>#}
+{#												<li><a href="#">Cras vitae metus aliquam  pharetra.</a></li>#}
+{#											</ul>#}
+{#										</section>#}
+{#										<section class="6u">#}
+{#											<ul class="default">#}
+{#												<li><a href="#">Pellentesque elit non gravida blandit.</a></li>#}
+{#												<li><a href="#">Lorem ipsum dolor consectetuer elit.</a></li>#}
+{#												<li><a href="#">Phasellus nibh pellentesque congue.</a></li>#}
+{#												<li><a href="#">Cras vitae metus aliquam  pharetra.</a></li>#}
+{#											</ul>#}
+{#										</section>#}
+{#									</div>#}
+{#								</section>#}
+{#							</div>#}
+{#							<div class="4u">#}
+{#								<section>#}
+{#									<header class="major">#}
+{#										<h2>Donec dictum metus</h2>#}
+{#										<span class="byline">Mattis wisi maecenas ligula</span>#}
+{#									</header>#}
+{#									<ul class="contact">#}
+{#										<li>#}
+{#											<span class="address">Address</span>#}
+{#											<span>1234 Somewhere Road #4285 <br />Nashville, TN 00000</span>#}
+{#										</li>#}
+{#										<li>#}
+{#											<span class="mail">Mail</span>#}
+{#											<span><a href="#">someone@untitled.tld</a></span>#}
+{#										</li>#}
+{#										<li>#}
+{#											<span class="phone">Phone</span>#}
+{#											<span>(000) 000-0000</span>#}
+{#										</li>#}
+{#									</ul>	#}
+{#								</section>#}
+{#							</div>#}
+{#						</div>#}
+{##}
+{#					<!-- Copyright -->#}
+{#						<div class="copyright">#}
+{#							Design: <a href="http://templated.co">TEMPLATED</a> Images: <a href="http://unsplash.com">Unsplash</a> (<a href="http://unsplash.com/cc0">CC0</a>)#}
+{#						</div>#}
+{##}
+{#				</div>#}
+{#			</div>#}
+<!-- 登录、注册模态框（Modal） -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="container">
+        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-info" >
+                <div class="panel-heading">
+                    <div class="panel-title">登录</div>
+                    <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">忘记密码？</a></div>
+                </div>
+                <div style="padding-top:30px" class="panel-body" >
+                    <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                        <form id="loginform" class="form-horizontal" role="form">
+                            <div style="margin-bottom: 25px" class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username or email">
+                            </div>
+                            <div style="margin-bottom: 25px" class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+                            </div>
+                            <div class="input-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input id="login-remember" type="checkbox" name="remember" value="1"> 记住我
+                                    </label>
+                              </div>
+                            </div>
+                            <div style="margin-top:10px" class="form-group" style="float:right;">
+                                <!-- Button -->
+                                <div class="col-sm-12 controls">
+                                    <a id="btn-login" href="#" class="btn btn-success">登录</a>
+                                    <a id="btn-login" href="#" class="btn btn-warning">取消</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12 control">
+                                    <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                                        没有账号？
+                                        <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">在此注册</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        </div>
+        <div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="panel-title">注册</div>
+                    <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()">登录</a></div>
+                </div>
+                <div class="panel-body" >
+                    <form id="signupform" class="form-horizontal" role="form">
+                        <div id="signupalert" style="display:none" class="alert alert-danger">
+                            <p>Error:</p>
+                            <span></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-md-3 control-label">Email</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="email" placeholder="Email Address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstname" class="col-md-3 control-label">First Name</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="firstname" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname" class="col-md-3 control-label">Last Name</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="lastname" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-md-3 control-label">Password</label>
+                            <div class="col-md-9">
+                                <input type="password" class="form-control" name="passwd" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="icode" class="col-md-3 control-label">Invitation Code</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="icode" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <!-- Button -->
+                            <div class="col-md-offset-3 col-md-9">
+                                <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
+                                <span style="margin-left:8px;">or</span>
+                            </div>
+                        </div>
+                        <div style="border-top: 1px solid #999; padding-top:20px"  class="form-group">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button id="btn-fbsignup" type="button" class="btn btn-primary"><i class="icon-facebook"></i>   Sign Up with Facebook</button>
+                            </div>
+                        </div>
+                    </form>
+                 </div>
+            </div>
+         </div>
+    </div>
+</div>
+
+        <script>
+            function showLoginForm(){
+                $('#loginModal').modal('show');
+            }
+        </script>
+
+	</body>
+</html>

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'blogSystem'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,8 +77,12 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'blog',
+        'USER': 'root',
+        'PASSWORD': '123456',
+        'HOST': 'localhost',
+        'PORT': 3306,
     }
 }
 
@@ -104,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh_hans'
 
 TIME_ZONE = 'UTC'
 
@@ -117,5 +122,38 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#     "django.core.context_processors.i18n",
+# )
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATICFILES_DIRS = (
+    # ("echart", os.path.join(STATIC_ROOT,'echart')),
+    ("css", os.path.join(STATIC_ROOT,'css')),
+    ("js", os.path.join(STATIC_ROOT,'js')),
+    ("images", os.path.join(STATIC_ROOT,'images')),
+    # ("jquery", os.path.join(STATIC_ROOT,'jquery')),
+    # ("bootstrap", os.path.join(STATIC_ROOT,'bootstrap')),
+    ("fonts", os.path.join(STATIC_ROOT,'fonts')),
+    # ("img", os.path.join(STATIC_ROOT,'img')),
+    # ("sewiseplayer3.2", os.path.join(STATIC_ROOT,'sewiseplayer3.2')),
+)
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
+
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'liveme_cms_finance@conew.com'
+EMAIL_HOST_PASSWORD = 'wckckzuthxcgivop'
+EMAIL_PORT = 25
