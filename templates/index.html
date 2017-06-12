@@ -31,14 +31,14 @@
 				<div class="container">
 
 					<!-- Logo -->
-						<h1><a href="#" id="logo">Horizons</a></h1>
+						<h1><a href="javascript:;" id="logo">地平线</a></h1>
 
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
-								<li><a href="index.html">首页</a></li>
+								<li><a href="{% url 'index' %}">首页</a></li>
 								<li>
-									<a href="">生活笔记</a>
+									<a href="{% url 'categoryLife' %}">生活笔记</a>
 									<ul>
 										<li><a href="#">Lorem ipsum dolor</a></li>
 										<li><a href="#">Magna phasellus</a></li>
@@ -56,9 +56,9 @@
 										<li><a href="#">Veroeros feugiat</a></li>
 									</ul>
 								</li>
-								<li><a href="left-sidebar.html">技术杂谈</a></li>
-								<li><a href="right-sidebar.html">福利专区</a></li>
-								<li><a href="no-sidebar.html">关于自己</a></li>
+								<li><a href="{% url 'categorySkills' %}">技术杂谈</a></li>
+								<li><a href="{% url 'welfare' %}">福利专区</a></li>
+								<li><a href="{% url 'about' %}">关于自己</a></li>
                                 {% if user.is_authenticated %}
 {#                                <li>#}
 {#									<a href="">{{ user.username }}</a>#}
@@ -80,7 +80,7 @@
 {#									</ul>#}
 {#								</li>#}
 {#                                {% else %}#}
-                                <li><a href="no-sidebar.html">{{ user.username }}</a></li>
+                                <li><a href="#">{{ user.username }}</a></li>
                                 {% endif %}
 							</ul>
 						</nav>
@@ -91,10 +91,10 @@
 							<div class="container">
 								<section>
 									<header class="major">
-										<h2>Welcome to Horizons!</h2>
+										<h2>欢迎来到地平线！</h2>
 										<span class="byline">&hellip; a responsive HTML5 site template freebie by <a href="http://templated.co">TEMPLATED</a>. Released for free under the <a href="http://templated.co/license">Creative Commons Attribution</a> license, so use it for whatever (personal or commercial) &ndash; just give us credit!</span>
 									</header>
-									<a href="javascript:;" class="button alt" onclick="showLoginForm()">Sign Up</a>
+									<a href="javascript:;" class="button alt" onclick="showLoginForm()">登录</a>
 								</section>
 							</div>
 						</div>
@@ -106,8 +106,8 @@
 			<div class="wrapper style2">
 				<section class="container">
 					<header class="major">
-						<h2>Nulla luctus eleifend</h2>
-						<span class="byline">Mauris vulputate dolor sit amet nibh</span>
+						<h2>看你想看的</h2>
+						<span class="byline">精选内容，还请客观笑纳</span>
 					</header>
 					<div class="row no-collapse-1">
 						<section class="4u">
@@ -328,15 +328,16 @@
                         <div class="form-group">
                             <!-- Button -->
                             <div class="col-md-offset-3 col-md-9">
-                                <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
+                                <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp 注册</button>
                                 <span style="margin-left:8px;">or</span>
+                                <button id="btn-signup" type="button" class="btn btn-warning"><i class="icon-hand-right"></i> &nbsp 取消</button>
                             </div>
                         </div>
-                        <div style="border-top: 1px solid #999; padding-top:20px"  class="form-group">
-                            <div class="col-md-offset-3 col-md-9">
-                                <button id="btn-fbsignup" type="button" class="btn btn-primary"><i class="icon-facebook"></i>   Sign Up with Facebook</button>
-                            </div>
-                        </div>
+{#                        <div style="border-top: 1px solid #999; padding-top:20px"  class="form-group">#}
+{#                            <div class="col-md-offset-3 col-md-9">#}
+{#                                <button id="btn-fbsignup" type="button" class="btn btn-primary"><i class="icon-facebook"></i>   Sign Up with Facebook</button>#}
+{#                            </div>#}
+{#                        </div>#}
                     </form>
                  </div>
             </div>

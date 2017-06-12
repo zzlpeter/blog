@@ -16,14 +16,16 @@
 		<script src="{% static 'js/jquery.dropotron.min.js' %}"></script>
 		<script src="{% static 'js/skel.min.js' %}"></script>
 		<script src="{% static 'js/skel-layers.min.js' %}"></script>
-		<script src="{% static 'js/init.js' %}"></script>
+        <script src="{% static 'js/init.js' %}"></script>
+		<script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
 
         <script src="{% static 'js/showdown/showdown.min.js' %}"></script>
         <script src="{% static 'js/editor/editor.js' %}"></script>
-{#		<noscript>#}
-			<link rel="stylesheet" href="{% static 'css/skel.css' %}" />
-			<link rel="stylesheet" href="{% static 'css/style.css' %}" />
-{#		</noscript>#}
+
+        <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
+
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
 	</head>
 	<body class="no-sidebar">
@@ -38,9 +40,9 @@
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
-								<li><a href="index.html">首页</a></li>
+								<li><a href="{% url 'index' %}">首页</a></li>
 								<li>
-									<a href="">生活笔记</a>
+									<a href="{% url 'categoryLife' %}">生活笔记</a>
 {#									<ul>#}
 {#										<li><a href="#">Lorem ipsum dolor</a></li>#}
 {#										<li><a href="#">Magna phasellus</a></li>#}
@@ -58,16 +60,23 @@
 {#										<li><a href="#">Veroeros feugiat</a></li>#}
 {#									</ul>#}
 								</li>
-								<li><a href="left-sidebar.html">技术杂谈</a></li>
-								<li><a href="right-sidebar.html">福利专区</a></li>
-								<li><a href="no-sidebar.html">关于自己</a></li>
+								<li>
+                                    <a href="{% url 'categorySkills' %}">技术杂谈</a>
+                                    <ul>
+                                        <li><a href="#">Python</a></li>
+                                        <li><a href="#">JS</a></li>
+                                        <li><a href="#">Linux</a></li>
+                                    </ul>
+                                </li>
+								<li><a href="{% url 'welfare' %}">福利专区</a></li>
+								<li><a href="{% url 'about' %}">关于自己</a></li>
                                 {% if user.is_authenticated %}
                                 <li style="float: right;">
 									<a href="">{{ user.username }}</a>
 									<ul>
-										<li><a href="#">权限设置</a></li>
-										<li><a href="#">首页设置</a></li>
-										<li><a href="#">修改密码</a></li>
+										<li><a href="authSetting">权限设置</a></li>
+										<li><a href="/">首页设置</a></li>
+										<li><a href="changepwd">修改密码</a></li>
 {#										<li>#}
 {#											<a href="">Phasellus consequat</a>#}
 {#											<ul>#}
@@ -78,14 +87,128 @@
 {#												<li><a href="#">Veroeros feugiat</a></li>#}
 {#											</ul>#}
 {#										</li>#}
-										<li><a href="#">退出登录</a></li>
+										<li><a href="logout">退出登录</a></li>
 									</ul>
 								</li>
                                 {% else %}
-                                <li><a href="no-sidebar.html">登录</a></li>
+                                <li style="float: right;"><a href="javascript:;" onclick="showLoginForm()">登录</a></li>
                                 {% endif %}
 							</ul>
 						</nav>
 
 				</div>
 			</div>
+
+<!-- 登录、注册模态框（Modal） -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="container">
+        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-info" >
+                <div class="panel-heading">
+                    <div class="panel-title">登录</div>
+                    <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">忘记密码？</a></div>
+                </div>
+                <div style="padding-top:30px" class="panel-body" >
+                    <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                        <form id="loginform" class="form-horizontal" role="form">
+                            <div style="margin-bottom: 25px" class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username or email">
+                            </div>
+                            <div style="margin-bottom: 25px" class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+                            </div>
+                            <div class="input-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input id="login-remember" type="checkbox" name="remember" value="1"> 记住我
+                                    </label>
+                              </div>
+                            </div>
+                            <div style="margin-top:10px" class="form-group" style="float:right;">
+                                <!-- Button -->
+                                <div class="col-sm-12 controls">
+                                    <a id="btn-login" href="#" class="btn btn-success">登录</a>
+                                    <a id="btn-login" href="#" class="btn btn-warning">取消</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12 control">
+                                    <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                                        没有账号？
+                                        <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">在此注册</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        </div>
+        <div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="panel-title">注册</div>
+                    <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()">登录</a></div>
+                </div>
+                <div class="panel-body" >
+                    <form id="signupform" class="form-horizontal" role="form">
+                        <div id="signupalert" style="display:none" class="alert alert-danger">
+                            <p>Error:</p>
+                            <span></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-md-3 control-label">Email</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="email" placeholder="Email Address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstname" class="col-md-3 control-label">First Name</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="firstname" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname" class="col-md-3 control-label">Last Name</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="lastname" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-md-3 control-label">Password</label>
+                            <div class="col-md-9">
+                                <input type="password" class="form-control" name="passwd" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="icode" class="col-md-3 control-label">Invitation Code</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="icode" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <!-- Button -->
+                            <div class="col-md-offset-3 col-md-9">
+                                <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp 注册</button>
+                                <span style="margin-left:8px;">or</span>
+                                <button id="btn-signup" type="button" class="btn btn-warning"><i class="icon-hand-right"></i> &nbsp 取消</button>
+                            </div>
+                        </div>
+{#                        <div style="border-top: 1px solid #999; padding-top:20px"  class="form-group">#}
+{#                            <div class="col-md-offset-3 col-md-9">#}
+{#                                <button id="btn-fbsignup" type="button" class="btn btn-primary"><i class="icon-facebook"></i>   Sign Up with Facebook</button>#}
+{#                            </div>#}
+{#                        </div>#}
+                    </form>
+                 </div>
+            </div>
+         </div>
+    </div>
+</div>
+
+        <script>
+            function showLoginForm(){
+                $('#loginModal').modal('show');
+            }
+        </script>

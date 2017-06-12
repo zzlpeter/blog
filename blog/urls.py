@@ -20,12 +20,21 @@ from blogSystem import views as blog_views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    url(r'^index/?$', blog_views.index, name='index'),
-    url(r'^no_sidebar/?$', blog_views.no_sidebar, name='no_sidebar'),
+    url(r'^/?$', blog_views.index, name='index'),
+    url(r'^postDetail/?$', blog_views.postDetail, name='postDetail'),
 
-    url(r'^showdown/?$', blog_views.showdown, name='showdown'),
+    url(r'^makePost/?$', blog_views.makePost, name='makePost'),
 
     url(r'^send_mail/', blog_views.send_mail, name='send_mail'),
 
-    url(r'^list1/', blog_views.list1, name='list1'),
+    url(r'^postList/', blog_views.postList, name='postList'),
+
+    url(r'^category/life/', blog_views.postList, name='categoryLife'),
+    url(r'^category/skills/', blog_views.postList, name='categorySkills'),
+    url(r'^welfare/', blog_views.postList, name='welfare'),
+    url(r'^about/', blog_views.postList, name='about'),
+
+    url(r'^logout/', blog_views.postList, name='logout'),
+    url(r'^authSetting/', blog_views.postList, name='authSetting'),
+    url(r'^changepwd/', blog_views.postList, name='changepwd'),
 ]

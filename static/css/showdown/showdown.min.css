@@ -1,48 +1,4 @@
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>Title</title>#}
-{#    <script src="{% static 'js/showdown/showdown.min.js' %}"></script>#}
-{#        <script src="{% static 'js/editor/editor.js' %}"></script>#}
-{#    <script>#}
-{#        var Showdown = require('showdown');var converter = new Showdown.converter();converter.makeHtml('#hello markdown!');#}
-{#    </script>#}
-{#</head>#}
-{#<body>#}
-{##}
-{#</body>#}
-{#</html>#}
-
-
-
-
-<!DOCTYPE html>
-<html>
-<head>
-    {% load staticfiles %}
-    <title>Markdown.js</title>
-    <script type="text/javascript" src="{% static 'js/showdown/showdown.min.js' %}"></script>
-</head>
-{#<--我们可以使用样式自定义markdown转换后的样式--!>#}
-<style>
-{#<--引用样式--!>#}
-{#    blockquote {#}
-{#        border-left:#eee solid 5px;#}
-{#        padding-left:20px;#}
-{#    }#}
-{#<--列表样式--!>#}
-{#    ul li {#}
-{#        line-height: 20px;#}
-{#    }#}
-{##}
-{#<--代码样式--!>#}
-{#    code {#}
-{#        color:#D34B62;#}
-{#        background: #F6F6F6;#}
-{#    }#}
-{# }#}
-    html,
+html,
 body {
     width: 100%;
     height: 100%;
@@ -277,27 +233,3 @@ pre code {
     color: white;
     font-size: 0.8em !important;
 }
-
-</style>
-<body>
-<div>
-{#    <--设置id为oriContent，如果想实现实时更新，使用onkeyup方法--!>#}
-
-    <textarea id="oriContent" style="height:100%;width:40%;margin:10px;" onkeyup="convert()"></textarea>
-{#<textarea id="result" style="height:400px;width:50%;" onkeyup="convert()" disabled="disabled" readonly></textarea>#}
-{#<---设置展示的div添加id-!>#}
-    <div id="result" style="height:100%;width:50%;margin:10px; float: right; border: 1px solid royalblue;"></div>
-
-</div>
-
-{#<--写转化函数--!>#}
-<script type="text/javascript">
-function convert(){
-    var text = document.getElementById("oriContent").value;
-    var converter = new showdown.Converter();
-    var html = converter.makeHtml(text);
-    document.getElementById("result").innerHTML = html;
-}
-</script>
-</body>
-</html>
