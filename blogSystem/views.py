@@ -108,5 +108,5 @@ def send_mail(req):
     except Exception, exc:
         return HttpResponse(json.dumps({'msg': 'error'}), content_type='application/json')
 
-def postList(req, tmp_name='postList.html'):
+def postList(req, category1=None, category2=None, tmp_name='postList.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))

@@ -10,3 +10,9 @@ class test(models.Model):
 
     class Meta:
         db_table = 'test'
+
+class Category(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=20)
+    create_time = models.DateField(auto_now=True)
+    level = models.SmallIntegerField

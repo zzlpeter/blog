@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html style="height: 100%;">
 <head>
     {% load staticfiles %}
-    <title>Markdown.js</title>
+    <title>Make The World Smarter</title>
     <script type="text/javascript" src="{% static 'js/showdown/showdown.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/showdown/showdown.min.css' %}" />
 </head>
 {#<--我们可以使用样式自定义markdown转换后的样式--!>#}
 
 <body>
+<div class="wrapper style2" style="padding: 30px;">
+    <span class="byline">伊诺的博客：</span>
+    <button style="float:right;">发布</button>
 <div>
 {#    <--设置id为oriContent，如果想实现实时更新，使用onkeyup方法--!>#}
 
-    <textarea id="oriContent" style="height:100%;width:40%;margin:10px;" onkeyup="convert()"></textarea>
+    <textarea id="oriContent" style="height:700px;width:550px;margin:10px;resize: none;" onkeyup="convert()"></textarea>
 {#<---设置展示的div添加id-!>#}
-    <div id="result" style="height:100%;width:50%;margin:10px; float: right; border: 1px solid royalblue;"></div>
+    <div id="result" style="height:700px;width:50%;margin:10px; float: right; border: 1px solid royalblue;overflow:auto"></div>
 
 </div>
 
