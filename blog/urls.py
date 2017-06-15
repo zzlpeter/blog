@@ -25,19 +25,22 @@ urlpatterns = [
 
     url(r'^makePost/?$', blog_views.makePost, name='makePost'),
 
-    url(r'^send_mail/', blog_views.send_mail, name='send_mail'),
+    url(r'^send_mail/?$', blog_views.send_mail, name='send_mail'),
 
-    url(r'^postList/', blog_views.postList, name='postList'),
+    url(r'^postList/?$', blog_views.postList, name='postList'),
+
+    url(r'^category/(?P<category1>\w+)/(?P<post_id>\d+)/?$', blog_views.postDetail, name='category1_post_detail'),
+    url(r'^category/(?P<category1>\w+)/(?P<category2>\w+)/(?P<post_id>\d+)/?$', blog_views.postDetail, name='category2_post_detail'),
 
     # url(r'^category/life/', blog_views.postList, name='categoryLife'),
     # url(r'^category/skills/', blog_views.postList, name='categorySkills'),
-    url(r'^welfare/', blog_views.postList, name='welfare'),
-    url(r'^about/', blog_views.postList, name='about'),
+    url(r'^welfare/?$', blog_views.postList, name='welfare'),
+    url(r'^about/?$', blog_views.postList, name='about'),
 
-    url(r'^logout/', blog_views.postList, name='logout'),
-    url(r'^authSetting/', blog_views.postList, name='authSetting'),
-    url(r'^changepwd/', blog_views.postList, name='changepwd'),
+    url(r'^logout/?$', blog_views.postList, name='logout'),
+    url(r'^authSetting/?$', blog_views.postList, name='authSetting'),
+    url(r'^changepwd/?$', blog_views.postList, name='changepwd'),
 
-    url(r'^category/(?P<category1>\w+)/$', blog_views.postList, name='category_by1'),
+    url(r'^category/(?P<category1>\w+)/?$', blog_views.postList, name='category_by1'),
     url(r'^category/(?P<category1>\w+)/(?P<category2>\w+)/?$', blog_views.postList, name='category_by2'),
 ]

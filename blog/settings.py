@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Django settings for blog project.
 
@@ -25,7 +26,7 @@ SECRET_KEY = 'fm2)zsn&w&l@fl87v3m=6epg_emr6_scss!%_t5n92(x&v5iz&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -111,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'zh_hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -126,23 +127,15 @@ USE_TZ = True
 #     "django.core.context_processors.i18n",
 # )
 
+# 静态文件路径设置
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = (
-    # ("echart", os.path.join(STATIC_ROOT,'echart')),
     ("css", os.path.join(STATIC_ROOT,'css')),
     ("js", os.path.join(STATIC_ROOT,'js')),
     ("images", os.path.join(STATIC_ROOT,'images')),
-    # ("jquery", os.path.join(STATIC_ROOT,'jquery')),
-    # ("bootstrap", os.path.join(STATIC_ROOT,'bootstrap')),
     ("fonts", os.path.join(STATIC_ROOT,'fonts')),
-    # ("img", os.path.join(STATIC_ROOT,'img')),
-    # ("sewiseplayer3.2", os.path.join(STATIC_ROOT,'sewiseplayer3.2')),
 )
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
-
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -152,6 +145,7 @@ STATICFILES_FINDERS = (
 
 
 
+# 发邮件相关配置
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'liveme_cms_finance@conew.com'
