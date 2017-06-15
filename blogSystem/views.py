@@ -3,6 +3,7 @@
 from django.shortcuts import render_to_response, RequestContext, render, HttpResponse
 
 import models as blog_models
+import json
 
 # Create your views here.
 
@@ -70,3 +71,36 @@ def postList(req, category1=None, category2=None, tmp_name='postList.html'):
     # if category2:
     #     obj = blog_models.Category.objects.filter()
     return render_to_response(tmp_name, context_instance=RequestContext(req))
+
+
+def makePostTrue(req):
+    author = req.user
+    content = req.POST.get('content')
+    blog_models.Post.objects.create(content=content)
+    json_str = {'status': 1, 'msg': u'提交成功'}
+    return _response_json(json_str)
+
+
+
+
+def _response_json(data):
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

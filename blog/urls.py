@@ -25,6 +25,8 @@ urlpatterns = [
 
     url(r'^makePost/?$', blog_views.makePost, name='makePost'),
 
+    url(r'^makePostTrue/?$', blog_views.makePostTrue, name='makePostTrue'),
+
     url(r'^send_mail/?$', blog_views.send_mail, name='send_mail'),
 
     url(r'^postList/?$', blog_views.postList, name='postList'),

@@ -30,7 +30,7 @@ class ImagesCategory(models.Model):
 
 class Images(models.Model):
     id = models.AutoField(primary_key=True)
-    upload_time = models.DateField(auto_now=True)
+    upload_time = models.DateTimeField(auto_now=True)
     src = models.CharField(max_length=100)
     img_category = models.ForeignKey(ImagesCategory)
 
@@ -48,7 +48,7 @@ class UserExtend(models.Model):
         primary_key=True
     )
     portrait = models.ForeignKey(Images)
-    login_ip = models.CharField(max_length=100)
+    login_ip = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.user
@@ -61,9 +61,9 @@ class UserExtend(models.Model):
 class Category(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20)
-    create_time = models.DateField(auto_now=True)
+    create_time = models.DateTimeField(auto_now=True)
     level = models.SmallIntegerField()
-    parent_level = models.IntegerField()
+    parent_level = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -80,6 +80,7 @@ class Post(models.Model):
     img = models.ForeignKey(Images)
     post_time = models.DateTimeField(auto_now=True)
     content = models.TextField()
+    is_valid = models.SmallIntegerField(default=1)
 
     def __str__(self):
         return self.title

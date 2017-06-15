@@ -4,6 +4,7 @@
     {% load staticfiles %}
     <title>Make The World Smarter</title>
     <script type="text/javascript" src="{% static 'js/showdown/showdown.min.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/showdown/showdown.min.css' %}" />
 </head>
 {#<--我们可以使用样式自定义markdown转换后的样式--!>#}
@@ -11,7 +12,7 @@
 <body>
 <div class="wrapper style2" style="padding: 30px;">
     <span class="byline">伊诺的博客：</span>
-    <button style="float:right;">发布</button>
+    <button style="float:right;" onclick="makePost()">发布</button>
 <div>
 {#    <--设置id为oriContent，如果想实现实时更新，使用onkeyup方法--!>#}
 
@@ -29,6 +30,25 @@ function convert(){
     var html = converter.makeHtml(text);
     document.getElementById("result").innerHTML = html;
 }
+
+function makePost() {
+    if(confirm('确定提交吗？')){
+        var content = $('#result').html();
+        $.ajax({
+            url: "{% url 'makePostTrue' %}",
+            type: 'POST',
+            dataType: 'JSON',
+            data: {
+                'content': content,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(resData){
+                alert(resData.msg);
+            }
+        })
+    }
+}
+
 </script>
 </body>
 </html>
