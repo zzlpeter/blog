@@ -74,12 +74,13 @@ class Category(models.Model):
 
 class Post(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, blank=True, null=True)
     author = models.ForeignKey(UserExtend)
-    summary = models.CharField(max_length=500)
+    summary = models.CharField(max_length=500, blank=True, null=True)
     img = models.ForeignKey(Images)
     post_time = models.DateTimeField(auto_now=True)
     content = models.TextField()
+    category = models.ForeignKey(Category)
     is_valid = models.SmallIntegerField(default=1)
 
     def __str__(self):

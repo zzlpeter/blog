@@ -11,8 +11,8 @@ def index(req, tmp_name='index.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
 def postDetail(req, category1=None, category2=None, post_id=None, tmp_name='postDetail.html'):
-
-    return render_to_response(tmp_name, context_instance=RequestContext(req))
+    postObj = blog_models.Post.objects.get(pk=2)
+    return render_to_response(tmp_name, {'postObj': postObj}, context_instance=RequestContext(req))
 
 def makePost(req, tmp_name='makePost.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
@@ -76,7 +76,7 @@ def postList(req, category1=None, category2=None, tmp_name='postList.html'):
 def makePostTrue(req):
     author = req.user
     content = req.POST.get('content')
-    blog_models.Post.objects.create(content=content)
+    blog_models.Post.objects.create(content=content, author_id=author.id, img_id=1)
     json_str = {'status': 1, 'msg': u'提交成功'}
     return _response_json(json_str)
 
