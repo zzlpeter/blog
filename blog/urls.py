@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from blogSystem import views as blog_views
+from blogSystem.account import views as account_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -39,10 +40,10 @@ urlpatterns = [
     url(r'^welfare/?$', blog_views.postList, name='welfare'),
     url(r'^about/?$', blog_views.postList, name='about'),
 
-    url(r'^accounts/user_logout/?$', blog_views.user_logout, name='user_logout'),
-    url(r'^accounts/authSetting/?$', blog_views.postList, name='authSetting'),
-    url(r'^accounts/changepwd/?$', blog_views.postList, name='changepwd'),
-    url(r'^accounts/user_login/?$', blog_views.user_login, name='user_login'),
+    url(r'^accounts/user_logout/?$', account_views.user_logout, name='user_logout'),
+    url(r'^accounts/authSetting/?$', account_views.user_auth_setting, name='authSetting'),
+    url(r'^accounts/changepwd/?$', account_views.user_change_pwd, name='changepwd'),
+    url(r'^accounts/user_login/?$', account_views.user_login, name='user_login'),
 
     url(r'^category/(?P<category1>\w+)/?$', blog_views.postList, name='category_by1'),
     url(r'^category/(?P<category1>\w+)/(?P<category2>\w+)/?$', blog_views.postList, name='category_by2'),

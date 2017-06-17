@@ -92,8 +92,12 @@ function convert(){
 function makePost() {
     var content = $('#result').html();
     var title = $('#post-subject').val();
-    var summary = $('#post-summary').text();
+    var summary = $('#post-summary').val();
     var category = $('#post-category').val();
+    if(!content || !title || !summary || !category){
+        alert('标题、概要、内容为必填项！');
+        return false;
+    }
     $.ajax({
         url: "{% url 'makePostSummit' %}",
         type: 'POST',

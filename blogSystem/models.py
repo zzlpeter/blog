@@ -100,6 +100,11 @@ class Post(models.Model):
             count = 1
         return count
 
+    def post_detail_path(self):
+        level2 = Category.objects.get(pk=self.category_id).name
+        level1 = Category.objects.get(pk=self.category.parent_level).name
+        return '/category/%s/%s/%s' % (level1, level2, self.id)
+
 
 class ThumbUpDown(models.Model):
     thumb_choice = (

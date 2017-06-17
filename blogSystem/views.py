@@ -1,8 +1,8 @@
 # coding: utf-8
 
-from django.shortcuts import render_to_response, RequestContext, render, HttpResponse, HttpResponseRedirect, get_object_or_404
-from django.contrib.auth import logout, login, authenticate
+from django.shortcuts import render_to_response, RequestContext, HttpResponse, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from blogSystem.common.views import response_json
 
 import models as blog_models
 import json
@@ -11,13 +11,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-# Create your views here.
 
 # 首页展示
 def index(req, tmp_name='index.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
-# 贴在详情页面
+# 帖子详情页面
 def postDetail(req, category1=None, category2=None, post_id=None, tmp_name='postDetail.html'):
     postObj = get_object_or_404(blog_models.Post, pk=post_id)
 
@@ -92,6 +91,9 @@ def makePostSummit(req):
     category = req.POST.get('category')
     title = req.POST.get('title')
     summary = req.POST.get('summary')
+    if not all([content.strip(), category.strip(), title.strip(), summary.strip()]):
+        json_str = {'status': 0, 'msg': u'标题、概要、内容为必填项！'}
+        return response_json(json_str)
     try:
         blog_models.Post.objects.create(content=content,
                                         author_id=user.id,
@@ -103,36 +105,9 @@ def makePostSummit(req):
     except Exception, exc:
         logger.error(exc, exc_info=True)
         json_str = {'status': 0, 'msg': u'提交异常，请给作者留言，谢谢！'}
-    return _response_json(json_str)
+    return response_json(json_str)
 
 
-
-# 统一返回json数据
-def _response_json(data):
-    return HttpResponse(json.dumps(data), content_type='application/json')
-
-
-
-# 用户登出
-def user_logout(req):
-    logout(req)
-    return HttpResponseRedirect('/')
-
-# 用户登录
-def user_login(req):
-    username = req.POST.get('username')
-    password = req.POST.get('password')
-    remember = req.POST.get('remember')
-    if req.user.is_authenticated():
-        json_str = {'status': 0, 'msg': u'您已登录，不可重复登录！'}
-        return _response_json(json_str)
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        login(req, user)
-        json_str = {'status': 1, 'msg': u'认证成功'}
-    else:
-        json_str = {'status': 0, 'msg': u'用户名与密码不匹配，请检查！'}
-    return _response_json(json_str)
 
 
 
