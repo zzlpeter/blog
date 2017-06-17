@@ -1,21 +1,29 @@
 # coding: utf-8
 
-from django.shortcuts import render_to_response, RequestContext, render, HttpResponse
+from django.shortcuts import render_to_response, RequestContext, render, HttpResponse, HttpResponseRedirect, get_object_or_404
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import login_required
 
 import models as blog_models
 import json
 
 # Create your views here.
 
+# 首页展示
 def index(req, tmp_name='index.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
+# 贴在详情页面
 def postDetail(req, category1=None, category2=None, post_id=None, tmp_name='postDetail.html'):
-    postObj = blog_models.Post.objects.get(pk=2)
+    postObj = get_object_or_404(blog_models.Post, pk=post_id)
+
     return render_to_response(tmp_name, {'postObj': postObj}, context_instance=RequestContext(req))
 
+# 发帖页面
+@login_required
 def makePost(req, tmp_name='makePost.html'):
-    return render_to_response(tmp_name, context_instance=RequestContext(req))
+    category = blog_models.Category.objects.filter(level=2).order_by('-parent_level', 'id')
+    return render_to_response(tmp_name, {'category': category}, context_instance=RequestContext(req))
 
 def send_mail(req):
     import json
@@ -72,24 +80,42 @@ def postList(req, category1=None, category2=None, tmp_name='postList.html'):
     #     obj = blog_models.Category.objects.filter()
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
-
-def makePostTrue(req):
-    author = req.user
+@login_required
+def makePostSummit(req):
+    user = req.user
     content = req.POST.get('content')
-    blog_models.Post.objects.create(content=content, author_id=author.id, img_id=1)
+    blog_models.Post.objects.create(content=content, author_id=user.id, img_id=1)
     json_str = {'status': 1, 'msg': u'提交成功'}
     return _response_json(json_str)
 
 
 
-
+# 统一返回json数据
 def _response_json(data):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 
+# 用户登出
+def user_logout(req):
+    logout(req)
+    return HttpResponseRedirect('/')
 
-
+# 用户登录
+def user_login(req):
+    username = req.POST.get('username')
+    password = req.POST.get('password')
+    remember = req.POST.get('remember')
+    if req.user.is_authenticated():
+        json_str = {'status': 0, 'msg': u'您已登录，不可重复登录！'}
+        return _response_json(json_str)
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        login(req, user)
+        json_str = {'status': 1, 'msg': u'认证成功'}
+    else:
+        json_str = {'status': 0, 'msg': u'用户名与密码不匹配，请检查！'}
+    return _response_json(json_str)
 
 
 

@@ -5,25 +5,82 @@
     <title>Make The World Smarter</title>
     <script type="text/javascript" src="{% static 'js/showdown/showdown.min.js' %}"></script>
     <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+
     <link rel="stylesheet" href="{% static 'css/showdown/showdown.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
 </head>
 {#<--我们可以使用样式自定义markdown转换后的样式--!>#}
 
 <body>
 <div class="wrapper style2" style="padding: 30px;">
-    <span class="byline">伊诺的博客：</span>
-    <button style="float:right;" onclick="makePost()">发布</button>
+    <span class="byline">期待你的精彩内容：</span>
+    <button style="float:right;" onclick="showPostModal()">发布</button>
 <div>
 {#    <--设置id为oriContent，如果想实现实时更新，使用onkeyup方法--!>#}
 
-    <textarea id="oriContent" style="height:700px;width:550px;margin:10px;resize: none;" onkeyup="convert()"></textarea>
+    <textarea id="oriContent" style="height:751px;width:44%;margin-top:8px;resize: none;" onkeyup="convert()"></textarea>
 {#<---设置展示的div添加id-!>#}
-    <div id="result" style="height:700px;width:50%;margin:10px; float: right; border: 1px solid royalblue;overflow:auto"></div>
+    <div id="result" style="height:749px;width:50%;margin:10px; float: right; border: 1px solid royalblue;overflow:auto"></div>
 
 </div>
 
+
+<!-- 填写post基本信息模态框（Modal） -->
+<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="panel-title" id="contactLabel"><span class="glyphicon glyphicon-info-sign"></span> 输入帖子标题及概要</h4>
+            </div>
+            <div class="modal-body" style="padding: 5px;">
+{#                    <div class="row">#}
+{#                        <div class="col-lg-6 col-md-6 col-sm-6" style="padding-bottom: 10px;">#}
+{#                            <input class="form-control" name="firstname" placeholder="Firstname" type="text" required autofocus />#}
+{#                        </div>#}
+{#                        <div class="col-lg-6 col-md-6 col-sm-6" style="padding-bottom: 10px;">#}
+{#                            <input class="form-control" name="lastname" placeholder="Lastname" type="text" required />#}
+{#                        </div>#}
+{#                    </div>#}
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 10px;">
+                            对应板块：
+                            <select style="width: 70px;">
+                                {% for cat in category %}
+                                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 10px;">
+                            <input class="form-control" name="subject" placeholder="输入帖子标题" type="text" required="required" maxlength="50" id="post-subject"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <textarea style="resize:vertical;" class="form-control" placeholder="输入帖子简短概要..." rows="6" name="summary" required="required" maxlength="100" id="post-summary"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer" style="margin-bottom:-14px;">
+                    <input type="button" class="btn btn-success" value="确认提交" onclick="makePost()" />
+                        <!--<span class="glyphicon glyphicon-ok"></span>-->
+{#                    <input type="reset" class="btn btn-danger" value="Clear" />#}
+                        <!--<span class="glyphicon glyphicon-remove"></span>-->
+                    <button style="float: right;" type="button" class="btn btn-default btn-close" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+
 {#<--写转化函数--!>#}
 <script type="text/javascript">
+
+//转换函数
 function convert(){
     var text = document.getElementById("oriContent").value;
     var converter = new showdown.Converter();
@@ -31,23 +88,32 @@ function convert(){
     document.getElementById("result").innerHTML = html;
 }
 
+//提交post内容到后台
 function makePost() {
-    if(confirm('确定提交吗？')){
-        var content = $('#result').html();
-        $.ajax({
-            url: "{% url 'makePostTrue' %}",
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-                'content': content,
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
-            success: function(resData){
-                alert(resData.msg);
-            }
-        })
-    }
+    var content = $('#result').html();
+    var title = $('#post-subject').val();
+    var summary = $('#post-summary').text();
+    $.ajax({
+        url: "{% url 'makePostSummit' %}",
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+            'content': content,
+            'title': title,
+            'summary': summary,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success: function(resData){
+            alert(resData.msg);
+        }
+    })
 }
+
+//弹出框，填写标题及概要
+function showPostModal() {
+    $('#postModal').modal('show');
+}
+
 
 </script>
 </body>

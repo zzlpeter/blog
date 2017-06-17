@@ -25,7 +25,7 @@ urlpatterns = [
 
     url(r'^makePost/?$', blog_views.makePost, name='makePost'),
 
-    url(r'^makePostTrue/?$', blog_views.makePostTrue, name='makePostTrue'),
+    url(r'^makePostSummit/?$', blog_views.makePostSummit, name='makePostSummit'),
 
     url(r'^send_mail/?$', blog_views.send_mail, name='send_mail'),
 
@@ -39,9 +39,10 @@ urlpatterns = [
     url(r'^welfare/?$', blog_views.postList, name='welfare'),
     url(r'^about/?$', blog_views.postList, name='about'),
 
-    url(r'^logout/?$', blog_views.postList, name='logout'),
-    url(r'^authSetting/?$', blog_views.postList, name='authSetting'),
-    url(r'^changepwd/?$', blog_views.postList, name='changepwd'),
+    url(r'^accounts/user_logout/?$', blog_views.user_logout, name='user_logout'),
+    url(r'^accounts/authSetting/?$', blog_views.postList, name='authSetting'),
+    url(r'^accounts/changepwd/?$', blog_views.postList, name='changepwd'),
+    url(r'^accounts/user_login/?$', blog_views.user_login, name='user_login'),
 
     url(r'^category/(?P<category1>\w+)/?$', blog_views.postList, name='category_by1'),
     url(r'^category/(?P<category1>\w+)/(?P<category2>\w+)/?$', blog_views.postList, name='category_by2'),
