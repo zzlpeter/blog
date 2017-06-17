@@ -46,7 +46,7 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 10px;">
                             对应板块：
-                            <select style="width: 70px;">
+                            <select style="width: 70px;" id="post-category">
                                 {% for cat in category %}
                                 <option value="{{ cat.id }}">{{ cat.name }}</option>
                                 {% endfor %}
@@ -93,6 +93,7 @@ function makePost() {
     var content = $('#result').html();
     var title = $('#post-subject').val();
     var summary = $('#post-summary').text();
+    var category = $('#post-category').val();
     $.ajax({
         url: "{% url 'makePostSummit' %}",
         type: 'POST',
@@ -101,6 +102,7 @@ function makePost() {
             'content': content,
             'title': title,
             'summary': summary,
+            'category': category,
             'csrfmiddlewaretoken': '{{ csrf_token }}'
         },
         success: function(resData){

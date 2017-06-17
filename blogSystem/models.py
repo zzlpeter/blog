@@ -3,6 +3,9 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your models here.
 
@@ -88,6 +91,14 @@ class Post(models.Model):
 
     class Meta:
         db_table = 'blog_post'
+
+    def post_count_belong_this_user(self):
+        try:
+            count = self.objects.filter(author_id=self.author_id).count()
+        except Exception, exc:
+            logger.error(exc, exc_info=True)
+            count = 1
+        return count
 
 
 class ThumbUpDown(models.Model):

@@ -34,10 +34,11 @@
 {#post list列表页#}
 <div class="container" style="height:100%;width:70%;margin:20px; float: left; margin-left: 45px;">
 	<div class="row">
+        {% for post in posts %}
 		<div class="row">
             <div class="col-xs-12 col-sm-3 col-md-3">
                 <a href="#">
-                    <img src="http://wanderluxe.theluxenomad.com/wp-content/uploads/2014/10/http-www.urchinbali.comgallery.jpg" class="img-responsive img-box img-thumbnail">
+                    <img src="/static/images/{{ post.img.img_category.name }}/{{ post.img.src }}" class="img-responsive img-box img-thumbnail">
                 </a>
             </div>
             <div class="col-xs-12 col-sm-9 col-md-9">
@@ -45,28 +46,30 @@
                     <div class="list-group-item">
                         <div class="row-picture">
                             <a href="#" title="sintret">
-                                <img class="circle img-thumbnail img-box" src="http://sintret.com/img/andy.jpg" alt="sintret">
+                                <img class="circle img-thumbnail img-box" src="/static/images/portrait/{{ post.author.portrait.src }}" alt="sintret">
                             </a>
                         </div>
                         <div class="row-content">
                             <div class="list-group-item-heading">
                                 <a href="#" title="sintret">
-                                    <small>sintret</small>
+                                    <small>{{ post.author.user.username }}</small>
                                 </a>
                             </div>
                             <small>
-                                <i class="glyphicon glyphicon-time"></i> 3 days ago via <span class="twitter"> <i class="fa fa-twitter"></i> <a target="_blank" href="https://twitter.com/sintret" alt="sintret" title="sintret">@sintret</a></span>
+                                <i class="glyphicon glyphicon-time"></i>{{ post.post_time|timesince }}
                                 <br>
-                                <span class="explore"><i class="glyphicon glyphicon-th"></i> <a href="#">Explore 2 places </a></span>
+                                <span class="explore"><i class="glyphicon glyphicon-th"></i> <a href="#">发帖数量 {{ post.post_count_belong_this_user }}  </a></span>
                             </small>
                         </div>
                     </div>
                 </div>
-                <h4><a href="#">5 of Bali’s Spanking New Haunts - WanderLuxe Magazine</a></h4>
-                <p>Naturally, we know where Bali's newest restaurants are and what to order, so give that private chef a rest and check out these spanking new haunts.</p>
+                <h4><a href="#">{{ post.title }}</a></h4>
+                <p>{{ post.summary }}</p>
             </div>
         </div>
         <hr>
+        {% endfor %}
+
 
         <div class="row">
             <div class="col-xs-12 col-sm-3 col-md-3">

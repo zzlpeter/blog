@@ -6,6 +6,10 @@ from django.contrib.auth.decorators import login_required
 
 import models as blog_models
 import json
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 # Create your views here.
 
@@ -76,16 +80,29 @@ def send_mail(req):
         return HttpResponse(json.dumps({'msg': 'error'}), content_type='application/json')
 
 def postList(req, category1=None, category2=None, tmp_name='postList.html'):
-    # if category2:
-    #     obj = blog_models.Category.objects.filter()
-    return render_to_response(tmp_name, context_instance=RequestContext(req))
+    posts = []
+    if category2:
+        posts = blog_models.Post.objects.filter(category__name=category2).order_by('id')
+    return render_to_response(tmp_name, {'posts': posts}, context_instance=RequestContext(req))
 
 @login_required
 def makePostSummit(req):
     user = req.user
     content = req.POST.get('content')
-    blog_models.Post.objects.create(content=content, author_id=user.id, img_id=1)
-    json_str = {'status': 1, 'msg': u'提交成功'}
+    category = req.POST.get('category')
+    title = req.POST.get('title')
+    summary = req.POST.get('summary')
+    try:
+        blog_models.Post.objects.create(content=content,
+                                        author_id=user.id,
+                                        img_id=1,
+                                        category_id=category,
+                                        title=title,
+                                        summary=summary)
+        json_str = {'status': 1, 'msg': u'提交成功'}
+    except Exception, exc:
+        logger.error(exc, exc_info=True)
+        json_str = {'status': 0, 'msg': u'提交异常，请给作者留言，谢谢！'}
     return _response_json(json_str)
 
 
