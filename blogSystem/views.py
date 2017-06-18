@@ -81,7 +81,7 @@ def send_mail(req):
 def postList(req, category1=None, category2=None, tmp_name='postList.html'):
     posts = []
     if category2:
-        posts = blog_models.Post.objects.filter(category__name=category2).order_by('id')
+        posts = blog_models.Post.objects.filter(category__name=category2).order_by('-id')
     return render_to_response(tmp_name, {'posts': posts}, context_instance=RequestContext(req))
 
 @login_required
