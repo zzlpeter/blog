@@ -94,7 +94,7 @@ class Post(models.Model):
 
     def post_count_belong_this_user(self):
         try:
-            count = self.objects.filter(author_id=self.author_id).count()
+            count = Post.objects.filter(author_id=self.author_id).count()
         except Exception, exc:
             logger.error(exc, exc_info=True)
             count = 1
