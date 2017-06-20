@@ -6,7 +6,6 @@
     <script type="text/javascript" src="{% static 'js/showdown/showdown.min.js' %}"></script>
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/jquery.min.js' %}"></script>
 
     <link rel="stylesheet" href="{% static 'css/showdown/showdown.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
@@ -81,45 +80,55 @@
 {#<--写转化函数--!>#}
 <script type="text/javascript">
 
-//转换函数
-function convert(){
-    var text = document.getElementById("oriContent").value;
-    var converter = new showdown.Converter();
-    var html = converter.makeHtml(text);
-    document.getElementById("result").innerHTML = html;
-}
-
-//提交post内容到后台
-function makePost() {
-    var content = $('#result').html();
-    var title = $('#post-subject').val();
-    var summary = $('#post-summary').val();
-    var category = $('#post-category').val();
-    if(!content || !title || !summary || !category){
-        alert('标题、概要、内容为必填项！');
-        return false;
+    //弹出框，填写标题及概要
+    function showPostModal() {
+        $('#postModal').modal('show');
     }
-    $.ajax({
-        url: "{% url 'makePostSummit' %}",
-        type: 'POST',
-        dataType: 'JSON',
-        data: {
-            'content': content,
-            'title': title,
-            'summary': summary,
-            'category': category,
-            'csrfmiddlewaretoken': '{{ csrf_token }}'
-        },
-        success: function(resData){
-            alert(resData.msg);
-        }
-    })
-}
 
-//弹出框，填写标题及概要
-function showPostModal() {
-    $('#postModal').modal('show');
-}
+    //转换函数
+    function convert(){
+        var text = document.getElementById("oriContent").value;
+        var converter = new showdown.Converter();
+        //支持显示如同github的勾选框，默认false
+        //ep: - [x] This task is done
+        converter.setOption("tasklists", true);
+        //支持显示table，默认false
+        converter.setOption("tables", true);
+        //支持图片大小设置，默认为false
+        converter.setOption("parseImgDimensions", true);
+        /**
+        **更多地请看https://github.com/showdownjs/showdown文档
+        **/
+        var html = converter.makeHtml(text);
+        document.getElementById("result").innerHTML = html;
+    }
+
+    //提交post内容到后台
+    function makePost() {
+        var content = $('#result').html();
+        var title = $('#post-subject').val();
+        var summary = $('#post-summary').val();
+        var category = $('#post-category').val();
+        if(!content || !title || !summary || !category){
+            alert('标题、概要、内容为必填项！');
+            return false;
+        }
+        $.ajax({
+            url: "{% url 'makePostSummit' %}",
+            type: 'POST',
+            dataType: 'JSON',
+            data: {
+                'content': content,
+                'title': title,
+                'summary': summary,
+                'category': category,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(resData){
+                alert(resData.msg);
+            }
+        })
+    }
 
 
 </script>
