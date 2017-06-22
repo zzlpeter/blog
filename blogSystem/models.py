@@ -109,7 +109,11 @@ class Post(models.Model):
 
     # 获取该帖子喜欢、不喜欢、阅读、分享数量
     def get_post_related_num(self, type):
-        return ThumbUpDown.objects.filter(thumb_type=type, post_id=self.id).count()
+        if type in ('up', 'down'):
+            return ThumbUpDown.objects.filter(thumb_type=type, post_id=self.id).count()
+        elif type == 'share':
+            return PostShare.objects.filter(post_id=self.id).count()
+
 
 class ThumbUpDown(models.Model):
     thumb_choice = (
@@ -127,6 +131,26 @@ class ThumbUpDown(models.Model):
 
     class Meta:
         db_table = 'blog_thumb_up_down'
+
+
+class PostShare(models.Model):
+    dest_choice = (
+        ('qzone', u'QQ空间'),
+        ('tsina', u'新浪微博'),
+        ('tqq', u'腾讯微博'),
+        ('renren', u'人人'),
+        ('wechat', u'微信')
+    )
+    id = models.AutoField(primary_key=True)
+    share_time = models.DateTimeField(auto_now=True)
+    post = models.ForeignKey(Post)
+    destination = models.CharField(max_length=10, choices=dest_choice)
+
+    def __str__(self):
+        return self.id
+
+    class Meta:
+        db_table = 'blog_post_share'
 
 
 class PostComment(models.Model):
