@@ -92,6 +92,7 @@ class Post(models.Model):
     class Meta:
         db_table = 'blog_post'
 
+    # 获取该帖子作者一共发帖数量
     def post_count_belong_this_user(self):
         try:
             count = Post.objects.filter(author_id=self.author_id).count()
@@ -100,11 +101,15 @@ class Post(models.Model):
             count = 1
         return count
 
+    # 获取该帖子路径
     def post_detail_path(self):
         level2 = Category.objects.get(pk=self.category_id).name
         level1 = Category.objects.get(pk=self.category.parent_level).name
         return '/category/%s/%s/%s' % (level1, level2, self.id)
 
+    # 获取该帖子喜欢、不喜欢、阅读、分享数量
+    def get_post_related_num(self, type):
+        return ThumbUpDown.objects.filter(thumb_type=type, post_id=self.id).count()
 
 class ThumbUpDown(models.Model):
     thumb_choice = (
