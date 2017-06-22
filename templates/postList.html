@@ -3,6 +3,7 @@
 
 <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
 <link rel="stylesheet" href="{% static 'css/post-list.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
 		<!-- Main -->
 			<div class="wrapper style2" style="padding: 30px;">
 {#				<section class="container">#}
@@ -56,9 +57,9 @@
                                 </a>
                             </div>
                             <small>
-                                <i class="glyphicon glyphicon-time"></i>{{ post.post_time|timesince }}
+                                <i class="fa fa-clock-o icon-bar"></i> {{ post.post_time|timesince }} ago
                                 <br>
-                                <span class="explore"><i class="glyphicon glyphicon-th"></i> <a href="#">发帖数量 {{ post.post_count_belong_this_user }}  </a></span>
+                                <span class="explore"><i class="fa fa-bars"></i> <a href="#">发帖数量 {{ post.post_count_belong_this_user }}  </a></span>
                             </small>
                         </div>
                     </div>
@@ -67,7 +68,7 @@
                 <p>{{ post.summary|truncatechars:100 }}</p>
             </div>
         </div>
-        <br>
+        <hr>
         {% endfor %}
 
 

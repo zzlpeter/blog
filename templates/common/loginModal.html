@@ -57,39 +57,45 @@
                             <span></span>
                         </div>
                         <div class="form-group">
-                            <label for="email" class="col-md-3 control-label">Email</label>
+                            <label for="email" class="col-md-3 control-label">邮箱</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" name="email" placeholder="Email Address">
+                                <input type="email" class="form-control" name="email" placeholder="请输入邮箱，用于激活注册链接及找回密码" id="register-email">
+                            </div>
+                        </div>
+{#                        <div class="form-group">#}
+{#                            <label for="firstname" class="col-md-3 control-label">First Name</label>#}
+{#                            <div class="col-md-9">#}
+{#                                <input type="text" class="form-control" name="firstname" placeholder="First Name">#}
+{#                            </div>#}
+{#                        </div>#}
+                        <div class="form-group">
+                            <label for="lastname" class="col-md-3 control-label">用户名</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" name="lastname" placeholder="请设置用户名" id="register-username">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="firstname" class="col-md-3 control-label">First Name</label>
+                            <label for="password" class="col-md-3 control-label">密码</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" name="firstname" placeholder="First Name">
+                                <input type="password" class="form-control" name="passwd" placeholder="请设置密码，最少6位" id="register-pwd">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="lastname" class="col-md-3 control-label">Last Name</label>
+                            <label for="password" class="col-md-3 control-label">确认密码</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" name="lastname" placeholder="Last Name">
+                                <input type="password" class="form-control" name="passwd" placeholder="请再次设置密码" id="register-pwd-again">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="password" class="col-md-3 control-label">Password</label>
-                            <div class="col-md-9">
-                                <input type="password" class="form-control" name="passwd" placeholder="Password">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="icode" class="col-md-3 control-label">Invitation Code</label>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" name="icode" placeholder="">
-                            </div>
-                        </div>
+{#                        <div class="form-group">#}
+{#                            <label for="icode" class="col-md-3 control-label">验证码</label>#}
+{#                            <div class="col-md-9">#}
+{#                                <input type="text" class="form-control" name="icode" placeholder="请输入邮箱中收到的验证码">#}
+{#                            </div>#}
+{#                        </div>#}
                         <div class="form-group">
                             <!-- Button -->
                             <div class="col-md-offset-3 col-md-9">
-                                <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp 注册</button>
+                                <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right" onclick="userRegister()"></i> &nbsp 注册</button>
                                 <span style="margin-left:8px;">or</span>
                                 <button id="btn-signup" type="button" class="btn btn-warning cancel-login-href"><i class="icon-hand-right"></i> &nbsp 取消</button>
                             </div>
@@ -107,6 +113,8 @@
 </div>
 
 <script>
+
+    // 用户登录
     function userLogin() {
         var username = $('#login-username').val();
         var password = $('#login-password').val();
@@ -130,4 +138,17 @@
             }
         })
     }
+
+    // 用户注册
+    function userRegister() {
+        var email = $('#register-email').val();
+        var username = $('#register-username').val();
+        var pwd = $('#register-pwd').val();
+        var pwd_again = $('#register-pwd-again').val();
+        if(!username.trim()){
+            alert('请设置用户名！');
+            return false;
+        }
+    }
+
 </script>

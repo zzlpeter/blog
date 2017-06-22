@@ -108,6 +108,9 @@ def makePostSummit(req):
     return response_json(json_str)
 
 
+def test(req, tmp_name='test.html'):
+    return render_to_response(tmp_name, context_instance=RequestContext(req))
+
 
 
 

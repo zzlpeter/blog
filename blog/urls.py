@@ -47,4 +47,9 @@ urlpatterns = [
 
     url(r'^category/(?P<category1>\w+)/?$', blog_views.postList, name='category_by1'),
     url(r'^category/(?P<category1>\w+)/(?P<category2>\w+)/?$', blog_views.postList, name='category_by2'),
+
+
+
+
+    url(r'^test/?$', blog_views.test),
 ]
