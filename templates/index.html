@@ -96,7 +96,14 @@
 										<h2>Trust Yourself ！</h2>
 										<span class="byline">追梦的路上，永远不会感觉孤独；生命的广阔，只要努力就一定可以看到！</span>
 									</header>
+                                    {% if not user.is_authenticated %}
 									<a href="javascript:;" class="button alt show-login-href">登 录</a>
+                                    {% endif %}
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <p class="alt">{{ message }}</p>
+                                        {% endfor %}
+                                    {% endif %}
 								</section>
 							</div>
 						</div>

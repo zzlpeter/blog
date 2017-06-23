@@ -1,3 +1,7 @@
+{% load staticfiles %}
+
+<script src="{% static 'js/layer/layer.js' %}"></script>
+
 <!-- 登录、注册模态框（Modal） -->
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="container">
@@ -131,9 +135,10 @@
             },
             success: function(resData){
                 if(resData.status == 0){
-                    alert(resData.msg);
+                    layer.msg(resData.msg, {icon: 5});
                 }else{
-                    window.location.href = '/';
+                    layer.msg(resData.msg, {icon: 6});
+{#                    window.location.href = '/';#}
                 }
             }
         })
