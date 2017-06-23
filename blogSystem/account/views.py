@@ -10,7 +10,7 @@ from django.contrib import messages
 # 用户登出
 def user_logout(req):
     logout(req)
-    messages.add_message(req, messages.INFO, u'您已成功退出！')
+    # messages.add_message(req, messages.INFO, u'您已成功退出！')
     return HttpResponseRedirect('/')
 
 # 用户登录
@@ -24,7 +24,7 @@ def user_login(req):
     user = authenticate(username=username, password=password)
     if user is not None:
         login(req, user)
-        messages.add_message(req, messages.INFO, u'您已成功登陆！')
+        # messages.add_message(req, messages.INFO, u'您已成功登陆！')
         json_str = {'status': 1, 'msg': u'您已成功登陆！'}
     else:
         json_str = {'status': 0, 'msg': u'用户名与密码不匹配，请检查！'}

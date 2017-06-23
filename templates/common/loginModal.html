@@ -137,6 +137,7 @@
                 if(resData.status == 0){
                     layer.msg(resData.msg, {icon: 5});
                 }else{
+                    $('#loginModal').modal('hide');
                     layer.msg(resData.msg, {icon: 6});
 {#                    window.location.href = '/';#}
                 }
