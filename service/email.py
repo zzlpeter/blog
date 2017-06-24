@@ -25,10 +25,10 @@ class Email():
         subject = 'Python SMTP 邮件测试'
         message['Subject'] = Header(subject, 'utf-8')
         try:
-            smtpObj = smtplib.SMTP()
-            smtpObj.connect('smtp.gmail.com', 25)
-            smtpObj.starttls()
-            smtpObj.login('liveme_cms_finance@conew.com', 'wckckzuthxcgivop123')
+            smtpObj = smtplib.SMTP('localhost', 25)
+            # smtpObj.connect('smtp.gmail.com', 25)
+            # smtpObj.starttls()
+            # smtpObj.login('', '')
             # for _ in range(5):
             status = smtpObj.sendmail(self.mail_from, self.mail_to, message.as_string())
             print "邮件发送成功", status
