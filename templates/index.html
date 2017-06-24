@@ -37,30 +37,37 @@
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
-								<li><a href="{% url 'index' %}">首页</a></li>
-								<li>
+								<li style="border-radius: 10px"><a href="{% url 'index' %}">首页</a></li>
+								<li style="border-radius: 10px">
 									<a href="{% url 'category_by1' 'life' %}">生活笔记</a>
-									<ul>
-										<li><a href="#">Lorem ipsum dolor</a></li>
-										<li><a href="#">Magna phasellus</a></li>
-										<li><a href="#">Etiam dolore nisl</a></li>
-										<li>
-											<a href="">Phasellus consequat</a>
-											<ul>
-												<li><a href="#">Lorem ipsum dolor</a></li>
-												<li><a href="#">Phasellus consequat</a></li>
-												<li><a href="#">Magna phasellus</a></li>
-												<li><a href="#">Etiam dolore nisl</a></li>
-												<li><a href="#">Veroeros feugiat</a></li>
-											</ul>
-										</li>
-										<li><a href="#">Veroeros feugiat</a></li>
-									</ul>
+{#									<ul>#}
+{#										<li><a href="#">Lorem ipsum dolor</a></li>#}
+{#										<li><a href="#">Magna phasellus</a></li>#}
+{#										<li><a href="#">Etiam dolore nisl</a></li>#}
+{#										<li>#}
+{#											<a href="">Phasellus consequat</a>#}
+{#											<ul>#}
+{#												<li><a href="#">Lorem ipsum dolor</a></li>#}
+{#												<li><a href="#">Phasellus consequat</a></li>#}
+{#												<li><a href="#">Magna phasellus</a></li>#}
+{#												<li><a href="#">Etiam dolore nisl</a></li>#}
+{#												<li><a href="#">Veroeros feugiat</a></li>#}
+{#											</ul>#}
+{#										</li>#}
+{#										<li><a href="#">Veroeros feugiat</a></li>#}
+{#									</ul>#}
 								</li>
-								<li><a href="{% url 'category_by2' 'skills' 'python' %}">技术杂谈</a></li>
-								<li><a href="{% url 'category_by1' 'welfare' %}">福利专区</a></li>
-								<li><a href="{% url 'about' %}">关于自己</a></li>
-                                <li><a href="{% url 'about' %}">给我留言</a></li>
+								<li style="border-radius: 10px">
+                                    <a href="javascript:;">技术杂谈</a>
+                                    <ul>
+                                        <li><a href="{% url 'category_by2' 'skills' 'python' %}">Python</a></li>
+                                        <li><a href="{% url 'category_by2' 'skills' 'js' %}">JS</a></li>
+                                        <li><a href="{% url 'category_by2' 'skills' 'linux' %}">Linux</a></li>
+                                    </ul>
+                                </li>
+								<li style="border-radius: 10px"><a href="{% url 'category_by1' 'welfare' %}">福利专区</a></li>
+								<li style="border-radius: 10px"><a href="{% url 'about' %}">关于自己</a></li>
+                                <li style="border-radius: 10px" class="active"><a href="{% url 'about' %}">给我留言</a></li>
                                 {% if user.is_authenticated %}
 {#                                <li>#}
 {#									<a href="">{{ user.username }}</a>#}
@@ -82,7 +89,25 @@
 {#									</ul>#}
 {#								</li>#}
 {#                                {% else %}#}
-                                <li><a href="#">{{ user.username }}</a></li>
+                                <li>
+                                    <a href="#">{{ user.username }}</a>
+                                    <ul>
+										<li><a href="authSetting">权限设置</a></li>
+										<li><a href="/">首页设置</a></li>
+										<li><a href="changepwd">修改密码</a></li>
+{#										<li>#}
+{#											<a href="">Phasellus consequat</a>#}
+{#											<ul>#}
+{#												<li><a href="#">Lorem ipsum dolor</a></li>#}
+{#												<li><a href="#">Phasellus consequat</a></li>#}
+{#												<li><a href="#">Magna phasellus</a></li>#}
+{#												<li><a href="#">Etiam dolore nisl</a></li>#}
+{#												<li><a href="#">Veroeros feugiat</a></li>#}
+{#											</ul>#}
+{#										</li>#}
+										<li><a href="{% url 'user_logout' %}">退出登录</a></li>
+									</ul>
+                                </li>
                                 {% endif %}
 							</ul>
 						</nav>
@@ -248,5 +273,14 @@
 {#			</div>#}
 {#    登录模态框    #}
     {% include 'common/loginModal.html' %}
+        <script>
+            $(function() {
+                // Dropdowns.
+                $('#nav > ul').dropotron({
+                    offsetY: -15,
+                    hoverDelay: 0
+                });
+            });
+        </script>
 	</body>
 </html>

@@ -120,7 +120,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+# 浏览器关闭session失效
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 # TEMPLATE_CONTEXT_PROCESSORS = (

@@ -4,31 +4,16 @@
 <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
 <link rel="stylesheet" href="{% static 'css/post-list.css' %}"/>
 <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
-		<!-- Main -->
-			<div class="wrapper style2" style="padding: 30px;">
-{#				<section class="container">#}
-{#					<header class="major">#}
-{#						<h2>Nulla luctus eleifend</h2>#}
-						<span class="byline">伊诺的博客：</span>
-{#					</header>#}
-{#                    <div class="panel panel-info">#}
-{#                        <div class="panel-heading">#}
-{#                            <h3 class="panel-title">测试数据</h3>#}
-{#                        </div>#}
-{#                        <div class="panel-body">#}
-{#                            body部分#}
-{#                        </div>#}
-{#                    </div>#}
-{#                    <div class="panel panel-primary">...</div>#}
-{#				</section>#}
-			</div>
-{#面包屑#}
-<div class="row" style="padding-top:10px; padding-left: 56px; padding-bottom: 3px;">
-    <div class="btn-group btn-breadcrumb">
-        <a href="#" class="btn btn-success"><i class="glyphicon glyphicon-home"></i></a>
-        <a href="#" class="btn btn-success">Snippets</a>
-        <a href="#" class="btn btn-success">Breadcrumbs</a>
-        <a href="#" class="btn btn-success">Success</a>
+<div class="row" style="margin-bottom: -20px">
+    <ol class="breadcrumb" style="margin-bottom: -10px; margin-top:10px; margin-left: 90px;">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">2013</a></li>
+        <li class="active">十一月</li>
+    </ol>
+    {#搜索框#}
+    <button style="float:right; margin-top:10px; margin-right: 65px; background-color: cadetblue;" class="btn btn-default"><i class="fa fa-search icon"></i></button>
+    <div class="form-group" style="float:right; margin-top:10px; margin-right: -1px;">
+        <input style="width: 270px;" type="text" class="form-control" placeholder="搜搜看。。。">
     </div>
 </div>
 <hr>

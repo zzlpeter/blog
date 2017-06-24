@@ -10,21 +10,21 @@
 		<title>Make The World Smarter</title>
         <link rel="shortcut icon" href="/static/images/scenery/pic01.jpg">
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="" />
-		<meta name="keywords" content="" />
+{#		<meta name="description" content="" />#}
+{#		<meta name="keywords" content="" />#}
 
 		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
 		<script src="{% static 'js/jquery.min.js' %}"></script>
 		<script src="{% static 'js/jquery.dropotron.min.js' %}"></script>
 		<script src="{% static 'js/skel.min.js' %}"></script>
 		<script src="{% static 'js/skel-layers.min.js' %}"></script>
-        <script src="{% static 'js/init.js' %}"></script>
+{#        <script src="{% static 'js/init.js' %}"></script>#}
 		<script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
         <script src="{% static 'js/diy/login.js' %}"></script>
         <script src="{% static 'js/layer/layer.js' %}"></script>
 
         <script src="{% static 'js/showdown/showdown.min.js' %}"></script>
-        <script src="{% static 'js/editor/editor.js' %}"></script>
+{#        <script src="{% static 'js/editor/editor.js' %}"></script>#}
 
         <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
@@ -44,8 +44,8 @@
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
-								<li><a href="{% url 'index' %}">首页</a></li>
-								<li>
+								<li style="border-radius: 10px"><a href="{% url 'index' %}">首页</a></li>
+								<li class="active" style="border-radius: 10px">
 									<a href="{% url 'category_by1' 'life' %}">生活笔记</a>
 {#									<ul>#}
 {#										<li><a href="#">Lorem ipsum dolor</a></li>#}
@@ -64,19 +64,19 @@
 {#										<li><a href="#">Veroeros feugiat</a></li>#}
 {#									</ul>#}
 								</li>
-								<li>
-                                    <a href="">技术杂谈</a>
+								<li style="border-radius: 10px">
+                                    <a href="javascript:;">技术杂谈</a>
                                     <ul>
                                         <li><a href="{% url 'category_by2' 'skills' 'python' %}">Python</a></li>
                                         <li><a href="{% url 'category_by2' 'skills' 'js' %}">JS</a></li>
                                         <li><a href="{% url 'category_by2' 'skills' 'linux' %}">Linux</a></li>
                                     </ul>
                                 </li>
-								<li><a href="{% url 'category_by1' 'welfare' %}">福利专区</a></li>
-								<li><a href="{% url 'about' %}">关于自己</a></li>
+								<li style="border-radius: 10px"><a href="{% url 'category_by1' 'welfare' %}">福利专区</a></li>
+								<li style="border-radius: 10px"><a href="{% url 'about' %}">关于自己</a></li>
                                 {% if user.is_authenticated %}
                                 <li style="float: right;">
-									<a href="">{{ user.username }}</a>
+									<a href="" >{{ user.username }}</a>
 									<ul>
 										<li><a href="authSetting">权限设置</a></li>
 										<li><a href="/">首页设置</a></li>
@@ -111,4 +111,15 @@
             function showLoginForm(){
                 $('#loginModal').modal('show');
             }
+
+
+            $(function() {
+                // Dropdowns.
+                $('#nav > ul').dropotron({
+                    offsetY: -15,
+                    hoverDelay: 0
+                });
+            });
+
+
         </script>
