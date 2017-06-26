@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from blogSystem import views as blog_views
 from blogSystem.account import views as account_views
+from blogSystem.common import views as common_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -48,7 +49,7 @@ urlpatterns = [
     url(r'^category/(?P<category1>\w+)/?$', blog_views.postList, name='category_by1'),
     url(r'^category/(?P<category1>\w+)/(?P<category2>\w+)/?$', blog_views.postList, name='category_by2'),
 
-
+    url(r'^tuLing/?$', common_views.tu_ling, name='tu_ling'),
 
 
     url(r'^test/?$', blog_views.test),

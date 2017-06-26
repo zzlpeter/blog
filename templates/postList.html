@@ -4,19 +4,8 @@
 <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
 <link rel="stylesheet" href="{% static 'css/post-list.css' %}"/>
 <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
-<div class="row" style="margin-bottom: -20px">
-    <ol class="breadcrumb" style="margin-bottom: -10px; margin-top:10px; margin-left: 90px;">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">2013</a></li>
-        <li class="active">十一月</li>
-    </ol>
-    {#搜索框#}
-    <button style="float:right; margin-top:10px; margin-right: 65px; background-color: cadetblue;" class="btn btn-default"><i class="fa fa-search icon"></i></button>
-    <div class="form-group" style="float:right; margin-top:10px; margin-right: -1px;">
-        <input style="width: 270px;" type="text" class="form-control" placeholder="搜搜看。。。">
-    </div>
-</div>
-<hr>
+{#面包屑#}
+{% include 'common/breadcrumb.html' %}
 {#post list列表页#}
 <div class="container" style="height:100%;width:70%;margin:20px; float: left; margin-left: 45px;">
 	<div class="row">
@@ -50,10 +39,10 @@
                     </div>
                 </div>
                 <h4><a href="{{ post.post_detail_path }}">{{ post.title }}</a></h4>
-                <p>{{ post.summary|truncatechars:100 }}</p>
+                <p>{{ post.summary|truncatechars:50 }}</p>
             </div>
         </div>
-        <hr>
+        <br>
         {% endfor %}
 
 

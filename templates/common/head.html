@@ -13,7 +13,6 @@
 {#		<meta name="description" content="" />#}
 {#		<meta name="keywords" content="" />#}
 
-		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
 		<script src="{% static 'js/jquery.min.js' %}"></script>
 		<script src="{% static 'js/jquery.dropotron.min.js' %}"></script>
 		<script src="{% static 'js/skel.min.js' %}"></script>
@@ -30,7 +29,7 @@
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
         <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
 
-		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+{#		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->#}
 	</head>
 	<body class="no-sidebar">
 
@@ -95,7 +94,7 @@
 									</ul>
 								</li>
                                 {% else %}
-                                <li style="float: right;"><a href="javascript:;" class="show-login-href" onclick="showLoginForm()">登录</a></li>
+                                <li style="float: right;" id="head-login-li"><a href="javascript:;" class="show-login-href" onclick="showLoginForm()">登录</a></li>
                                 {% endif %}
                                 <li><a href="{% url 'about' %}">给我留言</a></li>
 							</ul>
