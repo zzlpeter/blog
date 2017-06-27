@@ -23,7 +23,7 @@ def getHtml(url):
 def tu_ling(req):
     info = req.GET.get('info')
     try:
-        url = API + info
+        url = API + info.encode('utf-8')
         response = getHtml(url)
         dic_json = json.loads(response)
         json_str = {'status': 1, 'msg': dic_json['text']}
