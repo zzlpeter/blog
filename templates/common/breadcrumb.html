@@ -2,9 +2,11 @@
 <div class="" style="margin-bottom: -20px; margin-right: 20px;">
     <ol class="breadcrumb" style="margin-bottom: -10px; margin-top:10px; margin-left: 80px; height: 40px;">
         {% for bread in breads %}
-        <li><a {% if forloop.last %}class="active"{% else %}href="{{ bread.href }}"{% endif %}>{{ bread.location }}</a></li>
-{#        <li><a href="#">2013</a></li>#}
-{#        <li class="active">十一月</li>#}
+            {% if forloop.last %}
+            <li class="active">{{ bread.location }}</li>
+            {% else %}
+            <li><a href="{{ bread.href }}">{{ bread.location }}</a></li>
+            {% endif %}
         {% endfor %}
         {#搜索框#}
         <button style="float:right; margin-bottom: -10px; margin-top:-6px; margin-right: -13px; background-color: cadetblue;" class="btn btn-default"><i class="fa fa-search icon"></i></button>

@@ -19,9 +19,25 @@ def index(req, tmp_name='index.html'):
 
 # 帖子详情页面
 def postDetail(req, category1=None, category2=None, post_id=None, tmp_name='postDetail.html'):
+    breads = []
+    if category1:
+        breads.append({
+            'location': CATEGORY_DICT.get(category1, category1),
+            'href': '/category/%s' % category1
+        })
+    if category2:
+        breads.append({
+            'location': category2.upper(),
+            'href': '/category/%s/%s' % (category1, category2)
+        })
+    if breads:
+        breads.insert(0, {'location': u'首页', 'href': '/'})
     postObj = get_object_or_404(blog_models.Post, pk=post_id)
+    breads.append({
+        'location': postObj.title
+    })
 
-    return render_to_response(tmp_name, {'postObj': postObj}, context_instance=RequestContext(req))
+    return render_to_response(tmp_name, {'postObj': postObj, 'breads': breads}, context_instance=RequestContext(req))
 
 # 发帖页面
 @login_required
@@ -80,7 +96,7 @@ def send_mail(req):
         return HttpResponse(json.dumps({'msg': 'error'}), content_type='application/json')
 
 def postList(req, category1=None, category2=None, tmp_name='postList.html'):
-    breads = [{'location': u'首页', 'href': '/'}]
+    breads = []
     if category1:
         breads.append({
             'location': CATEGORY_DICT.get(category1, category1),
@@ -90,6 +106,8 @@ def postList(req, category1=None, category2=None, tmp_name='postList.html'):
         breads.append({
             'location': category2.upper()
         })
+    if breads:
+        breads.insert(0, {'location': u'首页', 'href': '/'})
     posts = []
     if category2:
         posts = blog_models.Post.objects.filter(category__name=category2, is_valid=1).order_by('-id')

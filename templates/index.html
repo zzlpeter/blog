@@ -145,7 +145,7 @@
 					</header>
 					<div class="row no-collapse-1">
 						<section class="4u">
-							<a href="#" class="image feature"><img height="175px" src="{% static 'images/scenery/pic02.jpg' %}" alt="" style="border: solid cornsilk"></a>
+							<a href="#" class="image feature"><img height="175px" src="{% static 'images/scenery/pic02.jpg' %}" alt="" style="border: solid cornsilk" onmouseenter="picFade(this, 'out')" onmouseleave="picFade(this, 'in')"></a>
 							<p>Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat.</p>
 						</section>
 						<section class="4u">
@@ -281,7 +281,18 @@
                     offsetY: -15,
                     hoverDelay: 0
                 });
+
             });
+
+            function picFade(e, type) {
+                if(type=='out'){
+                    $(e).fadeOut(1000);
+                }else{
+                    $(e).fadeIn(1000);
+                }
+            }
+
+
         </script>
 	</body>
 </html>
