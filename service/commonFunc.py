@@ -1,6 +1,8 @@
 # coding: utf-8
 
 import logging
+from blogSystem.models import Images
+import random
 
 
 logger = logging.getLogger(__name__)
@@ -17,3 +19,10 @@ def get_user_ip(req):
         logger.error(exc, exc_info=True)
         ip = ''
     return ip
+
+# 随机设置用户头像
+def set_avatar_rendom():
+    id_list = Images.objects.filter(img_category__name='portrait').values_list('id')
+    count = len(id_list)
+    rand = random.randint(0, count - 1)
+    return id_list[rand]
