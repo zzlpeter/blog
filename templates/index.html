@@ -18,6 +18,7 @@
 		<script src="{% static 'js/skel-layers.min.js' %}"></script>
         <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
         <script src="{% static 'js/diy/login.js' %}"></script>
+        <script src="{% static 'js/vue/vue.min.js' %}"></script>
 
         <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
@@ -145,7 +146,7 @@
 					</header>
 					<div class="row no-collapse-1">
 						<section class="4u">
-							<a href="#" class="image feature"><img height="175px" src="{% static 'images/scenery/pic02.jpg' %}" alt="" style="border: solid cornsilk" onmouseenter="picFade(this, 'out')" onmouseleave="picFade(this, 'in')"></a>
+							<a href="#" class="image feature"><img height="175px" src="{% static 'images/scenery/pic02.jpg' %}"  alt="" style="border: solid cornsilk"></a>
 							<p>Nam in massa. Sed vel tellus. Curabitur sem urna, consequat vel, suscipit in, mattis placerat.</p>
 						</section>
 						<section class="4u">
@@ -156,7 +157,6 @@
 							<a href="#" class="image feature"><img height="175px" src="{% static 'images/scenery/pic04.jpg' %}" alt="" style="border: solid cornsilk"></a>
 							<p>Curabitur sem urna, consequat vel, suscipit convallis sem leo, mattis placerat, nulla. Sed ac leo.</p>
 						</section>
-	
 					</div>
 				</section>
 			</div>
@@ -282,6 +282,12 @@
                     hoverDelay: 0
                 });
 
+{#                $('.index-img-hover').hover(function () {#}
+{#                    $(this).fadeOut();#}
+{#                }, function () {#}
+{#                    $(this).fadeIn();#}
+{#                })#}
+
             });
 
             function picFade(e, type) {
@@ -292,6 +298,12 @@
                 }
             }
 
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    img1: '/static/images/scenery/pic02.jpg'
+                }
+            })
 
         </script>
 	</body>

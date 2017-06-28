@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response, RequestContext, HttpResponse, g
 from django.contrib.auth.decorators import login_required
 from blogSystem.common.views import response_json
 from service.commonKey import CATEGORY_DICT
+from django.db.models import F, Q
 
 import models as blog_models
 import json
@@ -32,18 +33,43 @@ def postDetail(req, category1=None, category2=None, post_id=None, tmp_name='post
         })
     if breads:
         breads.insert(0, {'location': u'首页', 'href': '/'})
+    # 帖子阅读次数加1
+    blog_models.Post.objects.filter(id=post_id).update(scan=F('scan') + 1)
+
+    # 获取帖子对象
     postObj = get_object_or_404(blog_models.Post, pk=post_id)
     breads.append({
         'location': postObj.title
     })
 
-    return render_to_response(tmp_name, {'postObj': postObj, 'breads': breads}, context_instance=RequestContext(req))
+    comments = blog_models.PostComment.objects.filter(post_id=post_id)
+
+    dic = {
+        'postObj': postObj,
+        'breads': breads,
+        'comments': comments
+    }
+
+    return render_to_response(tmp_name, dic, context_instance=RequestContext(req))
 
 # 发帖页面
 @login_required
 def makePost(req, tmp_name='makePost.html'):
     category = blog_models.Category.objects.filter(level=2).order_by('-parent_level', 'id')
     return render_to_response(tmp_name, {'category': category}, context_instance=RequestContext(req))
+
+def user_post(req, username, tmp_name='postList.html'):
+    breads = [
+        {'location': u'首页', 'href': '/'},
+        {'location': username}
+    ]
+    posts = blog_models.Post.objects.filter(author__user__username=username).order_by('-id')
+    dic = {
+        'breads': breads,
+        'posts': posts
+    }
+    return render_to_response(tmp_name, dic, context_instance=RequestContext(req))
+
 
 def send_mail(req):
     import json
@@ -115,7 +141,11 @@ def postList(req, category1=None, category2=None, tmp_name='postList.html'):
         c1Obj = get_object_or_404(blog_models.Category, name=category1)
         category2_list = blog_models.Category.objects.filter(parent_level=c1Obj.id).values_list('id')
         posts = blog_models.Post.objects.filter(category_id__in=category2_list, is_valid=1).order_by('-id')
-    return render_to_response(tmp_name, {'posts': posts, 'breads': breads}, context_instance=RequestContext(req))
+    dic = {
+        'breads': breads,
+        'posts': posts
+    }
+    return render_to_response(tmp_name, dic, context_instance=RequestContext(req))
 
 @login_required
 def makePostSummit(req):
@@ -140,8 +170,50 @@ def makePostSummit(req):
         json_str = {'status': 0, 'msg': u'提交异常，请给作者留言，谢谢！'}
     return response_json(json_str)
 
+def up_down_share_post(req):
+    action_type = req.GET.get('type')
+    post_id = req.GET.get('post_id')
+    share = req.GET.get('share')
+    user_id = req.user.id
+    if action_type in ('up', 'down'):
+        if blog_models.ThumbUpDown.objects.filter(post_id=post_id, user_id=user_id, thumb_type=action_type).exists():
+            json_str = {'status': 0, 'msg': u'不可重复操作'}
+        else:
+            blog_models.ThumbUpDown.objects.create(
+                user_id=user_id,
+                thumb_type=action_type,
+                post_id=post_id
+            )
+            count = blog_models.ThumbUpDown.objects.filter(post_id=post_id, thumb_type=action_type).count()
+            json_str = {'status': 1, 'count': count}
+    else:
+        blog_models.PostShare.objects.create(
+            post_id=post_id,
+            destination=share
+        )
+        count = blog_models.PostShare.objects.filter(post_id=post_id).count()
+        json_str = {'status': 1, 'count': count}
+    return response_json(json_str)
 
-def test(req, tmp_name='test.html'):
+@login_required
+def make_post_comment(req):
+    post_id = req.POST.get('post_id')
+    comment = req.POST.get('comment')
+    user = req.user
+    try:
+        blog_models.PostComment.objects.create(
+            comment=comment,
+            post_id=post_id,
+            poster_id=user.id
+        )
+        json_str = {'status': 1, 'msg': u'评论成功！'}
+    except Exception, exc:
+        logger.error(exc, exc_info=True)
+        json_str = {'status': 0, 'msg': u'评论异常，请稍后重试！'}
+    return response_json(json_str)
+
+
+def test(req, tmp_name='test1.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
 

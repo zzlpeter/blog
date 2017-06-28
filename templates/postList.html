@@ -1,5 +1,6 @@
 {% include 'common/head.html' %}
 {% load staticfiles %}
+{% load blog_extras %}
 
 <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
 <link rel="stylesheet" href="{% static 'css/post-list.css' %}"/>
@@ -12,224 +13,43 @@
 
 {#面包屑#}
 {% include 'common/breadcrumb.html' %}
+
 {#post list列表页#}
-{#<div class="container" style="width:70%;margin:20px; float: left; margin-left: 45px;">#}
-{#	<div class="row">#}
-{#        {% for post in posts %}#}
-{#		<div class="row">#}
-{#            <div class="col-xs-12 col-sm-3 col-md-3">#}
-{#                <a href="/static/images/{{ post.img.img_category.name }}/{{ post.img.src }}" data-gallery >#}
-{#                    <img src="/static/images/{{ post.img.img_category.name }}/{{ post.img.src }}" class="img-responsive img-box img-thumbnail">#}
-{#                </a>#}
-{#            </div>#}
-{#            <div class="col-xs-12 col-sm-9 col-md-9">#}
-{#                <div class="list-group">#}
-{#                    <div class="list-group-item">#}
-{#                        <div class="row-picture">#}
-{#                            <a href="#" title="sintret">#}
-{#                                <img class="circle img-thumbnail img-box" src="/static/images/portrait/{{ post.author.portrait.src }}" alt="sintret">#}
-{#                            </a>#}
-{#                        </div>#}
-{#                        <div class="row-content">#}
-{#                            <div class="list-group-item-heading">#}
-{#                                <a href="#" title="sintret">#}
-{#                                    <small>{{ post.author.user.username }}</small>#}
-{#                                </a>#}
-{#                            </div>#}
-{#                            <small>#}
-{#                                <i class="fa fa-clock-o icon-bar"></i> {{ post.post_time|timesince }} ago#}
-{#                                <br>#}
-{#                                <span class="explore"><i class="fa fa-bars"></i> <a href="#">发帖数量 {{ post.post_count_belong_this_user }}  </a></span>#}
-{#                            </small>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <h4><a href="{{ post.post_detail_path }}">{{ post.title }}</a></h4>#}
-{#                <p>{{ post.summary|truncatechars:50 }}</p>#}
-{#            </div>#}
-{#        </div>#}
-{#        <hr>#}
-{#        {% endfor %}#}
-{#	</div>#}
-{#</div>#}
-
-<div class="container">
-	<div class="row">
-		<div class="row">
-                    <div class="col-xs-12 col-sm-3 col-md-3">
-                        <a href="#">
-                            <img src="http://wanderluxe.theluxenomad.com/wp-content/uploads/2014/10/http-www.urchinbali.comgallery.jpg" class="img-responsive img-box img-thumbnail">
-                        </a>
-                    </div>
-                    <div class="col-xs-12 col-sm-9 col-md-9">
-                        <div class="list-group">
-                            <div class="list-group-item">
-                                <div class="row-picture">
-                                    <a href="#" title="sintret">
-                                        <img class="circle img-thumbnail img-box" src="http://sintret.com/img/andy.jpg" alt="sintret">
-                                    </a>
-                                </div>
-                                <div class="row-content">
-                                    <div class="list-group-item-heading">
-                                        <a href="#" title="sintret">
-                                            <small>sintret</small>
-                                        </a>
-                                    </div>
-                                    <small>
-                                        <i class="glyphicon glyphicon-time"></i> 3 days ago via <span class="twitter"> <i class="fa fa-twitter"></i> <a target="_blank" href="https://twitter.com/sintret" alt="sintret" title="sintret">@sintret</a></span>
-                                        <br>
-                                        <span class="explore"><i class="glyphicon glyphicon-th"></i> <a href="#">Explore 2 places </a></span>
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        <h4><a href="#">5 of Bali’s Spanking New Haunts - WanderLuxe Magazine</a></h4>
-                        <p>Naturally, we know where Bali's newest restaurants are and what to order, so give that private chef a rest and check out these spanking new haunts.</p>
-                    </div>
+<div class="container" style="width:70%;margin:20px; float: left; margin-left: 66px;">
+    {% for post in posts %}
+        <div class="well">
+            <div class="media">
+                <a class="pull-left" href="/static/images/{{ post.img.img_category.name }}/{{ post.img.src }}" data-gallery>
+                    <img width="150px" height="150px" class="media-object" src="/static/images/{{ post.img.img_category.name }}/{{ post.img.src }}">
+                </a>
+                <div class="media-body">
+                    <a href="{{ post.post_detail_path }}"><h4 class="media-heading">{{ post.title }}</h4></a>
+                    <p class="text-right">By <a href="{% url 'user_post' post.author.user.username %}">{{ post.author.user.username }}</a></p>
+                    <p>{{ post.summary }}</p>
+                    <ul class="list-inline list-unstyled">
+                        <li><span><i class="fa fa-clock-o icon-bar"></i>{{ post.post_time|timesince }} ago</span></li>
+                        <li>|</li>
+                        <span><i class="fa fa-bars"></i> {{ post.get_comment_count }} 评论</span>
+                        <li>|</li>
+                        <li>
+                            <span><i class="fa fa-eye icon"></i> {{ post.scan }} 阅读</span>
+                        </li>
+                        <li>|</li>
+                        <li>
+                            <span><i class="fa fa-share icon"></i> {% get_post_related_num post 'share' %} 分享</span>
+                        </li>
+                    </ul>
                 </div>
-                <hr>
-
-                <div class="row">
-                    <div class="col-xs-12 col-sm-3 col-md-3">
-                        <a href="#">
-                            <img src="http://wanderluxe.theluxenomad.com/wp-content/uploads/2014/09/http-barbacoabali.com_.jpg" class="img-responsive img-box img-thumbnail">
-                        </a>
-                    </div>
-                    <div class="col-xs-12 col-sm-9 col-md-9">
-                        <div class="list-group">
-                            <div class="list-group-item">
-                                <div class="row-picture">
-                                    <a href="#" title="sintret">
-                                        <img class="circle img-thumbnail img-box" src="http://sintret.com/img/andy.jpg" alt="sintret">
-                                    </a>
-                                </div>
-                                <div class="row-content">
-                                    <div class="list-group-item-heading">
-                                        <a href="#" title="sintret">
-                                            <small>sintret</small>
-                                        </a>
-                                    </div>
-                                    <small>
-                                        <i class="glyphicon glyphicon-time"></i> 1 month ago via <span class="twitter"> <i class="fa fa-twitter"></i> <a target="_blank" href="https://twitter.com/sintret" alt="sintret" title="sintret">@sintret</a></span>
-                                        <br>
-                                        <span class="explore"><i class="glyphicon glyphicon-th"></i> <a href="#">Explore 9 places </a></span>
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        <h4><a href="#">Top 8 Best Bali Restaurants - WanderLuxe Magazine</a></h4>
-                        <p>We know that there’s tons to noms in Bali, but what’s the best and where are they? Here are our top 8 Seminyak Bali restaurants to visit.</p>
-                    </div>
-                </div>
-                <hr>
-
-
-                <div class="row">
-                    <div class="col-xs-12 col-sm-3 col-md-3">
-                        <a href="#">
-                            <img src="http://i.huffpost.com/gen/2038950/thumbs/s-BANGKOK-NOODLES-large.jpg" class="img-responsive img-box img-thumbnail">
-                        </a>
-                    </div>
-                    <div class="col-xs-12 col-sm-9 col-md-9">
-                        <div class="list-group">
-                            <div class="list-group-item">
-                                <div class="row-picture">
-                                    <a href="#" title="sintret">
-                                        <img class="circle img-thumbnail img-box" src="http://sintret.com/img/andy.jpg" alt="sintret">
-                                    </a>
-                                </div>
-                                <div class="row-content">
-                                    <div class="list-group-item-heading">
-                                        <a href="#" title="sintret">
-                                            <small>sintret</small>
-                                        </a>
-                                    </div>
-                                    <small>
-                                        <i class="glyphicon glyphicon-time"></i> 1 month ago via <span class="twitter"> <i class="fa fa-twitter"></i> <a target="_blank" href="https://twitter.com/sintret" alt="sintret" title="sintret">@sintret</a></span>
-                                        <br>
-                                        <span class="explore"><i class="glyphicon glyphicon-th"></i> <a href="#">Explore 9 places </a></span>
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        <h4><a href="#">These Are The Best Noodle Spots In Bangkok</a></h4>
-                        <p>BANGKOK (AP) — With its fluorescent bulbs and cafeteria-style tables, the Bangkok restaurant Raan Jay Fai wouldn't win any awards for interior decorating.              But that hasn't deterred Martha Stewart, one of the restaurant's many fans...</p>
-                    </div>
-                </div>
-                <hr>
-	</div>
+            </div>
+        </div>
+    {% endfor %}
 </div>
-
 
 {#相册弹出层#}
 {% include 'common/bootstrapGallery.html' %}
-{#<div style="width: 2px; padding-top: 20%; padding-bottom: 0; background-color: darkgray; float: right; margin-right: 25%;"></div>#}
-		<!-- Footer -->
-{#			<div id="footer">#}
-{#				<div class="container">#}
-{##}
-{#					<!-- Lists -->#}
-{#						<div class="row">#}
-{#							<div class="8u">#}
-{#								<section>#}
-{#									<header class="major">#}
-{#										<h2>Donec dictum metus</h2>#}
-{#										<span class="byline">Quisque semper augue mattis wisi maecenas ligula</span>#}
-{#									</header>#}
-{#									<div class="row">#}
-{#										<section class="6u">#}
-{#											<ul class="default">#}
-{#												<li><a href="#">Pellentesque elit non gravida blandit.</a></li>#}
-{#												<li><a href="#">Lorem ipsum dolor consectetuer elit.</a></li>#}
-{#												<li><a href="#">Phasellus nibh pellentesque congue.</a></li>#}
-{#												<li><a href="#">Cras vitae metus aliquam  pharetra.</a></li>#}
-{#											</ul>#}
-{#										</section>#}
-{#										<section class="6u">#}
-{#											<ul class="default">#}
-{#												<li><a href="#">Pellentesque elit non gravida blandit.</a></li>#}
-{#												<li><a href="#">Lorem ipsum dolor consectetuer elit.</a></li>#}
-{#												<li><a href="#">Phasellus nibh pellentesque congue.</a></li>#}
-{#												<li><a href="#">Cras vitae metus aliquam  pharetra.</a></li>#}
-{#											</ul>#}
-{#										</section>#}
-{#									</div>#}
-{#								</section>#}
-{#							</div>#}
-{#							<div class="4u">#}
-{#								<section>#}
-{#									<header class="major">#}
-{#										<h2>Donec dictum metus</h2>#}
-{#										<span class="byline">Mattis wisi maecenas ligula</span>#}
-{#									</header>#}
-{#									<ul class="contact">#}
-{#										<li>#}
-{#											<span class="address">Address</span>#}
-{#											<span>1234 Somewhere Road #4285 <br />Nashville, TN 00000</span>#}
-{#										</li>#}
-{#										<li>#}
-{#											<span class="mail">Mail</span>#}
-{#											<span><a href="#">someone@untitled.tld</a></span>#}
-{#										</li>#}
-{#										<li>#}
-{#											<span class="phone">Phone</span>#}
-{#											<span>(000) 000-0000</span>#}
-{#										</li>#}
-{#									</ul>#}
-{#								</section>#}
-{#							</div>#}
-{#						</div>#}
-{##}
-{#					<!-- Copyright -->#}
-{#						<div class="copyright">#}
-{#							Design: <a href="http://templated.co">TEMPLATED</a> Images: <a href="http://unsplash.com">Unsplash</a> (<a href="http://unsplash.com/cc0">CC0</a>)#}
-{#						</div>#}
-{##}
-{#				</div>#}
-{#			</div>#}
 
-        {#机器人对话框#}
-        {% include 'common/tuling.html' %}
+{#机器人对话框#}
+{% include 'common/tuling.html' %}
 
 	</body>
 </html>

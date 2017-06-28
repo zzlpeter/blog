@@ -1,3 +1,4 @@
+# coding: utf-8
 """blog URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -32,7 +33,11 @@ urlpatterns = [
     url(r'^send_mail/?$', blog_views.send_mail, name='send_mail'),
 
     url(r'^postList/?$', blog_views.postList, name='postList'),
+    url(r'^up_down_share_post/?$', blog_views.up_down_share_post, name='up_down_share_post'),
+    url(r'^make_post_comment/?$', blog_views.make_post_comment, name='make_post_comment'),
+    url(r'^user/(?P<username>\w+)?$', blog_views.user_post, name='user_post'),
 
+    # 帖子详情
     url(r'^category/(?P<category1>\w+)/(?P<post_id>\d+)/?$', blog_views.postDetail, name='category1_post_detail'),
     url(r'^category/(?P<category1>\w+)/(?P<category2>\w+)/(?P<post_id>\d+)/?$', blog_views.postDetail, name='category2_post_detail'),
 
@@ -47,6 +52,7 @@ urlpatterns = [
     url(r'^accounts/changepwd/?$', account_views.user_change_pwd, name='changepwd'),
     url(r'^accounts/user_login/?$', account_views.user_login, name='user_login'),
 
+    # 帖子分类（一级和二级分类）
     url(r'^category/(?P<category1>\w+)/?$', blog_views.postList, name='category_by1'),
     url(r'^category/(?P<category1>\w+)/(?P<category2>\w+)/?$', blog_views.postList, name='category_by2'),
 

@@ -85,6 +85,7 @@ class Post(models.Model):
     content = models.TextField()
     category = models.ForeignKey(Category)
     is_valid = models.SmallIntegerField(default=1)
+    scan = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
@@ -113,6 +114,12 @@ class Post(models.Model):
             return ThumbUpDown.objects.filter(thumb_type=type, post_id=self.id).count()
         elif type == 'share':
             return PostShare.objects.filter(post_id=self.id).count()
+        elif type == 'scan':
+            return self.scan
+
+    # 获取评论数量
+    def get_comment_count(self):
+        return PostComment.objects.filter(post_id=self.id).count()
 
 
 class ThumbUpDown(models.Model):

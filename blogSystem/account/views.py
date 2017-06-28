@@ -4,13 +4,15 @@ from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import HttpResponseRedirect
 from blogSystem.common.views import response_json
 from django.contrib import messages
+from blogSystem import models as blog_models
+from service.commonFunc import get_user_ip
 
 
 
 # 用户登出
 def user_logout(req):
     logout(req)
-    # messages.add_message(req, messages.INFO, u'您已成功退出！')
+    messages.add_message(req, messages.INFO, u'您已成功退出！')
     return HttpResponseRedirect('/')
 
 # 用户登录
@@ -23,9 +25,13 @@ def user_login(req):
         return response_json(json_str)
     user = authenticate(username=username, password=password)
     if user is not None:
-        login(req, user)
-        # messages.add_message(req, messages.INFO, u'您已成功登陆！')
-        json_str = {'status': 1, 'msg': u'您已成功登陆！'}
+        if not user.is_active:
+            json_str = {'status': 0, 'msg': u'您的账号处于未激活状态，请激活！'}
+        else:
+            login(req, user)
+            ip = get_user_ip(req)
+            blog_models.UserExtend.objects.filter(user=user).update(login_ip=ip)
+            json_str = {'status': 1, 'msg': u'您已成功登陆！'}
     else:
         json_str = {'status': 0, 'msg': u'用户名与密码不匹配，请检查！'}
     return response_json(json_str)
