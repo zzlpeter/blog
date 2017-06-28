@@ -58,7 +58,7 @@
 {#									</ul>#}
 								</li>
 								<li style="border-radius: 10px">
-                                    <a href="javascript:;">技术杂谈</a>
+                                    <a href="{% url 'category_by1' 'skills' %}">技术杂谈</a>
                                     <ul>
                                         <li><a href="{% url 'category_by2' 'skills' 'python' %}">Python</a></li>
                                         <li><a href="{% url 'category_by2' 'skills' 'js' %}">JS</a></li>
@@ -67,7 +67,7 @@
                                 </li>
 								<li style="border-radius: 10px"><a href="{% url 'category_by1' 'welfare' %}">福利专区</a></li>
 								<li style="border-radius: 10px"><a href="{% url 'about' %}">关于自己</a></li>
-                                <li style="border-radius: 10px"><a href="{% url 'about' %}">给我留言</a></li>
+                                <li style="border-radius: 10px"><a href="{% url 'leave' %}">给我留言</a></li>
                                 {% if user.is_authenticated %}
 {#                                <li>#}
 {#									<a href="">{{ user.username }}</a>#}

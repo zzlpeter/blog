@@ -48,20 +48,21 @@
             layer.msg('总得有个话题吧', {icon: 5});
             return false;
         }
-
+        var d = new Date();
+        var HMS = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
         var send = "<li class='left clearfix'><span class='chat-img pull-left'>"+
                         "<img width='50px' height='50px' src="+ portrait + " alt='User Avatar' class='img-circle' />" +
                     "</span>" +
                     "<div class='chat-body clearfix'>" +
                         "<div class='header'>" + username + "<small class='pull-right text-muted'>" +
-                    "<i class='fa fa-clock-o icon-bar'></i>" + '12 mins' + "</small>" +
+                    "<i class='fa fa-clock-o icon-bar'></i>" + HMS + "</small>" +
                     "</div>" +
                     "<p>" + info + "</p>" +
                     "</div>" +
                     "</li>";
         $('#btn-input-kai-liao').val('');
         $("#chat-ul-robot").append(send);
-        $("#tu-ling-liao-wo").scrollTop = $("#tu-ling-liao-wo").scrollHeight;
+        $(".panel-body").scrollTop(100000);
 
         $.ajax({
             url: "{% url 'tu_ling' %}",
@@ -76,13 +77,14 @@
                               '</span>' +
                               '<div class="chat-body clearfix">' +
                                   '<div class="header">' +
-                                      '<small><i class="fa fa-clock-o icon-bar"></i>13 mins ago</small>' +
+                                      '<small><i class="fa fa-clock-o icon-bar"></i>'+resData.time+'</small>' +
                                         '<strong class="pull-right primary-font">博客机器人</strong>'+
                                    '</div>' +
                                  '<p>' + resData.msg + '</p>' +
                             '</div>' +
                             '</li>';
                  $("#chat-ul-robot").append(receive);
+                 $(".panel-body").scrollTop(100000);
             }
         })
     }

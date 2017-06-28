@@ -40,6 +40,7 @@ urlpatterns = [
     # url(r'^category/skills/', blog_views.postList, name='categorySkills'),
     url(r'^welfare/?$', blog_views.postList, name='welfare'),
     url(r'^about/?$', blog_views.postList, name='about'),
+    url(r'^leave/?$', blog_views.postList, name='leave'),
 
     url(r'^accounts/user_logout/?$', account_views.user_logout, name='user_logout'),
     url(r'^accounts/authSetting/?$', account_views.user_auth_setting, name='authSetting'),
@@ -50,6 +51,7 @@ urlpatterns = [
     url(r'^category/(?P<category1>\w+)/(?P<category2>\w+)/?$', blog_views.postList, name='category_by2'),
 
     url(r'^tuLing/?$', common_views.tu_ling, name='tu_ling'),
+    url(r'^make_title_active/?$', common_views.make_title_active, name='make_title_active'),
 
 
     url(r'^test/?$', blog_views.test),

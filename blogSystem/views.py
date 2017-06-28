@@ -3,6 +3,7 @@
 from django.shortcuts import render_to_response, RequestContext, HttpResponse, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from blogSystem.common.views import response_json
+from service.commonKey import CATEGORY_DICT
 
 import models as blog_models
 import json
@@ -79,10 +80,24 @@ def send_mail(req):
         return HttpResponse(json.dumps({'msg': 'error'}), content_type='application/json')
 
 def postList(req, category1=None, category2=None, tmp_name='postList.html'):
+    breads = [{'location': u'首页', 'href': '/'}]
+    if category1:
+        breads.append({
+            'location': CATEGORY_DICT.get(category1, category1),
+            'href': '/category/%s'%category1
+        })
+    if category2:
+        breads.append({
+            'location': category2.upper()
+        })
     posts = []
     if category2:
-        posts = blog_models.Post.objects.filter(category__name=category2).order_by('-id')
-    return render_to_response(tmp_name, {'posts': posts}, context_instance=RequestContext(req))
+        posts = blog_models.Post.objects.filter(category__name=category2, is_valid=1).order_by('-id')
+    if category1 and not category2:
+        c1Obj = get_object_or_404(blog_models.Category, name=category1)
+        category2_list = blog_models.Category.objects.filter(parent_level=c1Obj.id).values_list('id')
+        posts = blog_models.Post.objects.filter(category_id__in=category2_list, is_valid=1).order_by('-id')
+    return render_to_response(tmp_name, {'posts': posts, 'breads': breads}, context_instance=RequestContext(req))
 
 @login_required
 def makePostSummit(req):

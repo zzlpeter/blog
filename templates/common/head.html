@@ -43,8 +43,8 @@
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
-								<li style="border-radius: 10px"><a href="{% url 'index' %}">首页</a></li>
-								<li class="active" style="border-radius: 10px">
+								<li style="border-radius: 10px" id="category-index-id"><a href="{% url 'index' %}">首页</a></li>
+								<li style="border-radius: 10px" id="category-life-id">
 									<a href="{% url 'category_by1' 'life' %}">生活笔记</a>
 {#									<ul>#}
 {#										<li><a href="#">Lorem ipsum dolor</a></li>#}
@@ -63,16 +63,16 @@
 {#										<li><a href="#">Veroeros feugiat</a></li>#}
 {#									</ul>#}
 								</li>
-								<li style="border-radius: 10px">
-                                    <a href="javascript:;">技术杂谈</a>
+								<li style="border-radius: 10px" id="category-skills-id">
+                                    <a href="{% url 'category_by1' 'skills' %}">技术杂谈</a>
                                     <ul>
                                         <li><a href="{% url 'category_by2' 'skills' 'python' %}">Python</a></li>
                                         <li><a href="{% url 'category_by2' 'skills' 'js' %}">JS</a></li>
                                         <li><a href="{% url 'category_by2' 'skills' 'linux' %}">Linux</a></li>
                                     </ul>
                                 </li>
-								<li style="border-radius: 10px"><a href="{% url 'category_by1' 'welfare' %}">福利专区</a></li>
-								<li style="border-radius: 10px"><a href="{% url 'about' %}">关于自己</a></li>
+								<li style="border-radius: 10px" id="category-welfare-id"><a href="{% url 'category_by1' 'welfare' %}">福利专区</a></li>
+								<li style="border-radius: 10px" id="category-about-id"><a href="{% url 'about' %}">关于自己</a></li>
                                 {% if user.is_authenticated %}
                                 <li style="float: right;">
 									<a href="" >{{ user.username }}</a>
@@ -96,7 +96,7 @@
                                 {% else %}
                                 <li style="float: right;" id="head-login-li"><a href="javascript:;" class="show-login-href" onclick="showLoginForm()">登录</a></li>
                                 {% endif %}
-                                <li><a href="{% url 'about' %}">给我留言</a></li>
+                                <li style="border-radius: 10px" id="category-leave-id"><a href="{% url 'leave' %}">给我留言</a></li>
 							</ul>
 						</nav>
 
@@ -107,17 +107,32 @@
         {% include 'common/loginModal.html' %}
 
         <script>
+
             function showLoginForm(){
                 $('#loginModal').modal('show');
             }
 
 
             $(function() {
+
                 // Dropdowns.
                 $('#nav > ul').dropotron({
                     offsetY: -15,
                     hoverDelay: 0
                 });
+
+                // make title active
+                $.ajax({
+                    url: "{% url 'make_title_active' %}",
+                    dataType: 'JSON',
+                    type: 'GET',
+                    success: function (resData) {
+                        $('#nav').children('ul').children('li').each(function(e){
+                            $(e).removeClass('active');
+                        });
+                        $('#category-'+resData.active+'-id').addClass('active');
+                    }
+                })
             });
 
 
