@@ -59,6 +59,10 @@ urlpatterns = [
     url(r'^tuLing/?$', common_views.tu_ling, name='tu_ling'),
     url(r'^make_title_active/?$', common_views.make_title_active, name='make_title_active'),
 
+    url(r'^get_top_three_post/?$', blog_views.get_top_three_post, name='get_top_three_post'),
+
 
     url(r'^test/?$', blog_views.test),
+
+
 ]
