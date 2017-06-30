@@ -1,0 +1,465 @@
+{% include 'common/head.html' %}
+{% load staticfiles %}
+<style>
+    /*
+    Image credits:
+    uifaces.com (http://uifaces.com/authorized)
+*/
+
+#login { display: none; }
+.login,
+.logout {
+    position: absolute;
+    top: -3px;
+    right: 0;
+}
+.page-header { position: relative; }
+.reviews {
+    color: #555;
+    font-weight: bold;
+    margin: 10px auto 20px;
+}
+.notes {
+    color: #999;
+    font-size: 12px;
+}
+.media .media-object { max-width: 70px; }
+.media-body { position: relative; }
+.media-date {
+    position: absolute;
+    right: 25px;
+    top: 15px;
+}
+.media-date li { padding: 0; }
+.media-date li:first-child:before { content: ''; }
+.media-date li:before {
+    content: '.';
+    margin-left: -2px;
+    margin-right: 2px;
+}
+.media-comment { margin-bottom: -12px; }
+.media-replied { margin: 0 0 5px 12px; }
+.media-replied .media-heading { padding-left: 6px; }
+
+.btn-circle {
+    font-weight: bold;
+    font-size: 12px;
+    padding: 6px 15px;
+    border-radius: 10px;
+}
+.btn-circle span { padding-right: 6px; }
+.embed-responsive { margin-bottom: 20px; }
+.tab-content {
+    padding: 50px 15px;
+    border: 1px solid #ddd;
+    border-top: 0;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.custom-input-file {
+    overflow: hidden;
+    position: relative;
+    width: 120px;
+    height: 120px;
+    background: #eee url('https://s3.amazonaws.com/uifaces/faces/twitter/walterstephanie/128.jpg');
+    background-size: 120px;
+    border-radius: 120px;
+}
+input[type="file"]{
+    z-index: 999;
+    line-height: 0;
+    font-size: 0;
+    position: absolute;
+    opacity: 0;
+    filter: alpha(opacity = 0);-ms-filter: "alpha(opacity=0)";
+    margin: 0;
+    padding:0;
+    left:0;
+}
+.uploadPhoto {
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    display: none;
+    width: 50%;
+    height: 50%;
+    color: #fff;
+    text-align: center;
+    line-height: 60px;
+    text-transform: uppercase;
+    background-color: rgba(0,0,0,.3);
+    border-radius: 50px;
+    cursor: pointer;
+}
+.custom-input-file:hover .uploadPhoto { display: block; }
+</style>
+<link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
+<div class="container">
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1" id="logout">
+        <div class="page-header">
+            <h3 class="reviews">客观，留下足迹再走吧。</h3>
+            <div class="logout">
+                <button class="btn btn-default btn-circle text-uppercase" type="button" onclick="$('#leaveModal').modal('show');">
+                    <span><i class="fa fa-pencil-square"></i> 留言</span>
+                </button>
+            </div>
+        </div>
+        <div class="comment-tabs">
+            <ul class="nav nav-tabs" role="tablist">
+{#                <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Comments</h4></a></li>#}
+{#                <li><a href="#add-comment" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Add comment</h4></a></li>#}
+{#                <li><a href="#account-settings" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">Account settings</h4></a></li>#}
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="comments-logout">
+                    <ul class="media-list">
+                      <li class="media">
+                        <a class="pull-left" href="#">
+                          <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/lady_katherine/128.jpg" alt="profile">
+                        </a>
+                        <div class="media-body">
+                          <div class="well well-lg">
+                              <h4 class="text-uppercase " style="margin-top: -18px">Kriztine</h4>
+                              <span style="float: right; margin-top: -30px;"><i class="fa fa-clock-o icon-bar"></i> 2017-08-04</span>
+                              <p class="media-comment">
+                                Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.
+                              </p>
+                          </div>
+                        </div>
+                        <div class="collapse" id="replyTwo">
+                            <ul class="media-list">
+                                <li class="media media-replied">
+                                    <a class="pull-left" href="#">
+                                      <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/jackiesaik/128.jpg" alt="profile">
+                                    </a>
+                                    <div class="media-body">
+                                      <div class="well well-lg">
+                                          <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span> Lizz</h4>
+                                          <ul class="media-date text-uppercase reviews list-inline">
+                                            <li class="dd">22</li>
+                                            <li class="mm">09</li>
+                                            <li class="aaaa">2014</li>
+                                          </ul>
+                                          <p class="media-comment">
+                                            Classy!
+                                          </p>
+                                          <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
+                                      </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                      </li>
+                        <li class="media">
+                        <a class="pull-left" href="#">
+                          <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/lady_katherine/128.jpg" alt="profile">
+                        </a>
+                        <div class="media-body">
+                          <div class="well well-lg">
+                              <h4 class="text-uppercase " style="margin-top: -18px">Kriztine</h4>
+                              <span style="float: right; margin-top: -18px;"><i class="fa fa-clock-o icon-bar"></i> 2017-08-04</span>
+                              <p class="media-comment">
+                                Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.
+                              </p>
+{#                              <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>#}
+{#                              <a class="btn btn-warning btn-circle text-uppercase" data-toggle="collapse" href="#replyTwo"><span class="glyphicon glyphicon-comment"></span> 1 comment</a>#}
+                          </div>
+                        </div>
+                        <div class="collapse" id="replyTwo">
+                            <ul class="media-list">
+                                <li class="media media-replied">
+                                    <a class="pull-left" href="#">
+                                      <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/jackiesaik/128.jpg" alt="profile">
+                                    </a>
+                                    <div class="media-body">
+                                      <div class="well well-lg">
+                                          <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span> Lizz</h4>
+                                          <ul class="media-date text-uppercase reviews list-inline">
+                                            <li class="dd">22</li>
+                                            <li class="mm">09</li>
+                                            <li class="aaaa">2014</li>
+                                          </ul>
+                                          <p class="media-comment">
+                                            Classy!
+                                          </p>
+                                          <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
+                                      </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                      </li>
+                        </li>
+                        <li class="media">
+                        <a class="pull-left" href="#">
+                          <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/lady_katherine/128.jpg" alt="profile">
+                        </a>
+                        <div class="media-body">
+                          <div class="well well-lg">
+                              <h4 class="text-uppercase " style="margin-top: -18px">Kriztine</h4>
+                              <span style="float: right; margin-top: -18px;"><i class="fa fa-clock-o icon-bar"></i> 2017-08-04</span>
+                              <p class="media-comment">
+                                Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.
+                              </p>
+{#                              <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>#}
+{#                              <a class="btn btn-warning btn-circle text-uppercase" data-toggle="collapse" href="#replyTwo"><span class="glyphicon glyphicon-comment"></span> 1 comment</a>#}
+                          </div>
+                        </div>
+                        <div class="collapse" id="replyTwo">
+                            <ul class="media-list">
+                                <li class="media media-replied">
+                                    <a class="pull-left" href="#">
+                                      <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/jackiesaik/128.jpg" alt="profile">
+                                    </a>
+                                    <div class="media-body">
+                                      <div class="well well-lg">
+                                          <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span> Lizz</h4>
+                                          <ul class="media-date text-uppercase reviews list-inline">
+                                            <li class="dd">22</li>
+                                            <li class="mm">09</li>
+                                            <li class="aaaa">2014</li>
+                                          </ul>
+                                          <p class="media-comment">
+                                            Classy!
+                                          </p>
+                                          <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
+                                      </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                      </li>
+                        </li>
+                        <li class="media">
+                        <a class="pull-left" href="#">
+                          <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/lady_katherine/128.jpg" alt="profile">
+                        </a>
+                        <div class="media-body">
+                          <div class="well well-lg">
+                              <h4 class="text-uppercase " style="margin-top: -18px">Kriztine</h4>
+                              <span style="float: right; margin-top: -18px;"><i class="fa fa-clock-o icon-bar"></i> 2017-08-04</span>
+                              <p class="media-comment">
+                                Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.
+                              </p>
+{#                              <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>#}
+{#                              <a class="btn btn-warning btn-circle text-uppercase" data-toggle="collapse" href="#replyTwo"><span class="glyphicon glyphicon-comment"></span> 1 comment</a>#}
+                          </div>
+                        </div>
+                        <div class="collapse" id="replyTwo">
+                            <ul class="media-list">
+                                <li class="media media-replied">
+                                    <a class="pull-left" href="#">
+                                      <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/jackiesaik/128.jpg" alt="profile">
+                                    </a>
+                                    <div class="media-body">
+                                      <div class="well well-lg">
+                                          <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span> Lizz</h4>
+                                          <ul class="media-date text-uppercase reviews list-inline">
+                                            <li class="dd">22</li>
+                                            <li class="mm">09</li>
+                                            <li class="aaaa">2014</li>
+                                          </ul>
+                                          <p class="media-comment">
+                                            Classy!
+                                          </p>
+                                          <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
+                                      </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                      </li>
+                        </li>
+                        <li class="media">
+                        <a class="pull-left" href="#">
+                          <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/lady_katherine/128.jpg" alt="profile">
+                        </a>
+                        <div class="media-body">
+                          <div class="well well-lg">
+                              <h4 class="text-uppercase " style="margin-top: -18px">Kriztine</h4>
+                              <span style="float: right; margin-top: -18px;"><i class="fa fa-clock-o icon-bar"></i> 2017-08-04</span>
+                              <p class="media-comment">
+                                Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.
+                              </p>
+{#                              <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>#}
+{#                              <a class="btn btn-warning btn-circle text-uppercase" data-toggle="collapse" href="#replyTwo"><span class="glyphicon glyphicon-comment"></span> 1 comment</a>#}
+                          </div>
+                        </div>
+                        <div class="collapse" id="replyTwo">
+                            <ul class="media-list">
+                                <li class="media media-replied">
+                                    <a class="pull-left" href="#">
+                                      <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/jackiesaik/128.jpg" alt="profile">
+                                    </a>
+                                    <div class="media-body">
+                                      <div class="well well-lg">
+                                          <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span> Lizz</h4>
+                                          <ul class="media-date text-uppercase reviews list-inline">
+                                            <li class="dd">22</li>
+                                            <li class="mm">09</li>
+                                            <li class="aaaa">2014</li>
+                                          </ul>
+                                          <p class="media-comment">
+                                            Classy!
+                                          </p>
+                                          <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
+                                      </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                      </li>
+                        </li>
+                        <li class="media">
+                        <a class="pull-left" href="#">
+                          <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/lady_katherine/128.jpg" alt="profile">
+                        </a>
+                        <div class="media-body">
+                          <div class="well well-lg">
+                              <h4 class="text-uppercase " style="margin-top: -18px">Kriztine</h4>
+                              <span style="float: right; margin-top: -18px;"><i class="fa fa-clock-o icon-bar"></i> 2017-08-04</span>
+                              <p class="media-comment">
+                                Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.Yehhhh... Thanks for sharing.
+                              </p>
+{#                              <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>#}
+{#                              <a class="btn btn-warning btn-circle text-uppercase" data-toggle="collapse" href="#replyTwo"><span class="glyphicon glyphicon-comment"></span> 1 comment</a>#}
+                          </div>
+                        </div>
+                        <div class="collapse" id="replyTwo">
+                            <ul class="media-list">
+                                <li class="media media-replied">
+                                    <a class="pull-left" href="#">
+                                      <img class="media-object img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/jackiesaik/128.jpg" alt="profile">
+                                    </a>
+                                    <div class="media-body">
+                                      <div class="well well-lg">
+                                          <h4 class="media-heading text-uppercase reviews"><span class="glyphicon glyphicon-share-alt"></span> Lizz</h4>
+                                          <ul class="media-date text-uppercase reviews list-inline">
+                                            <li class="dd">22</li>
+                                            <li class="mm">09</li>
+                                            <li class="aaaa">2014</li>
+                                          </ul>
+                                          <p class="media-comment">
+                                            Classy!
+                                          </p>
+                                          <a class="btn btn-info btn-circle text-uppercase" href="#" id="reply"><span class="glyphicon glyphicon-share-alt"></span> Reply</a>
+                                      </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                      </li>
+                    </ul>
+                </div>
+                <div class="tab-pane" id="add-comment">
+                    <form action="#" method="post" class="form-horizontal" id="commentForm" role="form">
+                        <div class="form-group">
+                            <label for="email" class="col-sm-2 control-label">Comment</label>
+                            <div class="col-sm-10">
+                              <textarea class="form-control" name="addComment" id="addComment" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="uploadMedia" class="col-sm-2 control-label">Upload media</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                  <div class="input-group-addon">http://</div>
+                                  <input type="text" class="form-control" name="uploadMedia" id="uploadMedia">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Summit comment</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane" id="account-settings">
+                    <form action="#" method="post" class="form-horizontal" id="accountSetForm" role="form">
+                        <div class="form-group">
+                            <label for="avatar" class="col-sm-2 control-label">Avatar</label>
+                            <div class="col-sm-10">
+                                <div class="custom-input-file">
+                                    <label class="uploadPhoto">
+                                        Edit
+                                        <input type="file" class="change-avatar" name="avatar" id="avatar">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" name="name" id="name" placeholder="Vilma palma">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="nickName" class="col-sm-2 control-label">Nick name</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" name="nickName" id="nickName" placeholder="Vilma">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-10">
+                              <input type="email" class="form-control" name="email" id="email" placeholder="vilma@mail.com">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="col-sm-2 control-label">New password</label>
+                            <div class="col-sm-10">
+                              <input type="password" class="form-control" name="newPassword" id="newPassword">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword" class="col-sm-2 control-label">Confirm password</label>
+                            <div class="col-sm-10">
+                              <input type="password" class="form-control" name="confirmPassword" id="confirmPassword">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-primary btn-circle text-uppercase" type="submit" id="submit">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+	</div>
+  </div>
+
+  <div class="page-header text-center">
+    <h3 class="reviews"><span class="glyphicon glyphicon-magnet"></span> Uicomments by <a href="https://twitter.com/maridlcrmn">maridlcrmn</a></h3>
+  </div>
+  <div class="notes text-center"><small>Image credits: uifaces.com</small></div>
+</div>
+
+
+<!-- 留言模态框（Modal） -->
+<div class="modal fade" id="leaveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					留下弥足珍贵的足迹吧！
+				</h4>
+			</div>
+			<div class="modal-body">
+                <textarea id="leave-comment" style="height: 180px; max-width: 568px;"></textarea>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary">
+					走你
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>

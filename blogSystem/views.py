@@ -214,7 +214,7 @@ def make_post_comment(req):
 
 def get_top_three_post(req):
     page = req.GET.get('page', 1)
-    posts = blog_models.Post.objects.all().order_by('scan')[(int(page)-1)*3: int(page)*3]
+    posts = blog_models.Post.objects.all().order_by('?')[(int(page)-1)*3: int(page)*3]
     post_list = [
         {
             'img': "/static/images/%s/%s" % (post.img.img_category.name, post.img.src),
@@ -225,6 +225,9 @@ def get_top_three_post(req):
     data = {'post_list': post_list}
     return response_json(data)
 
+@login_required
+def leave_message(req, tmp_name='leaveMessage.html'):
+    return render_to_response(tmp_name, context_instance=RequestContext(req))
 
 
 

@@ -45,7 +45,7 @@ urlpatterns = [
     # url(r'^category/skills/', blog_views.postList, name='categorySkills'),
     url(r'^welfare/?$', blog_views.postList, name='welfare'),
     url(r'^about/?$', blog_views.postList, name='about'),
-    url(r'^leave/?$', blog_views.postList, name='leave'),
+    url(r'^leave_message/?$', blog_views.leave_message, name='leave_message'),
 
     url(r'^accounts/user_logout/?$', account_views.user_logout, name='user_logout'),
     url(r'^accounts/authSetting/?$', account_views.user_auth_setting, name='authSetting'),
