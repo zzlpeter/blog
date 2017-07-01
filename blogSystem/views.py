@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from blogSystem.common.views import response_json
 from service.commonKey import CATEGORY_DICT
 from django.db.models import F, Q
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
 
 import models as blog_models
 import json
@@ -225,9 +228,54 @@ def get_top_three_post(req):
     data = {'post_list': post_list}
     return response_json(data)
 
-@login_required
+# @login_required
 def leave_message(req, tmp_name='leaveMessage.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
+
+def get_more_message(req):
+    page = req.GET.get('page', 1)
+
+    limit = 20  # 每页显示的记录数
+    msgs = blog_models.MessageLeave.objects.all().order_by('-id')
+    # topics = Topic.objects.all()
+    paginator = Paginator(msgs, limit)  # 实例化一个分页对象
+
+    # page = request.GET.get('page')  # 获取页码
+    try:
+        msgObj = paginator.page(page)  # 获取某页对应的记录
+    except PageNotAnInteger:  # 如果页码不是个整数
+        msgObj = paginator.page(1)  # 取第一页的记录
+    except EmptyPage:  # 如果页码太大，没有相应的记录
+        msgObj = paginator.page(paginator.num_pages)  # 取最后一页的记录
+    msg_list = [
+        {
+            'leaver_name': msg.leaver.user.username,
+            'leaver_portrait': "/static/images/%s/%s" % (msg.leaver.portrait.img_category.name, msg.leaver.portrait.src),
+            'leave_msg': msg.message,
+            'leave_time': str(msg.leave_time)[0:19]
+        } for msg in msgObj
+    ]
+    json_str = {
+        'msg_list': msg_list,
+        'next': int(page) + 1 if msgObj.has_next() else 0,
+        'current': page
+    }
+    return response_json(json_str)
+
+@login_required
+def make_leave_comment_submit(req):
+    user = req.user
+    msg = req.POST.get('msg', '')
+    try:
+        blog_models.MessageLeave.objects.create(
+                                                leaver_id=user.id,
+                                                message=msg
+                                            )
+        json_str = {'status': 1, 'msg': u'留言成功，博主会尽快给您答复，请耐心等待！'}
+    except Exception, exc:
+        logger.error(exc, exc_info=True)
+        json_str = {'status': 0, 'msg': u'留言异常，请稍后重试！'}
+    return response_json(json_str)
 
 
 
