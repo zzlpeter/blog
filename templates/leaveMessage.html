@@ -276,7 +276,6 @@ input[type="file"]{
                         for(var i=0; i<res.body.msg_list.length; i++){
                             commentsApp.msg_arr.push(res.body.msg_list[i])
                         }
-{#                        commentsApp.msg_arr.concat(res.body.msg_list);#}
                         commentsApp.page += 1;
                         layer.closeAll('loading');
                         if(res.body.current > 1){

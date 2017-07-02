@@ -1,7 +1,7 @@
 # coding: utf-8
 
 from django.contrib.auth import logout, login, authenticate
-from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect, render_to_response, RequestContext
 from blogSystem.common.views import response_json
 from django.contrib import messages
 from blogSystem import models as blog_models
@@ -43,3 +43,6 @@ def user_auth_setting(req):
 # 用户改密码
 def user_change_pwd(req):
     pass
+
+def personal_center(req, tmp_name='personal_center.html'):
+    return render_to_response(tmp_name, context_instance=RequestContext(req))

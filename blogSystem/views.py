@@ -246,7 +246,8 @@ def get_more_message(req):
     except PageNotAnInteger:  # 如果页码不是个整数
         msgObj = paginator.page(1)  # 取第一页的记录
     except EmptyPage:  # 如果页码太大，没有相应的记录
-        msgObj = paginator.page(paginator.num_pages)  # 取最后一页的记录
+        # msgObj = paginator.page(paginator.num_pages)  # 取最后一页的记录
+        msgObj = []
     msg_list = [
         {
             'leaver_name': msg.leaver.user.username,
@@ -257,7 +258,7 @@ def get_more_message(req):
     ]
     json_str = {
         'msg_list': msg_list,
-        'next': int(page) + 1 if msgObj.has_next() else 0,
+        'next': int(page) + 1 if msgObj and msgObj.has_next() else 0,
         'current': page
     }
     return response_json(json_str)
@@ -279,7 +280,7 @@ def make_leave_comment_submit(req):
 
 
 
-def test(req, tmp_name='test.html'):
+def test(req, tmp_name='left-sidebar.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
 

@@ -51,6 +51,7 @@ urlpatterns = [
     url(r'^accounts/authSetting/?$', account_views.user_auth_setting, name='authSetting'),
     url(r'^accounts/changepwd/?$', account_views.user_change_pwd, name='changepwd'),
     url(r'^accounts/user_login/?$', account_views.user_login, name='user_login'),
+    url(r'^accounts/personal_center/?$', account_views.personal_center, name='personal_center'),
 
     # 帖子分类（一级和二级分类）
     url(r'^category/(?P<category1>\w+)/?$', blog_views.postList, name='category_by1'),
