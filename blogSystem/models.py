@@ -185,3 +185,29 @@ class MessageLeave(models.Model):
 
     class Meta:
         db_table = 'blog_message_leave'
+
+
+class UserAttention(models.Model):
+    id = models.AutoField(primary_key=True)
+    initiative_user = models.ForeignKey(UserExtend)
+    passivity_user = models.ForeignKey(UserExtend)
+
+    def __str__(self):
+        return self.id
+
+    class Meta:
+        db_table = 'blog_user_attention'
+
+
+class UserMessageCenter(models.Model):
+    id = models.AutoField(primary_key=True)
+    owner = models.ForeignKey(UserExtend)
+    message = models.CharField(max_length=1000)
+    msg_time = models.DateTimeField(auto_now=True)
+    is_read = models.SmallIntegerField(default=0)
+
+    def __str__(self):
+        return self.id
+
+    class Meta:
+        db_table = 'blog_user_message_center'
