@@ -189,8 +189,8 @@ class MessageLeave(models.Model):
 
 class UserAttention(models.Model):
     id = models.AutoField(primary_key=True)
-    initiative_user = models.ForeignKey(UserExtend)
-    passivity_user = models.ForeignKey(UserExtend)
+    guan_zhu = models.IntegerField()
+    bei_guan_zhu = models.IntegerField()
 
     def __str__(self):
         return self.id
@@ -201,7 +201,7 @@ class UserAttention(models.Model):
 
 class UserMessageCenter(models.Model):
     id = models.AutoField(primary_key=True)
-    owner = models.ForeignKey(UserExtend)
+    reader = models.ForeignKey(UserExtend)
     message = models.CharField(max_length=1000)
     msg_time = models.DateTimeField(auto_now=True)
     is_read = models.SmallIntegerField(default=0)
