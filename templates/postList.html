@@ -24,7 +24,7 @@
                 </a>
                 <div class="media-body">
                     <a href="{{ post.post_detail_path }}"><h4 class="media-heading">{{ post.title }}</h4></a>
-                    <p class="text-right">By <a href="{% url 'user_post' post.author.user.username %}">{{ post.author.user.username }}</a></p>
+                    <p class="text-right">By <a href="{% url 'user_post' post.author.user.id post.author.user.userextend.nickname %}">{{ post.author.user.userextend.nickname }}</a></p>
                     <p>{{ post.summary|truncatechars:100 }}</p>
                     <ul class="list-inline list-unstyled">
                         <li><span><i class="fa fa-clock-o icon-bar"></i>{{ post.post_time|timesince }} ago</span></li>

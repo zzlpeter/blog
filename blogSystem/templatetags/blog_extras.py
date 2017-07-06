@@ -1,7 +1,7 @@
 # coding: utf-8
 
 from django import template
-from blogSystem.models import UserExtend
+from blogSystem.models import UserExtend, UserAttention
 import logging
 
 register = template.Library()
@@ -23,3 +23,11 @@ def get_user_portrait(user):
     except Exception, exc:
         logger.error(exc, exc_info=True)
         return '/static/images/other/anonymous.jpg'
+
+# judge whether user has paid attention to some user
+@register.filter
+def judge_user_attention(user, uid):
+    if UserAttention.objects.filter(guan_zhu=user.id, bei_guan_zhu=uid).exists():
+        return 'yes'
+    else:
+        return 'no'

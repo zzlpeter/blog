@@ -8,6 +8,7 @@ from django.db.models import F, Q
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
+from django.http import Http404
 
 import models as blog_models
 import json
@@ -61,12 +62,15 @@ def makePost(req, tmp_name='makePost.html'):
     category = blog_models.Category.objects.filter(level=2).order_by('-parent_level', 'id')
     return render_to_response(tmp_name, {'category': category}, context_instance=RequestContext(req))
 
-def user_post(req, username, tmp_name='postList.html'):
+def user_post(req, uid, nickname, tmp_name='postList.html'):
     breads = [
         {'location': u'首页', 'href': '/'},
-        {'location': username}
+        {'location': nickname}
     ]
-    posts = blog_models.Post.objects.filter(author__user__username=username).order_by('-id')
+    if not blog_models.UserExtend.objects.filter(user_id=uid, nickname=nickname).exists():
+        raise Http404()
+
+    posts = blog_models.Post.objects.filter(author__user__id=uid).order_by('-id')
     dic = {
         'breads': breads,
         'posts': posts
@@ -284,6 +288,59 @@ def test(req, tmp_name='left-sidebar.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
 
+@login_required
+def guan_zhu_poster(req):
+    uid = req.GET.get('uid')
+    user = req.user
+    try:
+        uid = int(uid)
+        if blog_models.UserAttention.objects.filter(guan_zhu=user.id, bei_guan_zhu=uid).exists():
+            blog_models.UserAttention.objects.filter(guan_zhu=user.id, bei_guan_zhu=uid).delete()
+            json_str = {'status': 1, 'attention': 0, 'msg': u'取消关注'}
+        else:
+            blog_models.UserAttention.objects.create(
+                guan_zhu=user.id,
+                bei_guan_zhu=uid
+            )
+            json_str = {'status': 1, 'attention': 1, 'msg': u'关注成功'}
+    except Exception, exc:
+        logger.error(exc, exc_info=True)
+        json_str = {'status': 0, 'msg': u'服务器异常，请稍后重试'}
+    return response_json(json_str)
+
+@login_required
+def get_user_list(req):
+    page = req.GET.get('page', 1)
+
+    limit = 12  # 每页显示的记录数
+    users = blog_models.UserExtend.objects.all().order_by('-id')
+    # topics = Topic.objects.all()
+    paginator = Paginator(users, limit)  # 实例化一个分页对象
+
+    try:
+        userObj = paginator.page(page)  # 获取某页对应的记录
+    except PageNotAnInteger:  # 如果页码不是个整数
+        userObj = paginator.page(1)  # 取第一页的记录
+    except EmptyPage:  # 如果页码太大，没有相应的记录
+        # msgObj = paginator.page(paginator.num_pages)  # 取最后一页的记录
+        userObj = []
+    user_list = [
+        {
+            # 'portrait': '/static/images/%s/%s'%(user.portrait.img_category.name, user.portrait.src),
+            'portrait': '/static/images/portrait/pic01.jpeg',
+            'nickname': user.nickname,
+            'date_joined': str(user.user.date_joined),
+            'activity': '',
+            'fans': 2,
+            'posts': 3
+        } for user in userObj
+    ]
+    json_str = {
+        'user_list': user_list,
+        'next': int(page) + 1 if userObj and userObj.has_next() else 0,
+        'current': page
+    }
+    return response_json(json_str)
 
 
 

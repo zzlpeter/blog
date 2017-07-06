@@ -6,6 +6,7 @@ from blogSystem.common.views import response_json
 from django.contrib import messages
 from blogSystem import models as blog_models
 from service.commonFunc import get_user_ip
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -46,3 +47,15 @@ def user_change_pwd(req):
 
 def personal_center(req, tmp_name='personal_center.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
+
+# 设置用户昵称
+@login_required
+def set_nickname(req):
+    user = req.user
+    nickname = req.GET.get('nickname')
+    if not nickname.strip():
+        json_str = {'status': 0, 'msg': u'昵称不允许为空'}
+        return response_json(json_str)
+    blog_models.UserExtend.objects.filter(user=user).update(nickname=nickname)
+    json_str = {'status': 1, 'msg': u'昵称设置成功'}
+    return response_json(json_str)

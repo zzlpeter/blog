@@ -104,7 +104,7 @@ input[type="file"]{
         <div class="page-header">
             <h3 class="reviews">客观，留下足迹再走吧。</h3>
             <div class="logout">
-                <button class="btn btn-default btn-circle text-uppercase" type="button" {% if user.is_authenticated %}onclick="$('#leaveModal').modal('show');"{% else %}title="登录之后方可操作" disabled="disabled"{% endif %}>
+                <button class="btn btn-default btn-circle text-uppercase" type="button" {% if user.is_authenticated %}onclick="showModal()"{% else %}title="登录之后方可操作" disabled="disabled"{% endif %}>
                     <span><i class="fa fa-pencil-square"></i> 写留言</span>
                 </button>
             </div>
@@ -252,6 +252,8 @@ input[type="file"]{
 	</div><!-- /.modal -->
 </div>
 
+<input type="hidden" {% if user.userextend.nickname %} value="yes" {% else %} value="no" {% endif %} id="hidden-nickname">
+
 <script>
 
     $(function () {
@@ -291,7 +293,40 @@ input[type="file"]{
         }
     });
 
+    function showModal() {
+        // 判断用户是否填写过昵称
+        var is_has = $('#hidden-nickname').val();
+        if(is_has=='no'){
+            layer.open({
+                title: '请设置昵称',
+                content: '<input type="text" placeholder="该昵称不做为登录凭证" id="test-layer">',
+                yes: function(index, layero){
+                    $.ajax({
+                        url: "{% url 'set_nickname' %}",
+                        type: 'GET',
+                        dataType: 'JSON',
+                        data: {
+                            'nickname': $('#test-layer').val()
+                        },
+                        success: function(res){
+                            if(res.status==1){
+                                layer.close(index);
+                                $('#test-layer').val('yes');
+                                $('#leaveModal').modal('show');
+                            }else{
+                                layer.msg(res.msg, {icon: 2});
+                            }
+                        }
+                    })
+            }
+            });
+            return false;
+        }
+        $('#leaveModal').modal('show');
+    }
+
     function makeCommentSubmit() {
+
         var msg = $('#leave-comment').val();
         if(!msg.trim()){
             layer.msg('请输入留言内容！', {icon: 6});
@@ -316,5 +351,5 @@ input[type="file"]{
         })
     }
 
-
+    
 </script>

@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 import logging
 
 logger = logging.getLogger(__name__)
@@ -52,12 +54,28 @@ class UserExtend(models.Model):
     )
     portrait = models.ForeignKey(Images)
     login_ip = models.CharField(max_length=100, blank=True, null=True)
+    nickname = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
         return self.user
 
+    def is_pay_attention_to_user(self, uid):
+        if UserAttention.objects.filter(guan_zhu=self.id, bei_guan_zhu=uid).exists():
+            return 'yes'
+        else:
+            return 'no'
+
     class Meta:
         db_table = 'blog_user_extend'
+
+    @receiver(post_save, sender=User)
+    def create_user_user_extend(sender, instance, created, **kwargs):
+        if created:
+            UserExtend.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_user_extend(sender, instance, **kwargs):
+        instance.userextend.save()
 
 
 

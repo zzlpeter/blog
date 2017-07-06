@@ -35,7 +35,7 @@ urlpatterns = [
     url(r'^postList/?$', blog_views.postList, name='postList'),
     url(r'^up_down_share_post/?$', blog_views.up_down_share_post, name='up_down_share_post'),
     url(r'^make_post_comment/?$', blog_views.make_post_comment, name='make_post_comment'),
-    url(r'^user/(?P<username>\w+)?$', blog_views.user_post, name='user_post'),
+    url(r'^user/(?P<uid>\d+)/(?P<nickname>\w+)?$', blog_views.user_post, name='user_post'),
 
     # 帖子详情
     url(r'^category/(?P<category1>\w+)/(?P<post_id>\d+)/?$', blog_views.postDetail, name='category1_post_detail'),
@@ -52,6 +52,7 @@ urlpatterns = [
     url(r'^accounts/changepwd/?$', account_views.user_change_pwd, name='changepwd'),
     url(r'^accounts/user_login/?$', account_views.user_login, name='user_login'),
     url(r'^accounts/personal_center/?$', account_views.personal_center, name='personal_center'),
+    url(r'^accounts/set_nickname/?$', account_views.set_nickname, name='set_nickname'),
 
     # 帖子分类（一级和二级分类）
     url(r'^category/(?P<category1>\w+)/?$', blog_views.postList, name='category_by1'),
@@ -63,6 +64,8 @@ urlpatterns = [
     url(r'^get_top_three_post/?$', blog_views.get_top_three_post, name='get_top_three_post'),
     url(r'^get_more_message/?$', blog_views.get_more_message, name='get_more_message'),
     url(r'^make_leave_comment_submit/?$', blog_views.make_leave_comment_submit, name='make_leave_comment_submit'),
+    url(r'^guan_zhu_poster/?$', blog_views.guan_zhu_poster, name='guan_zhu_poster'),
+    url(r'^get_user_list/?$', blog_views.get_user_list, name='get_user_list'),
 
 
     url(r'^test/?$', blog_views.test),
