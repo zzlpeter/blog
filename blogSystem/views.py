@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response, RequestContext, HttpResponse, g
 from django.contrib.auth.decorators import login_required
 from blogSystem.common.views import response_json
 from service.commonKey import CATEGORY_DICT
+from service.commonFunc import get_user_level
 from django.db.models import F, Q
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
@@ -254,7 +255,7 @@ def get_more_message(req):
         msgObj = []
     msg_list = [
         {
-            'leaver_name': msg.leaver.user.username,
+            'leaver_name': msg.leaver.user.userextend.nickname,
             'leaver_portrait': "/static/images/%s/%s" % (msg.leaver.portrait.img_category.name, msg.leaver.portrait.src),
             'leave_msg': msg.message,
             'leave_time': str(msg.leave_time)[0:19]
@@ -313,7 +314,7 @@ def get_user_list(req):
     page = req.GET.get('page', 1)
 
     limit = 12  # 每页显示的记录数
-    users = blog_models.User.objects.all().order_by('-id')
+    users = blog_models.User.objects.all().exclude(id=req.user.id).order_by('id')
     paginator = Paginator(users, limit)  # 实例化一个分页对象
 
     try:
@@ -328,10 +329,11 @@ def get_user_list(req):
             'portrait': '/static/images/%s/%s'%(user.userextend.portrait.img_category.name, user.userextend.portrait.src),
             'nickname': user.userextend.nickname or u'暂无昵称',
             'date_joined': str(user.date_joined)[0: 10],
-            'activity': '',
+            'level': get_user_level(user.id),
             'fans': blog_models.UserAttention.objects.filter(bei_guan_zhu=user.id).count(),
             'posts': blog_models.Post.objects.filter(author_id=user.id).count(),
-            'attention': 'yes' if blog_models.UserAttention.objects.filter(guan_zhu=req.user.id, bei_guan_zhu=user.id).exists() else 'no'
+            'attention': 'yes' if blog_models.UserAttention.objects.filter(guan_zhu=req.user.id, bei_guan_zhu=user.id).exists() else 'no',
+            'id': user.id
         } for user in userObj
     ]
     json_str = {
