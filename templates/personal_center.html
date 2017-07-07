@@ -1,0 +1,381 @@
+{% include 'common/head.html' %}
+{% load staticfiles %}
+<script src="{% static 'js/layer/layer.js' %}"></script>
+<script src="{% static 'js/vue/vue.js' %}"></script>
+<script src="{% static 'js/vue/vue-resource.js' %}"></script>
+<script src="{% static 'js/vue/index.js' %}"></script>
+
+<style>
+    /*
+    Image credits:
+    uifaces.com (http://uifaces.com/authorized)
+*/
+
+#login { display: none; }
+.login,
+.logout {
+    position: absolute;
+    top: -3px;
+    right: 0;
+}
+.page-header { position: relative; }
+.reviews {
+    color: #555;
+    font-weight: bold;
+    margin: 10px auto 20px;
+}
+.notes {
+    color: #999;
+    font-size: 12px;
+}
+.media .media-object { max-width: 70px; }
+.media-body { position: relative; }
+.media-date {
+    position: absolute;
+    right: 25px;
+    top: 15px;
+}
+.media-date li { padding: 0; }
+.media-date li:first-child:before { content: ''; }
+.media-date li:before {
+    content: '.';
+    margin-left: -2px;
+    margin-right: 2px;
+}
+.media-comment { margin-bottom: -12px; }
+.media-replied { margin: 0 0 5px 12px; }
+.media-replied .media-heading { padding-left: 6px; }
+
+.btn-circle {
+    font-weight: bold;
+    font-size: 12px;
+    padding: 6px 15px;
+    border-radius: 10px;
+}
+.btn-circle span { padding-right: 6px; }
+.embed-responsive { margin-bottom: 20px; }
+.tab-content {
+    padding: 50px 15px;
+    border: 1px solid #ddd;
+    border-top: 0;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.custom-input-file {
+    overflow: hidden;
+    position: relative;
+    width: 120px;
+    height: 120px;
+{#    background: #eee url('/static/images/portrait/pic04.jpeg');#}
+    background-size: 120px;
+    border-radius: 120px;
+}
+input[type="file"]{
+    z-index: 999;
+    line-height: 0;
+    font-size: 0;
+    position: absolute;
+    opacity: 0;
+    filter: alpha(opacity = 0);-ms-filter: "alpha(opacity=0)";
+    margin: 0;
+    padding:0;
+    left:0;
+}
+.uploadPhoto {
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    display: none;
+    width: 50%;
+    height: 50%;
+    color: #fff;
+    text-align: center;
+    line-height: 60px;
+    text-transform: uppercase;
+    background-color: rgba(0,0,0,.3);
+    border-radius: 50px;
+    cursor: pointer;
+}
+.custom-input-file:hover .uploadPhoto { display: block; }
+</style>
+<link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
+<div class="container">
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1" id="logout" style="width: 105%; margin-left: 0;margin-right: 0px;">
+        <div class="page-header">
+            <h3 class="reviews">在这里，可以查看并设置基本账号信息。</h3>
+            <div class="logout">
+                <button class="btn btn-default btn-circle text-uppercase" type="button" {% if user.is_authenticated %}onclick="$('#leaveModal').modal('show');"{% else %}title="登录之后方可操作" disabled="disabled"{% endif %}>
+                    <span><i class="fa fa-pencil-square"></i> 写留言</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="comment-tabs">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">我的动态</h4></a></li>
+                <li><a href="#add-comment" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">我的消息</h4></a></li>
+                <li><a href="#account-settings" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">账号设置</h4></a></li>
+                <li><a href="#user-list" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">用户列表</h4></a></li>
+            </ul>
+            <div class="tab-content">
+                {% verbatim %}
+                <div class="tab-pane active" id="comments-logout">
+                    <template v-if="msg_arr">
+                    <ul class="media-list">
+                        <li class="media" v-for="msg in msg_arr">
+                            <a class="pull-left" href="#">
+                                <img class="media-object img-circle" :src="msg.leaver_portrait" alt="profile">
+                            </a>
+                            <div class="media-body">
+                                <div class="well well-lg">
+                                    <h4 class="text-uppercase " style="margin-top: -18px">{{ msg.leaver_name }}</h4>
+                                    <span style="float: right; margin-top: -30px;"><i class="fa fa-clock-o icon-bar"></i> {{ msg.leave_time }}</span>
+                                    <p class="media-comment">
+                                        {{ msg.leave_msg }}
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    </template>
+                    <span v-else>赞无留言，快来抢沙发吧！</span>
+                </div>
+                {% endverbatim %}
+                {% verbatim %}
+                <div class="tab-pane" id="user-list">
+                    <button style="float:right; margin-bottom: -10px; margin-top:-48px; margin-right: -13px; background-color: cadetblue; width: 34px;" class="btn btn-default">搜</button>
+                    <div class="form-group" style="float:right; margin-right: 19px; margin-top:-48px; ">
+                        <input style="width: 270px;" type="text" class="form-control" placeholder="搜索用户">
+                    </div>
+                    <div class="container" id="tourpackages-carousel">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" v-for="user in user_arr">
+                                <div class="thumbnail">
+                                    <div class="caption">
+                                        <div class='col-lg-12'>
+                                            <img width="50px" height="50px" class="img-circle" :src="user.portrait"> <span>{{ user.nickname }}</span>
+                                        </div>
+                                        <div class='col-lg-12'>
+                                            <p>活跃指数：
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                            </p>
+                                            <p>最近活跃时间: {{ user.date_joined }}</p>
+                                            <p>粉丝数：{{ user.fans }}   发帖数：{{ user.posts }}</p>
+                                        </div>
+                                        <button type="button" class="btn btn-primary btn-xs btn-update btn-add-card">Update</button>
+                                        <i class='fa fa-heart-o' style="float:right;" title="关注" v-if="user.attention === 'no'"></i>
+                                        <i class='fa fa-heart' style="float:right;" title="取消关注" v-else></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End row -->
+                    </div><!-- End container -->
+                    <button style="float:right;">加载更过>>></button>
+                </div>
+                {% endverbatim %}
+                <div class="tab-pane" id="add-comment">
+                    <form action="#" method="post" class="form-horizontal" id="commentForm" role="form">
+                        <div class="form-group">
+                            <label for="email" class="col-sm-2 control-label">Comment</label>
+                            <div class="col-sm-10">
+                              <textarea class="form-control" name="addComment" id="addComment" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="uploadMedia" class="col-sm-2 control-label">Upload media</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                  <div class="input-group-addon">http://</div>
+                                  <input type="text" class="form-control" name="uploadMedia" id="uploadMedia">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Summit comment</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane" id="account-settings">
+                    <form action="#" method="post" class="form-horizontal" id="accountSetForm" role="form">
+                        <div class="form-group">
+                            <label for="avatar" class="col-sm-2 control-label">头像</label>
+                            <div class="col-sm-10">
+                                <div class="custom-input-file" style="background-image: url('/static/images/{{ user.userextend.portrait.img_category.name }}/{{ user.userextend.portrait.src }}')">
+                                    <label class="uploadPhoto">
+                                        上传
+                                        <input type="file" class="change-avatar" name="avatar" id="avatar">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="col-sm-2 control-label">用户名</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" name="name" id="name" placeholder="您的登录用户名" value="{{ user.username }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="nickName" class="col-sm-2 control-label">昵称</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" name="nickName" id="nickName" placeholder="该昵称并不作为您的登录凭证，只是在发帖时会展示" value="{{ user.userextend.nickname }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-2 control-label">邮箱</label>
+                            <div class="col-sm-10">
+                              <input type="email" class="form-control" name="email" id="email" placeholder="vilma@mail.com" value="{{ user.email }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="col-sm-2 control-label">新密码</label>
+                            <div class="col-sm-10">
+                              <input type="password" class="form-control" name="newPassword" id="newPassword">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword" class="col-sm-2 control-label">确认新密码</label>
+                            <div class="col-sm-10">
+                              <input type="password" class="form-control" name="confirmPassword" id="confirmPassword">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-primary btn-circle text-uppercase" type="submit" id="submit">保存修改</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+	</div>
+  </div>
+
+  <div class="page-header text-center" id="show-more-div">
+  </div>
+  <div class="notes text-center"><small>Make The Wrold Smarter</small></div>
+</div>
+
+
+<!-- 留言模态框（Modal） -->
+<div class="modal fade" id="leaveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					留下弥足珍贵的足迹吧！
+				</h4>
+			</div>
+			<div class="modal-body">
+                <textarea id="leave-comment" style="height: 180px; max-width: 568px;" placeholder="诉说你内心最真实的想法，帮助博主共同改进。"></textarea>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" onclick="makeCommentSubmit()">
+					走你
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+<script>
+
+    $(function () {
+        //页面加载完毕获取留言数据
+{#        commentsApp.getMoreMessage();#}
+        userListApp.initUserList();
+    });
+
+    var userListApp = new Vue({
+        el: "#user-list",
+        data: {
+            user_arr: new Array,
+            page: 1
+        },
+        methods: {
+            initUserList: function () {
+                layer.load();
+                var url = '/get_user_list?page='+userListApp.page;
+                this.$http.get(url).then(
+                    function (res) {
+                        console.log(res.body.user_list);
+                        for(var i=0; i<res.body.user_list.length; i++){
+                            userListApp.user_arr.push(res.body.user_list[i])
+                        }
+                        userListApp.page += 1;
+                        layer.closeAll('loading');
+                    }
+                )
+            }
+        }
+    });
+
+    var commentsApp = new Vue({
+        el: "#comments-logout",
+        data: {
+            page: 1,
+            msg_arr: new Array
+        },
+        methods: {
+            getMoreMessage: function(){
+                layer.load();
+                var url = '/get_more_message?page='+commentsApp.page;
+                this.$http.get(url).then(
+                    function(res){
+                        console.log(res.body.msg_list);
+                        for(var i=0; i<res.body.msg_list.length; i++){
+                            commentsApp.msg_arr.push(res.body.msg_list[i])
+                        }
+                        commentsApp.page += 1;
+                        layer.closeAll('loading');
+                        if(res.body.current > 1){
+
+                        }
+                        if(res.body.next==0&&res.body.current>1){
+                            $('#show-more-msg').remove();
+                            $('#show-more-div').append("<h3>我是有底线的。。。</h3>")
+                        }
+                    }
+                )
+            }
+        }
+    });
+
+    function makeCommentSubmit() {
+        var msg = $('#leave-comment').val();
+        if(!msg.trim()){
+            layer.msg('请输入留言内容！', {icon: 6});
+            return false;
+        }
+        $.ajax({
+            url: "{% url 'make_leave_comment_submit' %}",
+            dataType: 'JSON',
+            type: 'POST',
+            data: {
+                'msg': msg,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(res){
+                if(res.status==1){
+                    $('#leaveModal').modal('hide');
+                    layer.msg(res.msg, {icon: 1});
+                }else{
+                    layer.msg(res.msg, {icon: 2});
+                }
+            }
+        })
+    }
+
+
+</script>
