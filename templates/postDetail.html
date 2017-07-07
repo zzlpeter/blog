@@ -1,0 +1,212 @@
+        {% include 'common/head.html' %}
+        {% load staticfiles %}
+        {% load blog_extras %}
+        <script src="{% static 'js/share.js' %}"></script>
+        <script src="{% static 'js/layer/layer.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/comment.css' %}" />
+
+        {#面包屑#}
+        {% include 'common/breadcrumb.html' %}
+        {#正文开始#}
+        <div id="content" style="height:100%;width:70%;margin:20px; float: left; margin-left: 80px;">
+            <h2>{{ postObj.title }}</h2>
+        </div>
+
+        {#将view传过来的变量暂时存起来#}
+        <input id="hidden_content" value="{{ postObj.content }}" type="hidden">
+
+        {#评论区#}
+        <div class="container" style="float:left; margin-left: 20px;">
+            <div class="col-sm-8">
+                <div class="panel panel-white post panel-shadow" style="margin-left: 32px;">
+                    <div class="post-heading">
+                        <div class="pull-left image">
+                            <img src="/static/images/portrait/{{ postObj.author.portrait.src }}" class="img-circle avatar" alt="user profile image">
+                        </div>
+                        <div class="pull-left meta">
+                            <div class="title h5">
+                                <a href="#"><strong>{{ postObj.author.user.username }} </strong></a>
+                                发表该帖子.
+                                {% if user.is_authenticated %}
+                                    {% if user|judge_user_attention:postObj.author_id == 'yes'  %}
+                                        <i class='fa fa-heart' style="float:right; margin-right: -400px;" title="取消关注" onclick="guanZhu('{{ postObj.author_id }}')" id="guan-zhu-poster"></i>
+                                    {% else %}
+                                        <i class='fa fa-heart-o' style="float:right; margin-right: -400px;" title="关注" onclick="guanZhu('{{ postObj.author_id }}')" id="guan-zhu-poster"></i>
+                                    {% endif %}
+                                {% else %}
+                                    <i class='fa fa-heart-o' style="float:right; margin-right: -400px;" title="登录之后关注该作者" disabled="disabled"></i>
+                                {% endif %}
+                            </div>
+                            <h6 class="text-muted time">{{ postObj.post_time|timesince }} ago</h6>
+                        </div>
+                    </div>
+                    <div class="post-description">
+                        <p>{{ postObj.summary }}</p>
+                        <div class="stats">
+                            <a href="javascript:;" {% if user.is_authenticated %}onclick="clickPostType('{{ postObj.id }}', 'up')" title="喜欢"{% else %}title="登录之后才可操作" disabled="disabled" {% endif %} class="btn btn-default stat-item" >
+                                <i class="fa fa-thumbs-up icon"></i><span id="post-up-id">{% get_post_related_num postObj 'up' %}</span>
+                            </a>
+                            <a href="javascript:;" {% if user.is_authenticated %}onclick="clickPostType('{{ postObj.id }}', 'down')" title="不喜欢"{% else %}title="登录之后才可操作" disabled="disabled" {% endif %} class="btn btn-default stat-item">
+                                <i class="fa fa-thumbs-down icon"></i><span id="post-down-id">{% get_post_related_num postObj 'down' %}</span>
+                            </a>
+                            <a href="javascript:;" class="btn btn-default stat-item" title="浏览次数">
+                                <i class="fa fa-eye icon"></i><span id="post-scan-id">{{ postObj.scan }}</span>
+                            </a>
+                            <div class="dropup  btn-default stat-item" title="分享次数">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-share icon"></i><span id="post-share-id">{% get_post_related_num postObj 'share' %}</span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <div class="bdsharebuttonbox"><a href="#" class="bds_qzone" data-cmd="qzone"></a><a href="#" class="bds_tsina" data-cmd="tsina"></a><a href="#" class="bds_tqq" data-cmd="tqq"></a><a href="#" class="bds_renren" data-cmd="renren"></a><a href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-footer">
+                        <div class="input-group">
+                            <input class="form-control" placeholder={% if user.is_authenticated %}"请输入评论内容"{% else %}"登录之后方可评论"{% endif %} type="text" id="post-comment">
+                            <span class="input-group-addon">
+                                <a href="javascript:;" {% if user.is_authenticated %}onclick="postComment('{{ postObj.id }}')"{% else %}disabled="disabled" title="登录之后方可评论"{% endif %}><i class="fa fa-edit"></i></a>
+                            </span>
+                        </div>
+                        <ul class="comments-list">
+                        {% if comments %}
+                            {% for comment in comments %}
+                            <li class="comment">
+                                <a class="pull-left" href="#">
+                                    <img class="avatar" src="/static/images/portrait/{{ comment.poster.portrait.src }}" alt="avatar">
+                                </a>
+                                <div class="comment-body">
+                                    <div class="comment-heading">
+                                        <h4 class="user">{{ comment.poster.user.username }}</h4>
+                                        <h5 class="time">{{ comment.comment_time|timesince }} ago</h5>
+                                    </div>
+                                    <p>{{ comment.comment }}</p>
+                                </div>
+{#                                <ul class="comments-list">#}
+{#                                    <li class="comment">#}
+{#                                        <a class="pull-left" href="#">#}
+{#                                            <img class="avatar" src="http://bootdey.com/img/Content/user_3.jpg" alt="avatar">#}
+{#                                        </a>#}
+{#                                        <div class="comment-body">#}
+{#                                            <div class="comment-heading">#}
+{#                                                <h4 class="user">Ryan Haywood</h4>#}
+{#                                                <h5 class="time">3 minutes ago</h5>#}
+{#                                            </div>#}
+{#                                            <p>Relax my friend</p>#}
+{#                                        </div>#}
+{#                                    </li>#}
+{#                                    <li class="comment">#}
+{#                                        <a class="pull-left" href="#">#}
+{#                                            <img class="avatar" src="http://bootdey.com/img/Content/user_2.jpg" alt="avatar">#}
+{#                                        </a>#}
+{#                                        <div class="comment-body">#}
+{#                                            <div class="comment-heading">#}
+{#                                                <h4 class="user">Gavino Free</h4>#}
+{#                                                <h5 class="time">3 minutes ago</h5>#}
+{#                                            </div>#}
+{#                                            <p>Ok, cool.</p>#}
+{#                                        </div>#}
+{#                                    </li>#}
+{#                                </ul>#}
+                            </li>
+                            {% endfor %}
+
+                        {% else %}
+                            暂无评论，快来抢沙发。。。
+                        {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {#机器人对话框#}
+        {% include 'common/tuling.html' %}
+
+        {#脚本区#}
+        <script>
+
+            // 将文本以HTML格式展示出来
+            $(document).ready(function () {
+                var content = $('#hidden_content').val();
+                $('#content').append(content);
+                $('#content').append("<hr>");
+            });
+
+            function clickPostType(id, type) {
+                $.ajax({
+                    url: "{% url 'up_down_share_post' %}",
+                    dataType: 'JSON',
+                    type: 'GET',
+                    data: {
+                        'post_id': id,
+                        'type': type
+                    },
+                    success: function(resData){
+                        if(resData.status == 1){
+                            $('#post-'+type+'-id').text(resData.count);
+                        }else{
+                            layer.msg((resData.msg), {icon: 5});
+                        }
+                    }
+                })
+            }
+
+            function postComment(id) {
+                var comment = $("#post-comment").val();
+                if(!comment.trim()){
+                    layer.msg('评论内容不可为空', {icon: 5});
+                    return false;
+                }
+                $.ajax({
+                    url: "{% url 'make_post_comment' %}",
+                    dataType: 'JSON',
+                    type: 'POST',
+                    data: {
+                        'post_id': id,
+                        'comment': comment,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(resData){
+                        if(resData.status == 1){
+                            layer.msg(resData.msg, {icon: 6});
+                            setTimeout("window.location.reload(true);", 500);
+                        }else{
+                            layer.msg(resData.msg, {icon: 5});
+                        }
+                    }
+                })
+            }
+
+            function guanZhu(uid) {
+                $.ajax({
+                    url: "{% url 'guan_zhu_poster' %}",
+                    dataType: 'JSON',
+                    type: 'GET',
+                    data: {
+                        'uid': uid
+                    },
+                    success: function(res){
+                        if(res.status == 1){
+                            if(res.attention == 1){
+                                layer.msg(res.msg, {icon: 1});
+                                $('#guan-zhu-poster').attr('title', '取消关注');
+                                $('#guan-zhu-poster').removeClass('fa fa-heart-o').addClass('fa fa-heart');
+                            }else{
+                                layer.msg(res.msg, {icon: 1});
+                                $('#guan-zhu-poster').attr('title', '关注');
+                                $('#guan-zhu-poster').removeClass('fa fa-heart').addClass('fa fa-heart-o');
+                            }
+                        }else{
+                            layer.msg(res.msg, {icon: 5})
+                        }
+                    }
+                })
+            }
+
+        </script>
+
+	</body>
+</html>
