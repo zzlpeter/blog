@@ -313,8 +313,7 @@ def get_user_list(req):
     page = req.GET.get('page', 1)
 
     limit = 12  # 每页显示的记录数
-    users = blog_models.UserExtend.objects.all().order_by('-id')
-    # topics = Topic.objects.all()
+    users = blog_models.User.objects.all().order_by('-id')
     paginator = Paginator(users, limit)  # 实例化一个分页对象
 
     try:
@@ -322,17 +321,17 @@ def get_user_list(req):
     except PageNotAnInteger:  # 如果页码不是个整数
         userObj = paginator.page(1)  # 取第一页的记录
     except EmptyPage:  # 如果页码太大，没有相应的记录
-        # msgObj = paginator.page(paginator.num_pages)  # 取最后一页的记录
         userObj = []
+
     user_list = [
         {
-            # 'portrait': '/static/images/%s/%s'%(user.portrait.img_category.name, user.portrait.src),
-            'portrait': '/static/images/portrait/pic01.jpeg',
-            'nickname': user.nickname,
-            'date_joined': str(user.user.date_joined),
+            'portrait': '/static/images/%s/%s'%(user.userextend.portrait.img_category.name, user.userextend.portrait.src),
+            'nickname': user.userextend.nickname or u'暂无昵称',
+            'date_joined': str(user.date_joined)[0: 10],
             'activity': '',
-            'fans': 2,
-            'posts': 3
+            'fans': blog_models.UserAttention.objects.filter(bei_guan_zhu=user.id).count(),
+            'posts': blog_models.Post.objects.filter(author_id=user.id).count(),
+            'attention': 'yes' if blog_models.UserAttention.objects.filter(guan_zhu=req.user.id, bei_guan_zhu=user.id).exists() else 'no'
         } for user in userObj
     ]
     json_str = {
