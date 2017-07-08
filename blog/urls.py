@@ -53,6 +53,7 @@ urlpatterns = [
     url(r'^accounts/user_login/?$', account_views.user_login, name='user_login'),
     url(r'^accounts/personal_center/?$', account_views.personal_center, name='personal_center'),
     url(r'^accounts/set_nickname/?$', account_views.set_nickname, name='set_nickname'),
+    url(r'^accounts/upload_avatar/?$', account_views.upload_avatar, name='upload_avatar'),
 
     # 帖子分类（一级和二级分类）
     url(r'^category/(?P<category1>\w+)/?$', blog_views.postList, name='category_by1'),

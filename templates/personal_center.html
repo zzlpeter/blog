@@ -196,7 +196,7 @@ input[type="file"]{
                 <div class="tab-pane" id="account-settings">
                     <div class="row">
                         <div class="col-sm-3">
-                            <a href="#" class="nav-tabs-dropdown btn btn-block btn-primary">账号基本信息设置</a>
+                            <a href="#" class="nav-tabs-dropdown btn btn-block btn-info">账号基本信息设置</a>
                             <ul id="nav-tabs-wrapper" class="nav nav-tabs nav-pills nav-stacked well">
                                 <li class="active"><a href="#vtab1" data-toggle="tab">修改头像</a></li>
                                 <li><a href="#vtab2" data-toggle="tab">修改密码</a></li>
@@ -207,17 +207,33 @@ input[type="file"]{
                             <div class="tab-content" style="margin-top: -50px; border: 0;">
                                 <div role="tabpanel" class="tab-pane fade in active" id="vtab1">
                                     <div class="form-group">
-                                        <label for="avatar" class="col-sm-2 control-label">头像</label>
+{#                                        <label for="avatar" class="col-sm-2 control-label">头像</label>#}
                                         <div class="col-sm-10">
                                             <div class="custom-input-file" style="background-image: url('/static/images/{{ user.userextend.portrait.img_category.name }}/{{ user.userextend.portrait.src }}')">
                                                 <label class="uploadPhoto">上传
-                                                    <input type="file" class="change-avatar" name="avatar" id="avatar">
+                                                    <form id="uploadForm" enctype="multipart/form-data">
+                                                        <input type="file" class="change-avatar" name="avatar" id="avatar" onchange="changeAvatar()">
+                                                    </form>
                                                 </label>
                                             </div>
+                                        </div>
+                                        <label for="avatar" class="col-sm-2 control-label upload-pic-class" style="margin-top: -70px;margin-left: 164px; display: none;">--->>></label>
+                                        <div class="col-sm-10 upload-pic-class" style="float:right; margin-top: -120px; margin-right: -120px; display: none;">
+                                            <img width="120px" height="120px" class="img-circle" src="" alt="profile" id="upload-preview">
+                                        </div>
+                                        <label for="avatar" class="col-sm-2 control-label upload-pic-class" style="margin-top: -70px;margin-left: 428px; display: none;">--->>></label>
+                                        <div class="col-sm-10 upload-pic-class" style="float:right; margin-top: -71px; margin-right: -373px; display: none;">
+                                            <button onclick="submitAvatar()">确定</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade" id="vtab2">
+                                    <div class="form-group">
+                                        <label for="newPassword" class="col-sm-2 control-label">原密码</label>
+                                        <div class="col-sm-10">
+                                            <input type="password" class="form-control" name="oldPassword" id="oldPassword">
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label for="newPassword" class="col-sm-2 control-label">新密码</label>
                                         <div class="col-sm-10">
@@ -398,5 +414,86 @@ input[type="file"]{
             }
         })
     }
+
+
+    // 生成图片预览模式
+    function changeAvatar() {
+        var pic = document.getElementById("upload-preview"),
+            file = document.getElementById("avatar");
+
+        var ext = file.value.substring(file.value.lastIndexOf(".")+1).toLowerCase();
+
+        // gif在IE浏览器暂时无法显示
+        if(ext!='png'&&ext!='jpg'&&ext!='jpeg'){
+            layer.msg("图片的格式必须为png或者jpg或者jpeg格式！", {icon: 5});
+            return;
+        }
+        var isIE = navigator.userAgent.match(/MSIE/)!= null,
+            isIE6 = navigator.userAgent.match(/MSIE 6.0/)!= null;
+
+        if(isIE) {
+            file.select();
+            var reallocalpath = document.selection.createRange().text;
+
+            // IE6浏览器设置img的src为本地路径可以直接显示图片
+            if (isIE6) {
+                pic.src = reallocalpath;
+            }else {
+                // 非IE6版本的IE由于安全问题直接设置img的src无法显示本地图片，但是可以通过滤镜来实现
+                pic.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='image',src=\"" + reallocalpath + "\")";
+                // 设置img的src为base64编码的透明图片 取消显示浏览器默认图片
+                pic.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+             }
+         }else {
+            $(".upload-pic-class").css('display', 'block');
+            html5Reader(file);
+         }
+    }
+    // 预览模式 图片格式为base64编码
+     function html5Reader(file){
+         var file = file.files[0];
+         var reader = new FileReader();
+         reader.readAsDataURL(file);
+         reader.onload = function(e){
+             var pic = document.getElementById("upload-preview");
+             pic.src=this.result;
+         }
+     }
+
+     // 上传头像
+    function submitAvatar(){
+         var file = document.getElementById("avatar").files[0];
+         var size = file.size;
+         var type = file.type.split('/')[1].toUpperCase();
+         if(type!='JPG'&&type!='JPEG'&&type!='PNG'){
+             layer.msg('请选择JPG/PNG/JPEG格式的图片', {icon: 5});
+             return;
+         }
+         if(size > 2*1024*1024){
+             layer.msg('请上传2M以内的图片', {icon: 5});
+             return;
+         }
+
+         $.ajax({
+             url: "{% url 'upload_avatar' %}",
+             dataType: 'JSON',
+             type: 'POST',
+             cache: false,
+             data: new FormData($('#uploadForm')[0]),
+             processData: false,
+             contentType: false,
+             success: function(res){
+                 if(res.status == 1){
+                     $('.custom-input-file').css("background-image","url("+res.img+")");
+                     $(".upload-pic-class").css('display', 'none');
+                     layer.msg(res.msg, {icon: 6});
+                 }else{
+                     layer.msg(res.msg, {icon: 5});
+                 }
+             }
+         })
+    }
+
+
 
 </script>

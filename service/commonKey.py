@@ -17,3 +17,7 @@ API = 'http://www.tuling123.com/openapi/api?key=' + KEY + '&info='
 # 帖子10分、评论5分
 POST_SCORE = 10
 COMMENT_SCORE = 5
+
+
+# 图片保存路径(绝对路径)
+IMG_SAVE_ABSOLUTE_PATH = '/Users/zhangzhiliang/git/blog/static/images/other'

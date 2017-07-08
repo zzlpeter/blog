@@ -6,7 +6,15 @@ from blogSystem.common.views import response_json
 from django.contrib import messages
 from blogSystem import models as blog_models
 from service.commonFunc import get_user_ip
+from service.commonKey import IMG_SAVE_ABSOLUTE_PATH
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+import os
+from django.db import transaction
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 
@@ -59,3 +67,50 @@ def set_nickname(req):
     blog_models.UserExtend.objects.filter(user=user).update(nickname=nickname)
     json_str = {'status': 1, 'msg': u'昵称设置成功'}
     return response_json(json_str)
+
+# 上传头像
+@login_required
+@csrf_exempt
+def upload_avatar(req):
+    user = req.user
+    avatar = req.FILES.get('avatar')
+    try:
+        # 检查用户是否选择文件
+        if not avatar:
+            json_str = {'status': 0, 'msg': u'请选择需要上传的图片'}
+            return response_json(json_str)
+        # 检查文件大小及格式
+        name = avatar.name
+        size = avatar.size
+        foramt = avatar.content_type.split('/')[1]
+        if foramt not in ('jpg', 'png', 'jpeg'):
+            json_str = {'status': 0, 'msg': u'请选择JPG/PNG/JPEG格式的图片'}
+            return response_json(json_str)
+        if size > 2 * 1024 * 1024:
+            json_str = {'status': 0, 'msg': u'请上传2M以内的图片'}
+            return response_json(json_str)
+        path = os.path.join(IMG_SAVE_ABSOLUTE_PATH, name)
+        save = open(path, 'wb')
+        save.write(avatar.read())
+
+        with transaction.atomic():
+            img = blog_models.Images.objects.create(
+                    src=name,
+                    img_category_id=blog_models.ImagesCategory.objects.get(name='other').id
+                )
+            blog_models.UserExtend.objects.filter(user=user).update(portrait_id=img.id)
+
+
+        json_str = {
+            'status': 1,
+            'msg': u'头像上传成功',
+            'img': '/static/images/other/%s' % user.userextend.portrait.src
+        }
+        return response_json(json_str)
+    except Exception, exc:
+        logger.error(exc, exc_info=True)
+        json_str = {'status': 0, 'msg': u'图片上传异常，请检查图片格式'}
+        return response_json(json_str)
+
+
+
