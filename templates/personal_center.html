@@ -256,22 +256,22 @@ input[type="file"]{
                                     <div class="form-group">
                                         <label for="name" class="col-sm-2 control-label">用户名</label>
                                         <div class="col-sm-10">
-                                            <input type="text" style="width: 200px;" class="form-control" name="name" id="name" placeholder="您的登录用户名" value="{{ user.username }}">
-                                            <button style="float:right; margin-top: -30px; margin-right: 50px;" onclick="changeOther('name')">修改</button>
+                                            <input type="text" style="width: 200px;" class="form-control" name="name" id="name" placeholder="您的登录用户名" value="{{ user.username }}" onfocus="$('.display-none-class').css('display', 'none'); $(this).parent().children('button').css('display', 'block')">
+                                            <button class="display-none-class" style="float:right; margin-top: -30px; margin-right: 50px; display: none;" onclick="changeOther('name')">修改</button>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="nickName" class="col-sm-2 control-label">昵称</label>
                                         <div class="col-sm-10">
-                                            <input type="text" style="width: 200px;" class="form-control" name="nickName" id="nickName" placeholder="该昵称并不作为您的登录凭证，只是在发帖时会展示" value="{{ user.userextend.nickname }}">
-                                            <button style="float:right; margin-top: -30px; margin-right: 50px;" onclick="changeOther('nickName')">修改</button>
+                                            <input type="text" style="width: 200px;" class="form-control" name="nickName" id="nickName" placeholder="该昵称并不作为您的登录凭证，只是在发帖时会展示" value="{{ user.userextend.nickname }}" onfocus="$('.display-none-class').css('display', 'none'); $(this).parent().children('button').css('display', 'block')">
+                                            <button class="display-none-class" style="float:right; margin-top: -30px; margin-right: 50px; display: none;" onclick="changeOther('nickName')">修改</button>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="email" class="col-sm-2 control-label">邮箱</label>
                                         <div class="col-sm-10">
-                                            <input type="email" style="width: 200px;" class="form-control" name="email" id="email" placeholder="vilma@mail.com" value="{{ user.email }}">
-                                            <button style="float:right; margin-top: -30px; margin-right: 50px;" onclick="changeOther('email')">修改</button>
+                                            <input type="email" style="width: 200px;" class="form-control" name="email" id="email" placeholder="vilma@mail.com" value="{{ user.email }}" onfocus="$('.display-none-class').css('display', 'none'); $(this).parent().children('button').css('display', 'block')">
+                                            <button class="display-none-class" style="float:right; margin-top: -30px; margin-right: 50px; display: none;" onclick="changeOther('email')">修改</button>
                                         </div>
                                     </div>
 {#                                    <div class="form-group">#}

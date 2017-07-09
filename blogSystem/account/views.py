@@ -141,7 +141,7 @@ def change_pwd(req):
 @csrf_exempt
 def change_other(req):
     user = req.user
-    type = req.POST.objects('type')
+    type = req.POST.get('type')
     value = req.POST.get('value')
     if type == 'name':
         # 检查用户名是否被其他用户占用
@@ -155,13 +155,12 @@ def change_other(req):
             return response_json(json_str)
     elif type == 'nickName':
         # 检查用户昵称是否被其他用户占用
-        if blog_models.UserExtend.objects.exists(user=user).filter(nickname=value).exists():
+        if blog_models.UserExtend.objects.exclude(user=user).filter(nickname=value).exists():
             json_str = {'status': 0, 'msg': u'该昵称已被占用，请更换！'}
             return response_json(json_str)
         else:
-            userextend = blog_models.UserExtend.objects.get(user=user)
-            userextend.nickname = value
-            userextend.save()
+            user.userextend.nickname = value
+            user.userextend.save()
             json_str = {'status': 1, 'msg': u'您已成功修改昵称'}
             return response_json(json_str)
     elif type == 'email':
