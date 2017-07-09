@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import os
 from django.db import transaction
+import re
 
 import logging
 
@@ -112,4 +113,65 @@ def upload_avatar(req):
         return response_json(json_str)
 
 
+@login_required
+@csrf_exempt
+def change_pwd(req):
+    old_pwd = req.POST.get('old_pwd')
+    new_pwd = req.POST.get('new_pwd')
+    confirm_pwd = req.POST.get('confirm_pwd')
+    # 检查原密码是否正确
+    if not req.user.check_password(old_pwd):
+        json_str = {'status': 0, 'msg': u'原密码错误，请检查！'}
+        return response_json(json_str)
+    # 检查新密码是否符合规则
+    if new_pwd != confirm_pwd:
+        json_str = {'status': 0, 'msg': u'两次密码输入不一致，请重新输入'}
+        return response_json(json_str)
+    if not re.match('[a-zA-Z]\w{5,9}', new_pwd):
+        json_str = {'status': 0, 'msg': u'密码长度6-10位，以字母开头，只能输入字母、数字、下划线'}
+        return response_json(json_str)
+    # 保存新密码
+    req.user.set_password(new_pwd)
+    req.user.save()
+    json_str = {'status': 1, 'msg': u'新密码设置成功'}
+    return response_json(json_str)
+
+
+@login_required
+@csrf_exempt
+def change_other(req):
+    user = req.user
+    type = req.POST.objects('type')
+    value = req.POST.get('value')
+    if type == 'name':
+        # 检查用户名是否被其他用户占用
+        if blog_models.User.objects.exclude(id=user.id).filter(username=value).exists():
+            json_str = {'status': 0, 'msg': u'该用户名已被占用，请更换！'}
+            return response_json(json_str)
+        else:
+            user.username = value
+            user.save()
+            json_str = {'status': 1, 'msg': u'您已成功修改用户名'}
+            return response_json(json_str)
+    elif type == 'nickName':
+        # 检查用户昵称是否被其他用户占用
+        if blog_models.UserExtend.objects.exists(user=user).filter(nickname=value).exists():
+            json_str = {'status': 0, 'msg': u'该昵称已被占用，请更换！'}
+            return response_json(json_str)
+        else:
+            userextend = blog_models.UserExtend.objects.get(user=user)
+            userextend.nickname = value
+            userextend.save()
+            json_str = {'status': 1, 'msg': u'您已成功修改昵称'}
+            return response_json(json_str)
+    elif type == 'email':
+        if '@' not in value:
+            json_str = {'status': 0, 'msg': u'请输入有效邮箱'}
+            return response_json(json_str)
+        else:
+            # 给新邮箱发确认邮件
+            pass
+    else:
+        json_str = {'status': 0, 'msg': u'类型错误，请稍后重试'}
+        return response_json(json_str)
 
