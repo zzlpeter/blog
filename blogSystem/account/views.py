@@ -89,18 +89,17 @@ def upload_avatar(req):
         if size > 2 * 1024 * 1024:
             json_str = {'status': 0, 'msg': u'请上传2M以内的图片'}
             return response_json(json_str)
-        path = os.path.join(IMG_SAVE_ABSOLUTE_PATH, name)
-        save = open(path, 'wb')
-        save.write(avatar.read())
 
+        # 图片插入记录及修改用户头像走原子操作
         with transaction.atomic():
+            path = os.path.join(IMG_SAVE_ABSOLUTE_PATH, name)
+            save = open(path, 'wb')
+            save.write(avatar.read())
             img = blog_models.Images.objects.create(
                     src=name,
                     img_category_id=blog_models.ImagesCategory.objects.get(name='other').id
                 )
             blog_models.UserExtend.objects.filter(user=user).update(portrait_id=img.id)
-
-
         json_str = {
             'status': 1,
             'msg': u'头像上传成功',
