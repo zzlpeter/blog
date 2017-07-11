@@ -93,6 +93,7 @@ def upload_avatar(req):
 
         # 图片插入记录及修改用户头像走原子操作
         with transaction.atomic():
+            name = '%s-%s' % (user.id, name)
             path = os.path.join(IMG_SAVE_ABSOLUTE_PATH, name)
             save = open(path, 'wb')
             save.write(avatar.read())

@@ -159,8 +159,8 @@ input[type="file"]{
                                             <p>粉丝数：{{ user.fans }}   发帖数：{{ user.posts }}</p>
                                             <p>邮件通知：<input type="checkbox" name="yyy" lay-skin="switch" lay-text="ON|OFF" checked></p>
                                         </div>
-                                        <i :data-uid="user.id" onclick="userListApp.guanZhu(this)" class='fa fa-heart-o' style="float:right; margin-top: -160px;" title="关注" v-if="user.attention === 'no'"></i>
-                                        <i :data-uid="user.id" onclick="userListApp.guanZhu(this)" class='fa fa-heart' style="float:right; margin-top: -160px;" title="取消关注" v-else></i>
+                                        <a onclick="userListApp.guanZhu(this)"><i :data-uid="user.id" class='fa fa-heart-o' style="float:right; margin-top: -160px;" title="关注" v-if="user.attention === 'no'"></i></a>
+                                        <a onclick="userListApp.guanZhu(this)"><i :data-uid="user.id" class='fa fa-heart' style="float:right; margin-top: -160px;" title="取消关注" v-else></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -217,11 +217,11 @@ input[type="file"]{
                                                 </label>
                                             </div>
                                         </div>
-                                        <label for="avatar" class="col-sm-2 control-label upload-pic-class" style="margin-top: -70px;margin-left: 164px; display: none;">--->>></label>
+                                        <label class="col-sm-2 upload-pic-class" disabled="disabled" style="margin-top: -70px;margin-left: 164px; display: none;">--->>></label>
                                         <div class="col-sm-10 upload-pic-class" style="float:right; margin-top: -120px; margin-right: -120px; display: none;">
-                                            <img width="120px" height="120px" class="img-circle" src="" alt="profile" id="upload-preview">
+                                            <img width="120px" height="120px" class="img-circle" src="" disabled="disabled" alt="profile" id="upload-preview">
                                         </div>
-                                        <label for="avatar" class="col-sm-2 control-label upload-pic-class" style="margin-top: -70px;margin-left: 428px; display: none;">--->>></label>
+                                        <label class="col-sm-2 upload-pic-class" disabled="disabled" style="margin-top: -70px;margin-left: 428px; display: none;">--->>></label>
                                         <div class="col-sm-10 upload-pic-class" style="float:right; margin-top: -71px; margin-right: -373px; display: none;">
                                             <button onclick="submitAvatar()">确定</button>
                                         </div>

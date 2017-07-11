@@ -22,7 +22,7 @@
                 <div class="panel panel-white post panel-shadow" style="margin-left: 32px;">
                     <div class="post-heading">
                         <div class="pull-left image">
-                            <img src="/static/images/portrait/{{ postObj.author.portrait.src }}" class="img-circle avatar" alt="user profile image">
+                            <img src="/static/images/{{ postObj.author.portrait.img_category.name }}/{{ postObj.author.portrait.src }}" class="img-circle avatar" alt="user profile image">
                         </div>
                         <div class="pull-left meta">
                             <div class="title h5">
@@ -30,9 +30,9 @@
                                 发表该帖子.
                                 {% if user.is_authenticated %}
                                     {% if user|judge_user_attention:postObj.author_id == 'yes'  %}
-                                        <i class='fa fa-heart' style="float:right; margin-right: -400px;" title="取消关注" onclick="guanZhu('{{ postObj.author_id }}')" id="guan-zhu-poster"></i>
+                                        <a href="javascript:;" onclick="guanZhu('{{ postObj.author_id }}')"><i class='fa fa-heart' style="float:right; margin-right: -400px;" title="取消关注" id="guan-zhu-poster"></i></a>
                                     {% else %}
-                                        <i class='fa fa-heart-o' style="float:right; margin-right: -400px;" title="关注" onclick="guanZhu('{{ postObj.author_id }}')" id="guan-zhu-poster"></i>
+                                        <a href="javascript:;" onclick="guanZhu('{{ postObj.author_id }}')"><i class='fa fa-heart-o' style="float:right; margin-right: -400px;" title="关注" id="guan-zhu-poster"></i></a>
                                     {% endif %}
                                 {% else %}
                                     <i class='fa fa-heart-o' style="float:right; margin-right: -400px;" title="登录之后关注该作者" disabled="disabled"></i>
@@ -75,7 +75,7 @@
                             {% for comment in comments %}
                             <li class="comment">
                                 <a class="pull-left" href="#">
-                                    <img class="avatar" src="/static/images/portrait/{{ comment.poster.portrait.src }}" alt="avatar">
+                                    <img class="avatar" src="/static/images/{{ comment.poster.portrait.img_category.name }}/{{ comment.poster.portrait.src }}" alt="avatar">
                                 </a>
                                 <div class="comment-body">
                                     <div class="comment-heading">
