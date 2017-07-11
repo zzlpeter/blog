@@ -209,6 +209,7 @@ class UserAttention(models.Model):
     id = models.AutoField(primary_key=True)
     guan_zhu = models.IntegerField()
     bei_guan_zhu = models.IntegerField()
+    email_notice = models.SmallIntegerField(default=0)
 
     def __str__(self):
         return self.id

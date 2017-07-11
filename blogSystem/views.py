@@ -322,7 +322,8 @@ def get_user_list(req):
         userObj = paginator.page(1)  # 取第一页的记录
     except EmptyPage:  # 如果页码太大，没有相应的记录
         userObj = []
-
+    email_switch = lambda uid: blog_models.UserAttention.objects.get(guan_zhu=req.user.id, bei_guan_zhu=uid).email_notice or 0 \
+                    if blog_models.UserAttention.objects.filter(guan_zhu=req.user.id, bei_guan_zhu=uid).exists() else 0
     user_list = [
         {
             'portrait': '/static/images/%s/%s'%(user.userextend.portrait.img_category.name, user.userextend.portrait.src),
@@ -332,7 +333,8 @@ def get_user_list(req):
             'fans': blog_models.UserAttention.objects.filter(bei_guan_zhu=user.id).count(),
             'posts': blog_models.Post.objects.filter(author_id=user.id).count(),
             'attention': 'yes' if blog_models.UserAttention.objects.filter(guan_zhu=req.user.id, bei_guan_zhu=user.id).exists() else 'no',
-            'id': user.id
+            'id': user.id,
+            'email_notice': email_switch(user.id)
         } for user in userObj
     ]
     json_str = {
@@ -340,6 +342,28 @@ def get_user_list(req):
         'next': int(page) + 1 if userObj and userObj.has_next() else 0,
         'current': page
     }
+    return response_json(json_str)
+
+
+@login_required
+def email_notice_user(req):
+    user = req.user
+    uid = req.GET.get('uid')
+    try:
+        uid = int(uid)
+        if blog_models.UserAttention.objects.filter(guan_zhu=user.id, bei_guan_zhu=uid).exists():
+            if blog_models.UserAttention.objects.filter(guan_zhu=user.id, bei_guan_zhu=uid, email_notice=1).exists():
+                blog_models.UserAttention.objects.filter(guan_zhu=user.id, bei_guan_zhu=uid).update(email_notice=0)
+                json_str = {'status': 1, 'msg': u'关闭邮件通知'}
+            else:
+                blog_models.UserAttention.objects.filter(guan_zhu=user.id, bei_guan_zhu=uid).update(email_notice=1)
+                json_str = {'status': 1, 'msg': u'该用户发帖时您将收到邮件通知'}
+        else:
+            json_str = {'status': 0, 'msg': u'请先关注该用户，然后执行此操作'}
+        raise
+    except Exception, exc:
+        logger.error(exc, exc_info=True)
+        json_str = {'status': 0, 'msg': u'服务器异常，请稍后重试'}
     return response_json(json_str)
 
 

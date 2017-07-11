@@ -96,7 +96,6 @@ input[type="file"]{
 }
 .custom-input-file:hover .uploadPhoto { display: block; }
 </style>
-<link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
 <div class="container">
   <div class="row">
     <div class="col-sm-10 col-sm-offset-1" id="logout" style="width: 105%; margin-left: 0;margin-right: 0px;">
@@ -157,7 +156,8 @@ input[type="file"]{
                                             </p>
                                             <p>最近活跃时间: {{ user.date_joined }}</p>
                                             <p>粉丝数：<span :id="user.id">{{ user.fans }}</span>   发帖数：{{ user.posts }}</p>
-                                            <p>邮件通知：<input type="checkbox" name="yyy" lay-skin="switch" lay-text="ON|OFF" checked></p>
+                                            <p v-if="user.email_notice == 1">邮件通知：<input :data-uid="user.id" type="radio" :name="user.id" checked="checked" onchange="userListApp.emailNoticeUser(this)" value="1">开 <input :data-uid="user.id" type="radio" :name="user.id" onchange="userListApp.emailNoticeUser(this)" value="0">关</p>
+                                            <p v-else>邮件通知：<input :data-uid="user.id" type="radio" :name="user.id" onchange="userListApp.emailNoticeUser(this)" value="1">开 <input :data-uid="user.id" type="radio" :name="user.id" checked="checked" onchange="userListApp.emailNoticeUser(this)" value="0">关</p>
                                             <p v-if="user.attention === 'no'"><i onclick="userListApp.guanZhuUser(this)" :data-uid="user.id" class='fa fa-heart-o' style="float:right; margin-top: -160px;" title="关注"></i></p>
                                             <p v-else><i onclick="userListApp.guanZhuUser(this)" :data-uid="user.id" class='fa fa-heart' style="float:right; margin-top: -160px;" title="取消关注"></i></p>
                                         </div>
@@ -352,6 +352,21 @@ input[type="file"]{
                             }
                         }else{
                             layer.msg(res.body.msg, {icon: 5})
+                        }
+                    }
+                )
+            },
+            emailNoticeUser: function (e) {
+                var uid = $(e).data('uid');
+                var url = '/email_notice_user/?uid='+uid;
+                var old = $("input[name='"+$(e).data('uid')+"']:checked").val();
+                this.$http.get(url).then(
+                    function (res) {
+                        if(res.body.status == 1){
+                            layer.msg(res.body.msg, {icon: 1});
+                        }else{
+                            layer.msg(res.body.msg, {icon: 5});
+                            $("input[name="+uid+"][value="+old+"]").attr("checked", true);
                         }
                     }
                 )
