@@ -3,7 +3,7 @@
 <script src="{% static 'js/layer/layer.js' %}"></script>
 <script src="{% static 'js/vue/vue.js' %}"></script>
 <script src="{% static 'js/vue/vue-resource.js' %}"></script>
-<script src="{% static 'js/vue/index.js' %}"></script>
+{#<script src="{% static 'js/vue/index.js' %}"></script>#}
 <style>
     /*
     Image credits:
@@ -139,7 +139,7 @@ input[type="file"]{
                 <div class="tab-pane" id="user-list">
                     <button style="float:right; margin-bottom: -10px; margin-top:-48px; margin-right: -13px; background-color: cadetblue; width: 34px;" class="btn btn-default">搜</button>
                     <div class="form-group" style="float:right; margin-right: 19px; margin-top:-48px; ">
-                        <input style="width: 270px;" type="text" class="form-control" placeholder="搜索用户" v-model="filter_name">
+                        <input style="width: 270px;" type="text" class="form-control" placeholder="搜索用户">
                     </div>
                     <div class="container" id="tourpackages-carousel">
                         <div class="row">
@@ -156,11 +156,11 @@ input[type="file"]{
                                                 <i class="fa fa-star-o" aria-hidden="true" v-for="_ in user.level.no_star"></i>
                                             </p>
                                             <p>最近活跃时间: {{ user.date_joined }}</p>
-                                            <p>粉丝数：{{ user.fans }}   发帖数：{{ user.posts }}</p>
+                                            <p>粉丝数：<span :id="user.id">{{ user.fans }}</span>   发帖数：{{ user.posts }}</p>
                                             <p>邮件通知：<input type="checkbox" name="yyy" lay-skin="switch" lay-text="ON|OFF" checked></p>
+                                            <p v-if="user.attention === 'no'"><i onclick="userListApp.guanZhuUser(this)" :data-uid="user.id" class='fa fa-heart-o' style="float:right; margin-top: -160px;" title="关注"></i></p>
+                                            <p v-else><i onclick="userListApp.guanZhuUser(this)" :data-uid="user.id" class='fa fa-heart' style="float:right; margin-top: -160px;" title="取消关注"></i></p>
                                         </div>
-                                        <a onclick="userListApp.guanZhu(this)"><i :data-uid="user.id" class='fa fa-heart-o' style="float:right; margin-top: -160px;" title="关注" v-if="user.attention === 'no'"></i></a>
-                                        <a onclick="userListApp.guanZhu(this)"><i :data-uid="user.id" class='fa fa-heart' style="float:right; margin-top: -160px;" title="取消关注" v-else></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -196,7 +196,7 @@ input[type="file"]{
                 <div class="tab-pane" id="account-settings">
                     <div class="row">
                         <div class="col-sm-3">
-                            <a href="#" class="nav-tabs-dropdown btn btn-block btn-info">账号基本信息设置</a>
+                            <a href="javascript:;" class="nav-tabs-dropdown btn btn-block btn-info">账号基本信息设置</a>
                             <ul id="nav-tabs-wrapper" class="nav nav-tabs nav-pills nav-stacked well">
                                 <li class="active"><a href="#vtab1" data-toggle="tab">修改头像</a></li>
                                 <li><a href="#vtab2" data-toggle="tab">修改密码</a></li>
@@ -302,7 +302,7 @@ input[type="file"]{
         userListApp.initUserList();
     });
 
-    Vue.filter('recordLength', function (result, key) {
+    Vue.filter('my-filter', function (result, key) {
         this.$set(key, result.length);
         return result;
     });
@@ -333,8 +333,9 @@ input[type="file"]{
                     }
                 )
             },
-            guanZhu: function (e) {
+            guanZhuUser: function (e) {
                 var url = '/guan_zhu_poster/?uid='+$(e).data('uid');
+                var fans = parseInt($('#'+$(e).data('uid')).text());
                 this.$http.get(url).then(
                     function (res) {
                         if(res.body.status == 1){
@@ -342,10 +343,12 @@ input[type="file"]{
                                 layer.msg(res.body.msg, {icon: 1});
                                 $(e).attr('title', '取消关注');
                                 $(e).removeClass('fa fa-heart-o').addClass('fa fa-heart');
+                                $('#'+$(e).data('uid')).text(fans + 1);
                             }else{
                                 layer.msg(res.body.msg, {icon: 1});
                                 $(e).attr('title', '关注');
                                 $(e).removeClass('fa fa-heart').addClass('fa fa-heart-o');
+                                $('#'+$(e).data('uid')).text(fans - 1);
                             }
                         }else{
                             layer.msg(res.body.msg, {icon: 5})

@@ -312,7 +312,6 @@ def guan_zhu_poster(req):
 @login_required
 def get_user_list(req):
     page = req.GET.get('page', 1)
-
     limit = 12  # 每页显示的记录数
     users = blog_models.User.objects.all().exclude(id=req.user.id).order_by('id')
     paginator = Paginator(users, limit)  # 实例化一个分页对象
