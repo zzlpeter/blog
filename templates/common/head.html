@@ -90,7 +90,7 @@
 {#												<li><a href="#">Veroeros feugiat</a></li>#}
 {#											</ul>#}
 {#										</li>#}
-										<li><a href="{% url 'user_logout' %}">退出登录</a></li>
+										<li><a href="javascript:;" onclick="logOut()">退出登录</a></li>
 									</ul>
 								</li>
                                 {% else %}
@@ -108,8 +108,15 @@
 
         <script>
 
+            // 登录模态框
             function showLoginForm(){
                 $('#loginModal').modal('show');
+            }
+            // 退出登录
+            function logOut() {
+                layer.confirm('确认退出吗？', function (index) {
+                    window.location.href = "{% url 'user_logout' %}";
+                })
             }
 
 

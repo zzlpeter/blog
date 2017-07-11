@@ -359,7 +359,7 @@ input[type="file"]{
             emailNoticeUser: function (e) {
                 var uid = $(e).data('uid');
                 var url = '/email_notice_user/?uid='+uid;
-                var old = $("input[name='"+$(e).data('uid')+"']:checked").val();
+                var old = $("input[name='"+uid+"']:checked").val();
                 this.$http.get(url).then(
                     function (res) {
                         if(res.body.status == 1){
