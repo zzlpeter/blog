@@ -105,33 +105,28 @@ input[type="file"]{
 
         <div class="comment-tabs">
             <ul class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#comments-logout" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">我的动态</h4></a></li>
-                <li><a href="#add-comment" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">我的消息</h4></a></li>
+                <li class="active"><a href="#my-post-list" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">我的动态</h4></a></li>
+                <li><a href="#my-msg-list" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">我的消息</h4></a></li>
                 <li><a href="#account-settings" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">账号设置</h4></a></li>
                 <li><a href="#user-list" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">用户列表</h4></a></li>
             </ul>
             <div class="tab-content">
                 {% verbatim %}
-                <div class="tab-pane active" id="comments-logout">
-                    <template v-if="msg_arr">
-                    <ul class="media-list">
-                        <li class="media" v-for="msg in msg_arr">
-                            <a class="pull-left" href="#">
-                                <img class="media-object img-circle" :src="msg.leaver_portrait" alt="profile">
-                            </a>
-                            <div class="media-body">
-                                <div class="well well-lg">
-                                    <h4 class="text-uppercase " style="margin-top: -18px">{{ msg.leaver_name }}</h4>
-                                    <span style="float: right; margin-top: -30px;"><i class="fa fa-clock-o icon-bar"></i> {{ msg.leave_time }}</span>
-                                    <p class="media-comment">
-                                        {{ msg.leave_msg }}
-                                    </p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    </template>
-                    <span v-else>赞无留言，快来抢沙发吧！</span>
+                <div class="tab-pane active" id="my-post-list">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr v-for="(post, index) in post_arr">
+                                <td style="width: 5%;"># {{ index + 1 }}</td>
+                                <td style="width: 65%;"><a>{{ post.summary }}</a></td>
+                                <td style="width: 10%;">普通</td>
+                                <td style="width: 20%;">{{ post.time }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        <ul class="pager" style="margin-bottom: -30px">
+                            <li class="previous" v-if="postListApp.previous"><a onclick="postListApp.getPostList(postListApp.page-1)">上一页</a></li>
+                            <li class="next" v-if="postListApp.next"><a onclick="postListApp.getPostList(postListApp.page+1)">下一页</a></li>
+                        </ul>
                 </div>
                 {% endverbatim %}
                 {% verbatim %}
@@ -169,29 +164,25 @@ input[type="file"]{
                     <button style="float:right; color: lightseagreen;" onclick="userListApp.initUserList()" id="show-more-user">加载更过>>></button>
                 </div>
                 {% endverbatim %}
-                <div class="tab-pane" id="add-comment">
-                    <form action="#" method="post" class="form-horizontal" id="commentForm" role="form">
-                        <div class="form-group">
-                            <label for="email" class="col-sm-2 control-label">Comment</label>
-                            <div class="col-sm-10">
-                              <textarea class="form-control" name="addComment" id="addComment" rows="5"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="uploadMedia" class="col-sm-2 control-label">Upload media</label>
-                            <div class="col-sm-10">
-                                <div class="input-group">
-                                  <div class="input-group-addon">http://</div>
-                                  <input type="text" class="form-control" name="uploadMedia" id="uploadMedia">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button class="btn btn-success btn-circle text-uppercase" type="submit" id="submitComment"><span class="glyphicon glyphicon-send"></span> Summit comment</button>
-                            </div>
-                        </div>
-                    </form>
+                <div class="tab-pane" id="my-msg-list">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <td style="width: 10%;">1</td>
+                                <td style="width: 10%;">Tanmay</td>
+                                <td style="width: 60%;"><a>django教程第一课</a></td>
+                                <td style="width: 20%;">2017-07-07 10:10:12</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 10%;">Sachin</td>
+                                <td>Tanmay</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 10%;">Uma</td>
+                                <td>Tanmay</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="tab-pane" id="account-settings">
                     <div class="row">
@@ -297,8 +288,8 @@ input[type="file"]{
 <script>
 
     $(function () {
-        //页面加载完毕获取留言数据
-{#        commentsApp.getMoreMessage();#}
+        //页面加载完毕初始化数据
+        postListApp.getPostList();
         userListApp.initUserList();
     });
 
@@ -307,6 +298,7 @@ input[type="file"]{
         return result;
     });
 
+    // 用户列表APP
     var userListApp = new Vue({
         el: "#user-list",
         data: {
@@ -374,87 +366,35 @@ input[type="file"]{
         }
     });
 
-    var commentsApp = new Vue({
-        el: "#comments-logout",
+    var postListApp = new Vue({
+        el: "#my-post-list",
         data: {
             page: 1,
-            msg_arr: new Array
+            post_arr: new Array,
+            previous: true,
+            next: true
         },
         methods: {
-            getMoreMessage: function(){
+            getPostList: function(){
                 layer.load();
-                var url = '/get_more_message?page='+commentsApp.page;
+                var url = '/get_user_post?page='+postListApp.page;
                 this.$http.get(url).then(
                     function(res){
-                        console.log(res.body.msg_list);
-                        for(var i=0; i<res.body.msg_list.length; i++){
-                            commentsApp.msg_arr.push(res.body.msg_list[i])
+                        console.log(res.body.post_list);
+                        for(var i=0; i<res.body.post_list.length; i++){
+                            postListApp.post_arr.push(res.body.post_list[i])
                         }
-                        commentsApp.page += 1;
+                        postListApp.page = res.body.current_page;
+                        postListApp.previous = res.body.previous;
+                        postListApp.next = res.body.next;
                         layer.closeAll('loading');
-                        if(res.body.current > 1){
-
-                        }
-                        if(res.body.next==0&&res.body.current>1){
-                            $('#show-more-msg').remove();
-                            $('#show-more-div').append("<h3>我是有底线的。。。</h3>")
-                        }
                     }
                 )
             }
         }
     });
 
-    function makeCommentSubmit() {
-        var msg = $('#leave-comment').val();
-        if(!msg.trim()){
-            layer.msg('请输入留言内容！', {icon: 6});
-            return false;
-        }
-        $.ajax({
-            url: "{% url 'make_leave_comment_submit' %}",
-            dataType: 'JSON',
-            type: 'POST',
-            data: {
-                'msg': msg,
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
-            success: function(res){
-                if(res.status==1){
-                    $('#leaveModal').modal('hide');
-                    layer.msg(res.msg, {icon: 1});
-                }else{
-                    layer.msg(res.msg, {icon: 2});
-                }
-            }
-        })
-    }
 
-    function guanZhu(e) {
-        $.ajax({
-            url: "{% url 'guan_zhu_poster' %}",
-            dataType: 'JSON',
-            type: 'GET',
-            data: {
-                'uid': $(e).data('uid')
-            },
-            success: function(res){
-                if(res.status == 1){
-                    if(res.attention == 1){
-                        layer.msg(res.msg, {icon: 1});
-                        $(e).attr('title', '取消关注');
-                        $(e).removeClass('fa fa-heart-o').addClass('fa fa-heart');
-                    }else{
-                        layer.msg(res.msg, {icon: 1});
-                        $(e).attr('title', '关注');
-                        $(e).removeClass('fa fa-heart').addClass('fa fa-heart-o');
-                    }
-                }else{
-                    layer.msg(res.msg, {icon: 5});
-                }
-            }
-        })
-    }
 
 
     // 生成图片预览模式

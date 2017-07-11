@@ -70,6 +70,7 @@ urlpatterns = [
     url(r'^guan_zhu_poster/?$', blog_views.guan_zhu_poster, name='guan_zhu_poster'),
     url(r'^get_user_list/?$', blog_views.get_user_list, name='get_user_list'),
     url(r'^email_notice_user/?$', blog_views.email_notice_user, name='email_notice_user'),
+    url(r'^get_user_post/?$', blog_views.get_user_post, name='get_user_post'),
 
 
     url(r'^test/?$', blog_views.test),

@@ -354,18 +354,46 @@ def email_notice_user(req):
         if blog_models.UserAttention.objects.filter(guan_zhu=user.id, bei_guan_zhu=uid).exists():
             if blog_models.UserAttention.objects.filter(guan_zhu=user.id, bei_guan_zhu=uid, email_notice=1).exists():
                 blog_models.UserAttention.objects.filter(guan_zhu=user.id, bei_guan_zhu=uid).update(email_notice=0)
-                json_str = {'status': 1, 'msg': u'关闭邮件通知'}
+                json_str = {'status': 1, 'msg': u'您已成功关闭邮件通知'}
             else:
                 blog_models.UserAttention.objects.filter(guan_zhu=user.id, bei_guan_zhu=uid).update(email_notice=1)
                 json_str = {'status': 1, 'msg': u'该用户发帖时您将收到邮件通知'}
         else:
             json_str = {'status': 0, 'msg': u'请先关注该用户，然后执行此操作'}
-        raise
     except Exception, exc:
         logger.error(exc, exc_info=True)
         json_str = {'status': 0, 'msg': u'服务器异常，请稍后重试'}
     return response_json(json_str)
 
+@login_required
+def get_user_post(req):
+    user = req.user
+    page = req.GET.get('page', 1)
+
+    limit = 12  # 每页显示的记录数
+    posts = blog_models.Post.objects.filter(author__user__id=user.id).order_by('-id')
+    paginator = Paginator(posts, limit)  # 实例化一个分页对象
+
+    try:
+        postObj = paginator.page(page)  # 获取某页对应的记录
+    except PageNotAnInteger:  # 如果页码不是个整数
+        postObj = paginator.page(1)  # 取第一页的记录
+    except EmptyPage:  # 如果页码太大，没有相应的记录
+        postObj = []
+
+    post_list = [
+        {
+            'time': str(post.post_time)[0: 19],
+            'summary': '%s...' % post.summary[0:50] if len(post.summary) > 50 else post.summary
+        } for post in postObj
+    ]
+    json_str = {
+        'post_list': post_list,
+        'next': postObj.has_next(),
+        'previous': postObj.has_previous(),
+        'current_page': page
+    }
+    return response_json(json_str)
 
 
 
