@@ -384,7 +384,8 @@ def get_user_post(req):
     post_list = [
         {
             'time': str(post.post_time)[0: 19],
-            'summary': '%s...' % post.summary[0:50] if len(post.summary) > 50 else post.summary
+            'summary': '%s...' % post.summary[0:50] if len(post.summary) > 50 else post.summary,
+            'post_detail_path': post.post_detail_path()
         } for post in postObj
     ]
     json_str = {
