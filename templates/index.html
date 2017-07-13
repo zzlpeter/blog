@@ -149,7 +149,7 @@
 					<div class="row no-collapse-1">
 						<section class="4u" v-for="item in items">
 							<a :href="item.href" class="image feature"><img height="175px" :src="item.img"   alt="" style="border: solid cornsilk"></a>
-							<p>{{ item.summary }}</p>
+                            <p><a :href="item.href">{{ item.summary }}</a></p>
 						</section>
 					</div>
 				</section>

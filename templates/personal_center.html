@@ -115,17 +115,17 @@ input[type="file"]{
                 <div class="tab-pane active" id="my-post-list">
                     <table class="table table-striped">
                         <tbody>
-                            <tr v-for="(post, index) in post_arr">
-                                <td style="width: 5%;"># {{ index + 1 }}</td>
-                                <td style="width: 65%;"><a>{{ post.summary }}</a></td>
+                            <tr v-for="post in post_arr">
+                                <td style="width: 5%;"># {{ $index + 1 }}</td>
+                                <td style="width: 65%;">{{ post.summary }}</td>
                                 <td style="width: 10%;">普通</td>
                                 <td style="width: 20%;">{{ post.time }}</td>
                             </tr>
                         </tbody>
                     </table>
                         <ul class="pager" style="margin-bottom: -30px">
-                            <li class="previous" v-if="postListApp.previous"><a onclick="postListApp.getPostList(postListApp.page-1)">上一页</a></li>
-                            <li class="next" v-if="postListApp.next"><a onclick="postListApp.getPostList(postListApp.page+1)">下一页</a></li>
+                            <li v-if="previous === 'yes'" class="previous"><a onclick="postListApp.getPostList({{ page }}-1)">上一页</a></li>
+                            <li v-if="next === 'yes'" class="next"><a onclick="postListApp.getPostList({{ page }}+1)">下一页</a></li>
                         </ul>
                 </div>
                 {% endverbatim %}
@@ -289,7 +289,7 @@ input[type="file"]{
 
     $(function () {
         //页面加载完毕初始化数据
-        postListApp.getPostList();
+        postListApp.getPostList('1');
         userListApp.initUserList();
     });
 
@@ -371,19 +371,20 @@ input[type="file"]{
         data: {
             page: 1,
             post_arr: new Array,
-            previous: true,
-            next: true
+            previous: 'no',
+            next: 'no'
         },
         methods: {
-            getPostList: function(){
+            getPostList: function(p){
                 layer.load();
-                var url = '/get_user_post?page='+postListApp.page;
+                var url = '/get_user_post?page='+p;
                 this.$http.get(url).then(
                     function(res){
                         console.log(res.body.post_list);
-                        for(var i=0; i<res.body.post_list.length; i++){
-                            postListApp.post_arr.push(res.body.post_list[i])
-                        }
+{#                        for(var i=0; i<res.body.post_list.length; i++){#}
+{#                            postListApp.post_arr.push(res.body.post_list[i])#}
+{#                        }#}
+                        postListApp.post_arr = res.body.post_list;
                         postListApp.page = res.body.current_page;
                         postListApp.previous = res.body.previous;
                         postListApp.next = res.body.next;

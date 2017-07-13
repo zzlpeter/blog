@@ -370,7 +370,7 @@ def get_user_post(req):
     user = req.user
     page = req.GET.get('page', 1)
 
-    limit = 12  # 每页显示的记录数
+    limit = 3  # 每页显示的记录数
     posts = blog_models.Post.objects.filter(author__user__id=user.id).order_by('-id')
     paginator = Paginator(posts, limit)  # 实例化一个分页对象
 
@@ -389,8 +389,8 @@ def get_user_post(req):
     ]
     json_str = {
         'post_list': post_list,
-        'next': postObj.has_next(),
-        'previous': postObj.has_previous(),
+        'next': 'yes' if postObj.has_next() else 'no',
+        'previous': 'yes' if postObj.has_previous() else 'no',
         'current_page': page
     }
     return response_json(json_str)
