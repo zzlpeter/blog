@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 from django.http import Http404
+from datetime import datetime
 
 import models as blog_models
 import json
@@ -234,7 +235,7 @@ def get_top_three_post(req):
     return response_json(data)
 
 # @login_required
-def leave_message(req, tmp_name='leaveMessage.html'):
+def leave_message(req, tmp_name='leaveWord.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
 def get_more_message(req):
@@ -273,11 +274,21 @@ def make_leave_comment_submit(req):
     user = req.user
     msg = req.POST.get('msg', '')
     try:
+        if not msg.strip():
+            json_str = {'status': 0, 'msg': u'留言不允许为空'}
+            return response_json(json_str)
+        # 保存留言
         blog_models.MessageLeave.objects.create(
                                                 leaver_id=user.id,
                                                 message=msg
                                             )
-        json_str = {'status': 1, 'msg': u'留言成功，博主会尽快给您答复，请耐心等待！'}
+        msgObj = {
+            'leaver_name': user.userextend.nickname,
+            'leaver_portrait': "/static/images/%s/%s" % (user.userextend.portrait.img_category.name, user.userextend.portrait.src),
+            'leave_msg': msg,
+            'leave_time': str(datetime.now())[0:19]
+        }
+        json_str = {'status': 1, 'msg': u'留言成功，博主会尽快给您答复，请耐心等待！', 'obj': msgObj}
     except Exception, exc:
         logger.error(exc, exc_info=True)
         json_str = {'status': 0, 'msg': u'留言异常，请稍后重试！'}
@@ -370,7 +381,7 @@ def get_user_post(req):
     user = req.user
     page = req.GET.get('page', 1)
 
-    limit = 3  # 每页显示的记录数
+    limit = 12  # 每页显示的记录数
     posts = blog_models.Post.objects.filter(author__user__id=user.id).order_by('-id')
     paginator = Paginator(posts, limit)  # 实例化一个分页对象
 

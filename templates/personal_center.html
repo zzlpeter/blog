@@ -113,7 +113,7 @@ input[type="file"]{
             <div class="tab-content">
                 {% verbatim %}
                 <div class="tab-pane active" id="my-post-list">
-                    <template v-if="post_arr">
+                    <template v-if="post_arr.length!=0">
                         <table class="table table-striped">
                             <tbody>
                                 <tr v-for="post in post_arr">
@@ -129,18 +129,20 @@ input[type="file"]{
                             <li v-if="next === 'yes'" class="next"><a onclick="postListApp.getPostList({{ page }}+1)">下一页</a></li>
                         </ul>
                     </template>
-                    <span v-else>您还没有发表过任何帖子哦！</span>
+                    <template v-else>
+                    <span>您还没有发表过任何帖子哦！</span>
+                    </template>
                 </div>
                 {% endverbatim %}
                 {% verbatim %}
                 <div class="tab-pane" id="user-list">
                     <button style="float:right; margin-bottom: -10px; margin-top:-48px; margin-right: -13px; background-color: cadetblue; width: 34px;" class="btn btn-default">搜</button>
                     <div class="form-group" style="float:right; margin-right: 19px; margin-top:-48px; ">
-                        <input style="width: 270px;" type="text" class="form-control" placeholder="搜索用户">
+                        <input style="width: 270px;" type="text" v-model="filter_name" class="form-control" placeholder="搜索用户">
                     </div>
                     <div class="container" id="tourpackages-carousel">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" v-for="user in user_arr">
+                            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" v-for="user in user_arr|filterBy filter_name in 'nickname' ">
                                 <div class="thumbnail" style="height: 186px;">
                                     <div class="caption">
                                         <div class='col-lg-12'>
@@ -296,11 +298,6 @@ input[type="file"]{
         userListApp.initUserList();
     });
 
-    Vue.filter('my-filter', function (result, key) {
-        this.$set(key, result.length);
-        return result;
-    });
-
     // 用户列表APP
     var userListApp = new Vue({
         el: "#user-list",
@@ -354,14 +351,14 @@ input[type="file"]{
             emailNoticeUser: function (e) {
                 var uid = $(e).data('uid');
                 var url = '/email_notice_user/?uid='+uid;
-                var old = $("input[name='"+uid+"']:checked").val();
+{#                var old = $("input[name='email-notice-"+uid+"']:checked").val();#}
                 this.$http.get(url).then(
                     function (res) {
                         if(res.body.status == 1){
                             layer.msg(res.body.msg, {icon: 1});
                         }else{
                             layer.msg(res.body.msg, {icon: 5});
-                            $("input[name="+uid+"][value="+old+"]").attr("checked", true);
+{#                            $("input[name='"+uid+"'][value="+old+"]").attr("checked", true);#}
                         }
                     }
                 )
@@ -384,9 +381,6 @@ input[type="file"]{
                 this.$http.get(url).then(
                     function(res){
                         console.log(res.body.post_list);
-{#                        for(var i=0; i<res.body.post_list.length; i++){#}
-{#                            postListApp.post_arr.push(res.body.post_list[i])#}
-{#                        }#}
                         postListApp.post_arr = res.body.post_list;
                         postListApp.page = res.body.current_page;
                         postListApp.previous = res.body.previous;
@@ -397,8 +391,6 @@ input[type="file"]{
             }
         }
     });
-
-
 
 
     // 生成图片预览模式
