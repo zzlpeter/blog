@@ -9,6 +9,7 @@ from django.db.models import F, Q
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
+from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from datetime import datetime
 
@@ -259,7 +260,8 @@ def get_more_message(req):
             'leaver_name': msg.leaver.user.userextend.nickname,
             'leaver_portrait': "/static/images/%s/%s" % (msg.leaver.portrait.img_category.name, msg.leaver.portrait.src),
             'leave_msg': msg.message,
-            'leave_time': str(msg.leave_time)[0:19]
+            'leave_time': str(msg.leave_time)[0:19],
+            'id': msg.id
         } for msg in msgObj
     ]
     json_str = {
@@ -270,18 +272,31 @@ def get_more_message(req):
     return response_json(json_str)
 
 @login_required
+@csrf_exempt
 def make_leave_comment_submit(req):
     user = req.user
     msg = req.POST.get('msg', '')
+    level = req.POST.get('level', 1)
+    parent_id = req.POST.get('parent_id')
     try:
         if not msg.strip():
             json_str = {'status': 0, 'msg': u'留言不允许为空'}
             return response_json(json_str)
         # 保存留言
+        # if str(level) == '1':
         blog_models.MessageLeave.objects.create(
-                                                leaver_id=user.id,
-                                                message=msg
-                                            )
+                                            leaver_id=user.id,
+                                            message=msg,
+                                            level=level,
+                                            parent_id=parent_id
+                                        )
+        # else:
+        #     blog_models.MessageLeave.objects.create(
+        #                                         leaver_id=user.id,
+        #                                         message=msg,
+        #                                         level=2,
+        #                                         parent_id=parent_id
+        #     )
         msgObj = {
             'leaver_name': user.userextend.nickname,
             'leaver_portrait': "/static/images/%s/%s" % (user.userextend.portrait.img_category.name, user.userextend.portrait.src),
