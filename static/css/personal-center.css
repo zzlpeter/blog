@@ -58,7 +58,6 @@
     position: relative;
     width: 120px;
     height: 120px;
-{#    background: #eee url('/static/images/portrait/pic04.jpeg');#}
     background-size: 120px;
     border-radius: 120px;
 }
