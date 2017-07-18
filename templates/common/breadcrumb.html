@@ -9,10 +9,12 @@
             {% endif %}
         {% endfor %}
         {#搜索框#}
-        <button style="float:right; margin-bottom: -10px; margin-top:-6px; margin-right: -13px; background-color: cadetblue;" class="btn btn-default"><i class="fa fa-search icon"></i></button>
-        <div class="form-group" style="float:right; margin-bottom: -10px; margin-top:-6px; ">
-            <input style="width: 270px;" type="text" class="form-control" placeholder="搜搜看。。。">
-        </div>
+        <form action="{% url 'search' %}" style="top: 0px">
+            <button style="float:right; margin-bottom: -10px; margin-top:-26px; margin-right: -13px; background-color: cadetblue;" class="btn btn-default" type="submit"><i class="fa fa-search icon"></i></button>
+            <div class="form-group" style="float:right; margin-bottom: -10px; margin-top:-26px; margin-right: -12px;">
+                <input style="width: 270px;" type="text" class="form-control" placeholder="搜搜看。。。" name="q" value="{{ q }}">
+            </div>
+        </form>
     </ol>
 </div>
 {#分割线#}

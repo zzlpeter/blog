@@ -80,7 +80,6 @@ def user_post(req, uid, nickname, tmp_name='postList.html'):
     }
     return render_to_response(tmp_name, dic, context_instance=RequestContext(req))
 
-
 def send_mail(req):
     import json
     # # from django.core.mail import EmailMessage
@@ -315,11 +314,8 @@ def make_leave_comment_submit(req):
         json_str = {'status': 0, 'msg': u'留言异常，请稍后重试！'}
     return response_json(json_str)
 
-
-
 def test(req, tmp_name='left-sidebar.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
-
 
 @login_required
 def guan_zhu_poster(req):
@@ -376,7 +372,6 @@ def get_user_list(req):
     }
     return response_json(json_str)
 
-
 @login_required
 def email_notice_user(req):
     user = req.user
@@ -429,8 +424,13 @@ def get_user_post(req):
     return response_json(json_str)
 
 
-
-
+import os
+from whoosh.index import create_in
+from whoosh.fields import *
+from jieba.analyse import ChineseAnalyzer
+import json
+def search(req):
+    pass
 
 
 

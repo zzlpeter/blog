@@ -19,6 +19,7 @@ from django.contrib import admin
 from blogSystem import views as blog_views
 from blogSystem.account import views as account_views
 from blogSystem.common import views as common_views
+from blogSystem.search import views as search_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -74,6 +75,8 @@ urlpatterns = [
 
 
     url(r'^test/?$', blog_views.test),
+
+    url(r'^search/?$', search_views.search, name='search'),
 
 
 ]
