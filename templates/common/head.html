@@ -77,9 +77,9 @@
                                 <li style="float: right;">
 									<a href="" >{{ user.username }}</a>
 									<ul>
-										<li><a href="authSetting">权限设置</a></li>
+{#										<li><a href="authSetting">权限设置</a></li>#}
 										<li><a href="{% url 'personal_center' %}">个人中心</a></li>
-										<li><a href="changepwd">修改密码</a></li>
+										<li><a href="{% url 'makePost' %}">发帖操作</a></li>
 {#										<li>#}
 {#											<a href="">Phasellus consequat</a>#}
 {#											<ul>#}

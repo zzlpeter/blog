@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 <div class="chatContainer">
 
-    <div class="chatTitleContainer">留言板</div>
+    <div class="chatTitleContainer">留言板「当前共有{{ count }}条用户留言」</div>
     <input type="hidden" id="hidden-nickname" {% if user.userextend.nickname %} value="yes" {% else %} value="no" {% endif %} >
 	<div class="chatHistoryContainer">
         {% verbatim %}

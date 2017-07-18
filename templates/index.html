@@ -31,7 +31,7 @@
 	<body class="homepage">
 
 		<!-- Header -->
-			<div id="header">
+			<div id="header" style="background-image: url('http://cv.cuiqingcai.com/images/1.png')">
 				<div class="container">
 
 					<!-- Logo -->
@@ -95,9 +95,9 @@
                                 <li>
                                     <a href="#">{{ user.username }}</a>
                                     <ul>
-										<li><a href="authSetting">权限设置</a></li>
+{#										<li><a href="authSetting">权限设置</a></li>#}
 										<li><a href="{% url 'personal_center' %}">个人中心</a></li>
-										<li><a href="changepwd">修改密码</a></li>
+										<li><a href="{% url 'makePost' %}">发帖操作</a></li>
 {#										<li>#}
 {#											<a href="">Phasellus consequat</a>#}
 {#											<ul>#}
@@ -148,7 +148,7 @@
 					</header>
 					<div class="row no-collapse-1">
 						<section class="4u" v-for="item in items">
-							<a :href="item.href" class="image feature"><img height="175px" :src="item.img"   alt="" style="border: solid cornsilk"></a>
+							<a :href="item.href" class="image feature"><img height="175px" :src="item.img" alt="" style="border: solid cornsilk"></a>
                             <p><a :href="item.href">{{ item.summary }}</a></p>
 						</section>
 					</div>
@@ -157,14 +157,15 @@
         {% endverbatim %}
 
 		<!-- Main -->
-			<div id="main" class="wrapper style1">
+			<div id="main" class="wrapper style1" >
+{#                <img src="http://cv.cuiqingcai.com/images/3.png" width="100%">#}
 				<section class="container">
 					<header class="major">
 						<h2>Nulla luctus eleifend</h2>
 						<span class="byline">Mauris vulputate dolor sit amet nibh</span>
 					</header>
 					<div class="row">
-					
+
 						<!-- Content -->
 							<div class="6u">
 								<section>

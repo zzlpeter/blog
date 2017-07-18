@@ -236,7 +236,8 @@ def get_top_three_post(req):
 
 # @login_required
 def leave_message(req, tmp_name='leaveWord.html'):
-    return render_to_response(tmp_name, context_instance=RequestContext(req))
+    count = blog_models.MessageLeave.objects.count()
+    return render_to_response(tmp_name, {'count': count}, context_instance=RequestContext(req))
 
 def get_more_message(req):
     page = req.GET.get('page', 1)
@@ -423,14 +424,6 @@ def get_user_post(req):
     }
     return response_json(json_str)
 
-
-import os
-from whoosh.index import create_in
-from whoosh.fields import *
-from jieba.analyse import ChineseAnalyzer
-import json
-def search(req):
-    pass
 
 
 

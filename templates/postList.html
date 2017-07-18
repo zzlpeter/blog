@@ -46,11 +46,13 @@
         </div>
     {% endfor %}
 {% else %}
-    <span>未搜索到任何结果</span>
-    <br>
-    <span>您可以搜索其他关键词</span>
-    <br>
-    <span>本次搜索耗时：{{ time }}</span>
+    {% if time %}
+        <span>未搜索到任何结果</span>
+        <br>
+        <span>您可以搜索其他关键词</span>
+        <br>
+        <span>本次搜索耗时：{{ time }}</span>
+    {% endif %}
 {% endif %}
 </div>
 
