@@ -242,12 +242,21 @@ def leave_message(req, tmp_name='leaveWord.html'):
 def get_more_message(req):
     page = req.GET.get('page', 1)
 
-    limit = 20  # 每页显示的记录数
-    msgs = blog_models.MessageLeave.objects.all().order_by('-id')
-    # topics = Topic.objects.all()
+    limit = 10  # 每页显示的记录数
+    msgs = blog_models.MessageLeave.objects.filter(level=1).order_by('-id')
     paginator = Paginator(msgs, limit)  # 实例化一个分页对象
 
-    # page = request.GET.get('page')  # 获取页码
+    def _get_childrens(parentId):
+        childrens = blog_models.MessageLeave.objects.filter(parent_id=parentId).order_by('-id')
+        return [
+            {
+                'leaver_name': child.leaver.user.userextend.nickname,
+                'leaver_portrait': "/static/images/%s/%s" % (child.leaver.portrait.img_category.name, child.leaver.portrait.src),
+                'leave_msg': child.message,
+                'leave_time': str(child.leave_time)[0:19],
+            } for child in childrens
+        ]
+
     try:
         msgObj = paginator.page(page)  # 获取某页对应的记录
     except PageNotAnInteger:  # 如果页码不是个整数
@@ -261,49 +270,46 @@ def get_more_message(req):
             'leaver_portrait': "/static/images/%s/%s" % (msg.leaver.portrait.img_category.name, msg.leaver.portrait.src),
             'leave_msg': msg.message,
             'leave_time': str(msg.leave_time)[0:19],
-            'id': msg.id
+            'id': msg.id,
+            'childrens': _get_childrens(msg.id)
         } for msg in msgObj
     ]
     json_str = {
         'msg_list': msg_list,
-        'next': int(page) + 1 if msgObj and msgObj.has_next() else 0,
-        'current': page
+        'next': 'yes' if msgObj.has_next() else 'no',
+        'previous': 'yes' if msgObj and msgObj.has_previous() else 'no',
+        'current_page': page
     }
     return response_json(json_str)
 
+# vue.js post时参数放在body中
 @login_required
 @csrf_exempt
 def make_leave_comment_submit(req):
+    body = json.loads(req.body)
     user = req.user
-    msg = req.POST.get('msg', '')
-    level = req.POST.get('level', 1)
-    parent_id = req.POST.get('parent_id')
+    msg = body.get('msg', '')
+    level = body.get('level', 1)
+    parent_id = body.get('parent_id')
     try:
         if not msg.strip():
             json_str = {'status': 0, 'msg': u'留言不允许为空'}
             return response_json(json_str)
         # 保存留言
-        # if str(level) == '1':
         blog_models.MessageLeave.objects.create(
                                             leaver_id=user.id,
                                             message=msg,
                                             level=level,
                                             parent_id=parent_id
                                         )
-        # else:
-        #     blog_models.MessageLeave.objects.create(
-        #                                         leaver_id=user.id,
-        #                                         message=msg,
-        #                                         level=2,
-        #                                         parent_id=parent_id
-        #     )
         msgObj = {
             'leaver_name': user.userextend.nickname,
             'leaver_portrait': "/static/images/%s/%s" % (user.userextend.portrait.img_category.name, user.userextend.portrait.src),
             'leave_msg': msg,
             'leave_time': str(datetime.now())[0:19]
         }
-        json_str = {'status': 1, 'msg': u'留言成功，博主会尽快给您答复，请耐心等待！', 'obj': msgObj}
+        msg = u'留言成功，博主会尽快给您答复！' if str(level) == '1' else u'回复成功！'
+        json_str = {'status': 1, 'msg': msg, 'obj': msgObj}
     except Exception, exc:
         logger.error(exc, exc_info=True)
         json_str = {'status': 0, 'msg': u'留言异常，请稍后重试！'}
@@ -417,7 +423,7 @@ def get_user_post(req):
     json_str = {
         'post_list': post_list,
         'next': 'yes' if postObj.has_next() else 'no',
-        'previous': 'yes' if postObj.has_previous() else 'no',
+        'previous': 'yes' if postObj and postObj.has_previous() else 'no',
         'current_page': page
     }
     return response_json(json_str)

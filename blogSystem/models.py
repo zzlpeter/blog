@@ -198,7 +198,7 @@ class MessageLeave(models.Model):
     leave_time = models.DateTimeField(auto_now=True)
     leaver = models.ForeignKey(UserExtend)
     level = models.SmallIntegerField()
-    parent_id = models.IntegerField()
+    parent_id = models.IntegerField(default=0)
 
     def __str__(self):
         return self.id
