@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 import os
 from django.db import transaction
 import re
+from service.decorator import is_authenticated
 
 import logging
 
@@ -58,7 +59,7 @@ def personal_center(req, tmp_name='personal_center.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
 # 设置用户昵称
-@login_required
+@is_authenticated
 def set_nickname(req):
     user = req.user
     nickname = req.GET.get('nickname')

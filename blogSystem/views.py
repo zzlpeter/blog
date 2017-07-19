@@ -12,6 +12,7 @@ from django.core.paginator import PageNotAnInteger
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from datetime import datetime
+from service.decorator import is_authenticated
 
 import models as blog_models
 import json
@@ -167,7 +168,7 @@ def postList(req, category1=None, category2=None, tmp_name='postList.html'):
     }
     return render_to_response(tmp_name, dic, context_instance=RequestContext(req))
 
-@login_required
+@is_authenticated
 def makePostSummit(req):
     user = req.user
     content = req.POST.get('content')
