@@ -132,6 +132,8 @@ def send_mail(req):
 
 def postList(req, category1=None, category2=None, tmp_name='postList.html'):
     breads = []
+    limit = 2
+    page = req.GET.get('page', 1)
     if category1:
         breads.append({
             'location': CATEGORY_DICT.get(category1, category1),
@@ -150,6 +152,15 @@ def postList(req, category1=None, category2=None, tmp_name='postList.html'):
         c1Obj = get_object_or_404(blog_models.Category, name=category1)
         category2_list = blog_models.Category.objects.filter(parent_level=c1Obj.id).values_list('id')
         posts = blog_models.Post.objects.filter(category_id__in=category2_list, is_valid=1).order_by('-id')
+
+    paginator = Paginator(posts, limit)  # 实例化一个分页对象
+    try:
+        posts = paginator.page(page)  # 获取某页对应的记录
+    except PageNotAnInteger:  # 如果页码不是个整数
+        posts = paginator.page(1)  # 取第一页的记录
+    except EmptyPage:  # 如果页码太大，没有相应的记录
+        posts = paginator.page(paginator.num_pages)  # 取最后一页的记录
+
     dic = {
         'breads': breads,
         'posts': posts

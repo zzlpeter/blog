@@ -223,12 +223,22 @@
 
             });
 
-            function picFade(e, type) {
-                if(type=='out'){
-                    $(e).fadeOut(1000);
-                }else{
-                    $(e).fadeIn(1000);
-                }
+            function changeBackImage(e) {
+{#                $(e).css("background-image", "url(/static/images/scenery/pic06.png)");#}
+{#                $(e).css('background-image').fadeOut(function(){$(this).fadeOut()});#}
+                var image = $('#header');
+{#                    image.fadeOut(1000, function () {#}
+{#                        image.css("background-image", "url('/static/images/scenery/pic06.png')");#}
+{#                        image.fadeIn(1000);#}
+{#                    });#}
+
+                    //向左移动，移出左边界，最后距离左边距160px.
+                    image.animate({'left':-560},'slow',function(){
+                        //animate回调函数，首先距离移动图片，距离左边界150px，此时在右边界处了。在移动至贴近左边界。
+                        $(this).css({'left':150});
+                        image.css("background-image", "url('/static/images/scenery/pic06.png')")
+                        $(this).animate({'left':0}, 'slow');
+                    });
             }
 
             var app = new Vue({

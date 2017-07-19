@@ -139,6 +139,15 @@ class Post(models.Model):
     def get_comment_count(self):
         return PostComment.objects.filter(post_id=self.id).count()
 
+    # 获取帖子所属分类
+    # 若有二级分类，则忽略一级分类
+    def get_post_cat(self):
+        try:
+            return Category.objects.get(pk=self.category_id).name
+        except Exception, exc:
+            return Category.objects.get(pk=self.category.parent_level).name
+
+
 
 class ThumbUpDown(models.Model):
     thumb_choice = (

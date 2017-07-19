@@ -33,6 +33,15 @@
 {#脚本区#}
 <script>
 
+    $(function(){
+        //给input框绑定回车事件
+        $('#btn-input-kai-liao').keydown(function(event){
+            if(event.keyCode==13){
+               liaoWo();
+            }
+        });
+    });
+
     // 弹出、隐藏机器人对话框
     function showRobot() {
         $('#tu-ling-liao-wo').fadeToggle(1000);

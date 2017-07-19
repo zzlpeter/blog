@@ -17,7 +17,6 @@
 {#post list列表页#}
 <div class="container" style="width:70%;margin:20px; float: left; margin-left: 66px;">
 {% if posts %}
-    {% if time %}<span>本次搜索耗时：{{ time }}</span>{% endif %}
     {% for post in posts %}
         <div class="well">
             <div class="media">
@@ -41,26 +40,49 @@
                             <span><i class="fa fa-share icon"></i> {% get_post_related_num post 'share' %} 分享</span>
                         </li>
                     </ul>
+                    <span style="float:right; color: lightseagreen;">{{ post.get_post_cat }}</span>
                 </div>
             </div>
         </div>
     {% endfor %}
 {% else %}
-    {% if time %}
-        <span>未搜索到任何结果</span>
-        <br>
-        <span>您可以搜索其他关键词</span>
-        <br>
-        <span>本次搜索耗时：{{ time }}</span>
+    {% if not q %}
+        <span>该板块暂无内容，请稍后再来。</span>
     {% endif %}
 {% endif %}
+<hr>
+<ul class="pagination pagination-lg">
+    <li><a {% if posts.number == 1 %} disabled="disabled" {% else %} href="?page=1{% if q %}&q={{ q }}{% endif %}" {% endif %}>首页</a></li>
+    <li><a {% if posts.has_previous %} href="?page={{ posts.previous_page_number }}{% if q %}&q={{ q }}{% endif %}" {% else %} disabled="disabled" {% endif %}> « </a></li>
+    <li><a {% if posts.has_next %} href="?page={{ posts.next_page_number }}{% if q %}&q={{ q }}{% endif %}" {% else %} disabled="disabled" {% endif %}> » </a></li>
+    <li><a {% if posts.number == posts.paginator.num_pages %} disabled="disabled" {% else %} href="?page={{ posts.paginator.num_pages }}{% if q %}&q={{ q }}{% endif %}" {% endif %}>末页</a></li>
+</ul>
 </div>
+
+
 
 {#相册弹出层#}
 {% include 'common/bootstrapGallery.html' %}
 
 {#机器人对话框#}
 {% include 'common/tuling.html' %}
+
+<script>
+
+    $(function(){
+        if('{{ q }}'&&'{{ show }}'=='yes'){
+            if('{{ count }}' > 0){
+                layer.open({
+                    content: '本次搜索匹配结果 <span style="color: green">'+'{{ count }}'+'</span> 条<br>本次搜索耗时：'+ '{{ time }}'
+                })
+            }else{
+                layer.open({
+                    content: '未匹配到任何结果，尝试其他关键词<br>本次搜索耗时：'+ '{{ time }}'
+                })
+            }
+        }
+    });
+</script>
 
 	</body>
 </html>
