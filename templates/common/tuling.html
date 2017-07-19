@@ -27,7 +27,7 @@
 </div>
 <button class="btn btn-info"  style="position: fixed;bottom: 0; right: 0; color: green;" onclick="showRobot()">撩我吧</button>
 
-<input type="hidden" value="{% if user.is_authenticated %}{{ user.username }}{% else %}匿名发问者{% endif %}" id="hidden-username">
+<input type="hidden" value="{% if user.is_authenticated %}{{ user.username }}{% else %}匿名用户{% endif %}" id="hidden-username">
 <input type="hidden" value="{% if user.is_authenticated %}{{ user|get_user_portrait }}{% else %}'/static/images/other/anonymous.jpg'{% endif %}" id="hidden-user-portrait">
 
 {#脚本区#}
@@ -67,9 +67,9 @@
         $.ajax({
             url: "{% url 'tu_ling' %}",
             dataType: 'JSON',
-            type: 'GET',
+            type: 'POST',
             data: {
-                'info': $('#btn-input-kai-liao').val()
+                'info': info
             },
             success: function(resData){
                 var receive = '<li class="right clearfix"><span class="chat-img pull-right">' +

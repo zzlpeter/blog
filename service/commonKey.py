@@ -10,7 +10,7 @@ CATEGORY_DICT = {
 
 
 # 图灵机器人接口
-KEY = '8b005db5f57556fb96dfd98fbccfab84'
+KEY = 'cb82e1cce48542e18e882ddc7b5c42f5'
 API = 'http://www.tuling123.com/openapi/api?key=' + KEY + '&info='
 
 

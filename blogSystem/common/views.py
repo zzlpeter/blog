@@ -6,6 +6,8 @@ import logging
 import urllib
 from service.commonKey import API
 from datetime import datetime
+from django.utils.http import urlquote
+from django.views.decorators.csrf import csrf_exempt
 
 
 logger = logging.getLogger(__name__)
@@ -21,11 +23,12 @@ def getHtml(url):
     html = page.read()
     return html
 
+@csrf_exempt
 def tu_ling(req):
-    info = req.GET.get('info')
+    info = req.POST.get('info', '')
     time = datetime.now().strftime('%H:%M:%S')
     try:
-        url = API + info.encode('utf-8')
+        url = API + urlquote(info)
         response = getHtml(url)
         dic_json = json.loads(response)
         json_str = {'status': 1, 'msg': dic_json['text'], 'time': time}

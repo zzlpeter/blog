@@ -6,13 +6,16 @@ import json
 from django.db.models import Q
 import time
 from itertools import chain
+import jieba
+
 
 
 
 def search(req, tmp_name='postList.html'):
     start = time.time()
     query = req.GET.get('q', '')
-    qs = query.split(' ')
+    qs = jieba.cut(query)
+    qs = [q for q in list(qs) if q.strip()]
 
     breads = [
         {'location': u'首页', 'href': '/'},
