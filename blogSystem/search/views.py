@@ -10,6 +10,7 @@ import jieba
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
+from django.conf import settings
 
 import logging
 
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 def search(req, tmp_name='postList.html'):
     page = req.GET.get('page', 1)
-    limit = 2
+    limit = settings.PAGE_SIZE
     start = time.time()
     query = req.GET.get('q', '')
     qs = jieba.cut(query)

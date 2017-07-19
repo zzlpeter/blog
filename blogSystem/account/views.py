@@ -13,6 +13,7 @@ import os
 from django.db import transaction
 import re
 from service.decorator import is_authenticated
+from django.conf import settings
 
 import logging
 

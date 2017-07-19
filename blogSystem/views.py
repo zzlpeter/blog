@@ -13,6 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from datetime import datetime
 from service.decorator import is_authenticated
+from django.conf import settings
 
 import models as blog_models
 import json
@@ -133,7 +134,7 @@ def send_mail(req):
 
 def postList(req, category1=None, category2=None, tmp_name='postList.html'):
     breads = []
-    limit = 2
+    limit = settings.PAGE_SIZE
     page = req.GET.get('page', 1)
     if category1:
         breads.append({
@@ -254,7 +255,7 @@ def leave_message(req, tmp_name='leaveWord.html'):
 def get_more_message(req):
     page = req.GET.get('page', 1)
 
-    limit = 10  # 每页显示的记录数
+    limit = settings.PAGE_SIZE  # 每页显示的记录数
     msgs = blog_models.MessageLeave.objects.filter(level=1).order_by('-id')
     paginator = Paginator(msgs, limit)  # 实例化一个分页对象
 
@@ -353,7 +354,7 @@ def guan_zhu_poster(req):
 @login_required
 def get_user_list(req):
     page = req.GET.get('page', 1)
-    limit = 12  # 每页显示的记录数
+    limit = settings.PAGE_SIZE  # 每页显示的记录数
     users = blog_models.User.objects.all().exclude(id=req.user.id).order_by('id')
     paginator = Paginator(users, limit)  # 实例化一个分页对象
 
@@ -410,7 +411,7 @@ def get_user_post(req):
     user = req.user
     page = req.GET.get('page', 1)
 
-    limit = 12  # 每页显示的记录数
+    limit = settings.PAGE_SIZE  # 每页显示的记录数
     posts = blog_models.Post.objects.filter(author__user__id=user.id).order_by('-id')
     paginator = Paginator(posts, limit)  # 实例化一个分页对象
 

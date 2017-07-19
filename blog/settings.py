@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'blogSystem.content_process.views.is_can_register'
             ],
         },
     },
@@ -151,6 +152,12 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'liveme_cms_finance@conew.com'
 EMAIL_HOST_PASSWORD = 'wckckzuthxcgivop'
 EMAIL_PORT = 25
+
+
+# 每页数量
+PAGE_SIZE = 12
+# 是否可以注册
+CAN_REGISTER = True
 
 
 # 日志配置
