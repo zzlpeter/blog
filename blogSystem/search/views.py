@@ -11,6 +11,10 @@ from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 
 
@@ -22,6 +26,12 @@ def search(req, tmp_name='postList.html'):
     qs = jieba.cut(query)
     qs = [q for q in list(qs) if q.strip()]
 
+    # 将搜索条件和最近一次session记录比对，若一样则不显示，否则显示耗时记录
+    if req.session.get('query') == query:
+        show = 'no'
+    else:
+        show = 'yes'
+    req.session['query'] = query
 
     breads = [
         {'location': u'首页', 'href': '/'},
@@ -49,6 +59,6 @@ def search(req, tmp_name='postList.html'):
         'q': query,
         'time': str(round((end - start), 3)) + 's',
         'count': len(posts),
-        'show': 'yes' if int(page) == 1 else 'no'
+        'show': show
     }
     return render_to_response(tmp_name, dic, context_instance=RequestContext(req))
