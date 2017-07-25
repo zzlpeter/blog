@@ -11,9 +11,9 @@ def is_authenticated(func=None):
     :param func: 
     :return: 
     '''
-    def check(req):
+    def check(req, **kwargs):
         if req.user.is_authenticated():
-            pass
+            return func(req, **kwargs)
         else:
             json_str = {'status': 0, 'msg': u'登录之后才可操作'}
             return HttpResponse(json.dumps(json_str), content_type='application/json')
@@ -26,9 +26,9 @@ def is_can_register(func=None):
     :param func: 
     :return: 
     '''
-    def dec(req):
+    def dec(req, **kwargs):
         if settings.CAN_REGISTER:
-            pass
+            return func(req, **kwargs)
         else:
             return Http404
     return dec

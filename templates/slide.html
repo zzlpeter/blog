@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jQuery/HTML5超炫全屏焦点图插件DEMO演示</title>
+
+    {% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="/static/css/effect/style.css" media="screen" />
+
+<script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/static/js/effect/jquery.banner.revolution.min.js"></script>
+<script type="text/javascript" src="/static/js/effect/banner.js"></script>
+
+    <link rel="stylesheet" href="{% static 'css/skel.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+</head>
+
+<body>
+<div id="wrapper">
+    <div class="container" style="position: absolute;z-index: 10">
+
+					<!-- Logo -->
+{#						<h1><a href='javascript:;' id="logo">DREAM</a></h1>#}
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li style="border-radius: 10px" class="active"><a href="{% url 'index' %}">首页</a></li>
+								<li style="border-radius: 10px">
+									<a href="{% url 'category_by1' 'life' %}">生活笔记</a>
+									<ul>
+										<li><a href="#">Lorem ipsum dolor</a></li>
+										<li><a href="#">Magna phasellus</a></li>
+										<li><a href="#">Etiam dolore nisl</a></li>
+										<li>
+											<a href="">Phasellus consequat</a>
+											<ul>
+												<li><a href="#">Lorem ipsum dolor</a></li>
+												<li><a href="#">Phasellus consequat</a></li>
+												<li><a href="#">Magna phasellus</a></li>
+												<li><a href="#">Etiam dolore nisl</a></li>
+												<li><a href="#">Veroeros feugiat</a></li>
+											</ul>
+										</li>
+										<li><a href="#">Veroeros feugiat</a></li>
+									</ul>
+								</li>
+								<li style="border-radius: 10px">
+                                    <a href="{% url 'category_by1' 'skills' %}">技术杂谈</a>
+                                    <ul>
+                                        <li><a href="{% url 'category_by2' 'skills' 'python' %}">Python</a></li>
+                                        <li><a href="{% url 'category_by2' 'skills' 'js' %}">JS</a></li>
+                                        <li><a href="{% url 'category_by2' 'skills' 'linux' %}">Linux</a></li>
+                                    </ul>
+                                </li>
+								<li style="border-radius: 10px"><a href="{% url 'category_by1' 'welfare' %}">福利专区</a></li>
+								<li style="border-radius: 10px"><a href="{% url 'about' %}">关于自己</a></li>
+                                <li style="border-radius: 10px"><a href="{% url 'leave_message' %}">给我留言</a></li>
+                                {% if user.is_authenticated %}
+                                <li>
+									<a href="">{{ user.username }}</a>
+									<ul>
+										<li><a href="#">权限设置</a></li>
+										<li><a href="#">首页设置</a></li>
+										<li><a href="#">修改密码</a></li>
+										<li>
+											<a href="">Phasellus consequat</a>
+											<ul>
+												<li><a href="#">Lorem ipsum dolor</a></li>
+												<li><a href="#">Phasellus consequat</a></li>
+												<li><a href="#">Magna phasellus</a></li>
+												<li><a href="#">Etiam dolore nisl</a></li>
+												<li><a href="#">Veroeros feugiat</a></li>
+											</ul>
+										</li>
+										<li><a href="#">退出登录</a></li>
+									</ul>
+								</li>
+                                {% else %}
+                                <li>
+                                    <a href="#">{{ user.username }}</a>
+                                    <ul>
+										<li><a href="authSetting">权限设置</a></li>
+										<li><a href="{% url 'personal_center' %}">个人中心</a></li>
+										<li><a href="{% url 'makePost' %}">发帖操作</a></li>
+										<li>
+											<a href="">Phasellus consequat</a>
+											<ul>
+												<li><a href="#">Lorem ipsum dolor</a></li>
+												<li><a href="#">Phasellus consequat</a></li>
+												<li><a href="#">Magna phasellus</a></li>
+												<li><a href="#">Etiam dolore nisl</a></li>
+												<li><a href="#">Veroeros feugiat</a></li>
+											</ul>
+										</li>
+										<li><a href="javascript:;" onclick="logOut()">退出登录</a></li>
+									</ul>
+                                </li>
+                                {% endif %}
+							</ul>
+						</nav>
+
+
+					<!-- Banner -->
+						<div id="banner">
+							<div class="container">
+								<section>
+									<header class="major">
+										<h2>Trust Yourself ！</h2>
+										<span class="byline">追梦的路上，永远不会感觉孤独；生命的广阔，只要努力就一定可以看到！</span>
+									</header>
+                                    {% if not user.is_authenticated %}
+									<a href="javascript:;" class="button alt show-login-href">登 录</a>
+                                    {% endif %}
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <p class="alt">{{ message }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+								</section>
+							</div>
+						</div>
+
+				</div>
+	<div class="fullwidthbanner-container" >
+		<div class="fullwidthbanner">
+			<ul style="position: relative;">
+
+{#                    <li data-transition="3dcurtain-horizontal" data-slotamount="15" data-masterspeed="300">#}
+{#                        <div style="background-image: url('/static/images/scenery/pic05.png')">#}
+{#                            </div>#}
+{#                    </li>#}
+{#                <li data-transition="3dcurtain-vertical" data-slotamount="15" data-masterspeed="300" data-link="#">#}
+{#                <div style="background-image: url('/static/images/scenery/pic06.png')">#}
+{#                </div>#}
+{#                </li>#}
+{#                <li data-transition="3dcurtain-vertical" data-slotamount="15" data-masterspeed="300" data-link="#">#}
+{#                <div style="background-image: url('/static/images/scenery/pic07.png')">#}
+{#                </div>#}
+                    </li>
+					<img  src="/static/images/scenery/pic05.png" alt="" />
+				</li>
+				<li data-transition="turnoff" data-slotamount="15" data-masterspeed="300" data-link="#">
+					<img  src="/static/images/scenery/pic06.png" alt="" />
+				</li>
+				<li data-transition="flyin" data-slotamount="15" data-masterspeed="300" data-link="#">
+					<img  src="/static/images/scenery/pic07.png" alt="" />
+				</li>
+{#                <li data-transition="3dcurtain-vertical" data-slotamount="15" data-masterspeed="300" data-link="#">#}
+{#					<img src="/static/images/scenery/pic05.png" alt="" />#}
+{#				</li>#}
+{#				<li data-transition="3dcurtain-vertical" data-slotamount="15" data-masterspeed="300" data-link="#">#}
+{#					<img src="/static/images/scenery/pic06.png" alt="" />#}
+{#				</li>#}
+
+			</ul>
+		</div>
+	</div>
+</div>
+
+{#<div style="text-align:center;clear:both;">#}
+{#<script src="/static/js/effect/gg_bd_ad_720x90.js" type="text/javascript"></script>#}
+{#<script src="/follow.js" type="text/javascript"></script>#}
+{#</div>#}
+</body>
+</html>

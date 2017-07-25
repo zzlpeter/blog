@@ -328,7 +328,7 @@ def make_leave_comment_submit(req):
         json_str = {'status': 0, 'msg': u'留言异常，请稍后重试！'}
     return response_json(json_str)
 
-def test(req, tmp_name='left-sidebar.html'):
+def test(req, tmp_name='slide.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
 @login_required
