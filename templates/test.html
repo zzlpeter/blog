@@ -1,0 +1,215 @@
+<html>
+{% load staticfiles %}
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+{#<script src="{% static 'js/layer/layer.js' %}"></script>#}
+{##}
+{#<link rel="stylesheet" href="{% static 'css/layui/layui.css' %}" />#}
+<link rel="stylesheet" href="//res.layui.com/layui/build/css/layui.css"  media="all">
+<link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}" />
+<style>
+
+ /* entire container, keeps perspective */
+.flip-container {
+	perspective: 1000;
+}
+	/* flip the pane when hovered */
+	.flip-container:hover .flipper, .flip-container.hover .flipper {
+		transform: rotateY(180deg);
+	}
+
+.flip-container, .front, .back {
+	width: 320px;
+	height: 480px;
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+}
+
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
+}
+</style>
+
+
+<body>
+
+
+
+<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+	<div class="flipper">
+		<div class="front">
+			<img height="200px" width="200px" src="/static/images/portrait/pic01.jpeg">
+		</div>
+		<div class="back">
+			<img height="200px" width="200px" src="/static/images/portrait/pic02.jpeg">
+		</div>
+	</div>
+</div>
+
+
+
+<div class="bdsharebuttonbox"><a href="#" class="bds_qzone" data-cmd="qzone"></a><a href="#" class="bds_tsina" data-cmd="tsina"></a><a href="#" class="bds_tqq" data-cmd="tqq"></a><a href="#" class="bds_renren" data-cmd="renren"></a><a href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+<button id="test1">小小提示层</button>
+
+你必须先引入jQuery1.8或以上版本
+
+<script>
+
+$('#test1').on('click', function(){
+  layer.msg('开心。。', {icon: 6});
+});
+</script>
+
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+  <legend>默认面包屑</legend>
+</fieldset>
+
+<span class="layui-breadcrumb">
+  <a href="/">首页</a>
+  <a href="/demo/">演示</a>
+  <a><cite>导航元素</cite></a>
+</span>
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="panel panel-primary">
+                <div class="panel-heading" id="accordion">
+                    <span class="glyphicon glyphicon-comment"></span> Chat
+                    <div class="btn-group pull-right">
+                        <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </a>
+                    </div>
+                </div>
+            <div class="panel-collapse collapse" id="collapseOne">
+                <div class="panel-body">
+                    <ul class="chat">
+                        <li class="left clearfix"><span class="chat-img pull-left">
+                            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                        </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                </div>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
+                                </p>
+                            </div>
+                        </li>
+                        <li class="right clearfix"><span class="chat-img pull-right">
+                            <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
+                        </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>13 mins ago</small>
+                                    <strong class="pull-right primary-font">Bhaumik Patel</strong>
+                                </div>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
+                                </p>
+                            </div>
+                        </li>
+                        <li class="left clearfix"><span class="chat-img pull-left">
+                            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                        </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>14 mins ago</small>
+                                </div>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
+                                </p>
+                            </div>
+                        </li>
+                        <li class="right clearfix"><span class="chat-img pull-right">
+                            <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
+                        </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>15 mins ago</small>
+                                    <strong class="pull-right primary-font">Bhaumik Patel</strong>
+                                </div>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning btn-sm" id="btn-chat">
+                                Send</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="panel panel-default">
+		<div id="collapseTwo" class="panel-collapse collapse">
+			<div class="panel-body">
+				Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+				cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+				vice lomo.
+			</div>
+		</div>
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion"
+				   href="#collapseTwo">
+					点击我进行展开，再次点击我进行折叠。第 2 部分
+				</a>
+			</h4>
+		</div>
+
+	</div>
+
+</body>
+
+
+
+</html>
