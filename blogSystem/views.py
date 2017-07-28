@@ -195,9 +195,11 @@ def makePostSummit(req):
 def up_down_share_post(req):
     action_type = req.GET.get('type')
     post_id = req.GET.get('post_id')
-    share = req.GET.get('share')
     user_id = req.user.id
     if action_type in ('up', 'down'):
+        if not req.user.is_authenticated():
+            json_str = {'status': 0, 'msg': u'登录之后方可操作'}
+            return response_json(json_str)
         if blog_models.ThumbUpDown.objects.filter(post_id=post_id, user_id=user_id, thumb_type=action_type).exists():
             json_str = {'status': 0, 'msg': u'不可重复操作'}
         else:
@@ -208,13 +210,15 @@ def up_down_share_post(req):
             )
             count = blog_models.ThumbUpDown.objects.filter(post_id=post_id, thumb_type=action_type).count()
             json_str = {'status': 1, 'count': count}
-    else:
+    elif action_type in ('qzone', 'tsina', 'tqq', 'renren', 'weixin'):
         blog_models.PostShare.objects.create(
             post_id=post_id,
-            destination=share
+            destination=action_type
         )
         count = blog_models.PostShare.objects.filter(post_id=post_id).count()
         json_str = {'status': 1, 'count': count}
+    else:
+        json_str = {'status': 0, 'msg': u'未知类型的操作'}
     return response_json(json_str)
 
 @login_required
@@ -236,7 +240,7 @@ def make_post_comment(req):
 
 def get_top_three_post(req):
     page = req.GET.get('page', 1)
-    posts = blog_models.Post.objects.all().order_by('?')[(int(page)-1)*3: int(page)*3]
+    posts = blog_models.Post.objects.all().order_by('?')[(int(page)-1)*9: int(page)*9]
     post_list = [
         {
             'img': "/static/images/%s/%s" % (post.img.img_category.name, post.img.src),

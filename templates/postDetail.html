@@ -58,7 +58,13 @@
                                     <i class="fa fa-share icon"></i><span id="post-share-id">{% get_post_related_num postObj 'share' %}</span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <div class="bdsharebuttonbox"><a href="#" class="bds_qzone" data-cmd="qzone"></a><a href="#" class="bds_tsina" data-cmd="tsina"></a><a href="#" class="bds_tqq" data-cmd="tqq"></a><a href="#" class="bds_renren" data-cmd="renren"></a><a href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+                                    <div class="bdsharebuttonbox">
+                                        <a href="javascript:;" class="bds_qzone" onclick="clickPostType('{{ postObj.id }}', 'qzone')" data-cmd="qzone"></a>
+                                        <a href="javascript:;" class="bds_tsina" onclick="clickPostType('{{ postObj.id }}', 'tsina')" data-cmd="tsina"></a>
+                                        <a href="javascript:;" class="bds_tqq" onclick="clickPostType('{{ postObj.id }}', 'tqq')" data-cmd="tqq"></a>
+                                        <a href="javascript:;" class="bds_renren" onclick="clickPostType('{{ postObj.id }}', 'renren')" data-cmd="renren"></a>
+                                        <a href="javascript:;" class="bds_weixin" onclick="clickPostType('{{ postObj.id }}', 'weixin')" data-cmd="weixin"></a>
+                                    </div>
                                 </ul>
                             </div>
                         </div>
@@ -84,35 +90,8 @@
                                     </div>
                                     <p>{{ comment.comment }}</p>
                                 </div>
-{#                                <ul class="comments-list">#}
-{#                                    <li class="comment">#}
-{#                                        <a class="pull-left" href="#">#}
-{#                                            <img class="avatar" src="http://bootdey.com/img/Content/user_3.jpg" alt="avatar">#}
-{#                                        </a>#}
-{#                                        <div class="comment-body">#}
-{#                                            <div class="comment-heading">#}
-{#                                                <h4 class="user">Ryan Haywood</h4>#}
-{#                                                <h5 class="time">3 minutes ago</h5>#}
-{#                                            </div>#}
-{#                                            <p>Relax my friend</p>#}
-{#                                        </div>#}
-{#                                    </li>#}
-{#                                    <li class="comment">#}
-{#                                        <a class="pull-left" href="#">#}
-{#                                            <img class="avatar" src="http://bootdey.com/img/Content/user_2.jpg" alt="avatar">#}
-{#                                        </a>#}
-{#                                        <div class="comment-body">#}
-{#                                            <div class="comment-heading">#}
-{#                                                <h4 class="user">Gavino Free</h4>#}
-{#                                                <h5 class="time">3 minutes ago</h5>#}
-{#                                            </div>#}
-{#                                            <p>Ok, cool.</p>#}
-{#                                        </div>#}
-{#                                    </li>#}
-{#                                </ul>#}
                             </li>
                             {% endfor %}
-
                         {% else %}
                             暂无评论，快来抢沙发。。。
                         {% endif %}
