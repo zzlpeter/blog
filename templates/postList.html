@@ -40,7 +40,8 @@
                             <span><i class="fa fa-share icon"></i> {% get_post_related_num post 'share' %} 分享</span>
                         </li>
                     </ul>
-                    <span style="float:right; color: lightseagreen;">{{ post.get_post_cat }}</span>
+{#                    <span style="float:right; color: lightseagreen;">{{ post.get_post_cat }}</span>#}
+                    <span style="float:right; color: lightseagreen;"># {{ forloop.counter }}</span>
                 </div>
             </div>
         </div>
