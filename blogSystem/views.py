@@ -332,7 +332,7 @@ def make_leave_comment_submit(req):
         json_str = {'status': 0, 'msg': u'留言异常，请稍后重试！'}
     return response_json(json_str)
 
-def test(req, tmp_name='test2.html'):
+def test(req, tmp_name='test3.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
 @login_required
@@ -441,7 +441,8 @@ def get_user_post(req):
     }
     return response_json(json_str)
 
-
+def about_myself(req, tmp_name='myself.html'):
+    return render_to_response(tmp_name, context_instance=RequestContext(req))
 
 
 

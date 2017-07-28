@@ -72,7 +72,7 @@
 {#                                    </ul>#}
                                 </li>
 								<li style="border-radius: 10px" id="category-welfare-id"><a href="{% url 'category_by1' 'welfare' %}">福利专区</a></li>
-								<li style="border-radius: 10px" id="category-about-id"><a href="{% url 'about' %}">关于自己</a></li>
+								<li style="border-radius: 10px" id="category-about-id"><a href="{% url 'about_myself' %}">关于自己</a></li>
                                 {% if user.is_authenticated %}
                                 <li style="float: right;">
 									<a href="" >{{ user.username }}</a>
