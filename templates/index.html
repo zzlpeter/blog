@@ -282,7 +282,7 @@ img:hover{
                 <div class="container1" id="app-index">
                     {% verbatim %}
                     <div id="carousel">
-                        <figure v-for="item in items"><a :href="item.href"><img :src="item.img" style="height: 100px;width: 180px;" alt=""></a></figure>
+                        <figure v-for="item in items"><a :href="item.href"><img :src="item.img" style="height: 100px;width: 180px;" :title="item.summary" alt=""></a></figure>
                     </div>
                     {% endverbatim %}
                 </div>
