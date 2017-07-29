@@ -1,6 +1,4 @@
 <html>
-
-
 <style>
     .modal {
 	display:block;}
@@ -39,7 +37,7 @@
 		position:absolute;
 		top:0;
 		left:0;
-		background: url(http://www.jnvs.in/images/intro.jpg) no-repeat center center;
+		background: url('/static/images/other/tree.jpg') no-repeat center center;
 		background-size: cover;
 		width:50%;
 		height:100%;
@@ -69,32 +67,42 @@
 	margin-left: -67px;
 }
 </style>
-
-
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
 <body>
 
+    <div id="myModal" class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+        <div class="modal-content">
 
-<div id="myModal" class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><img src="http://www.jnvs.in/images/rope.png" alt="rope"></span></button>
-    <div class="modal-content">
+            <div class="left-animation">  </div>
+            <div class="right-animation">  </div>
+                 <div class="welcome">
+                     首页&nbsp;&nbsp;&nbsp;生活笔记&nbsp;&nbsp;&nbsp;技术杂谈&nbsp;&nbsp;&nbsp;福利专区&nbsp;&nbsp;&nbsp;关于自己&nbsp;&nbsp;&nbsp;给我留言<br><br>
+                     <b>个人简介</b> <br><br>
+                     <img style="border-radius: 50%; width: 100px; height: 100px;" src="/static/images/other/tree.jpg"> <br><br>
+        {#             张志亮 <br>#}
+                     如果你认为你失败了，那你就一败涂地；<br>
+                     如果你认为你不敢，那你就会退缩畏惧；<br>
+                     如果你想赢但是认为你不能，<br>
+                     那么毫无疑问你就会失利；<br>
+                     如果你认为你输了，你就输了。<br>
+                     因为我们发现人世间，成功从一个人的意志开始，<br>
+                     成功是一种心态。<br>
+                     生活之战中，<br>
+                     胜利并非属于那更强和更快的人，<br>
+                     胜利者终究是认为自己能行的人。<br>
 
-	<div class="left-animation">  </div>
-	<div class="right-animation">  </div>
-		 <div class="welcome"> Welcome To <br>
-		 Jawahar Navodaya Vidyalaya Samiti <br>
-		 Inaugurated by Honourable Minister <br> <b>Shri Prakash Javadekar </b><br>
+{#                     <b>与我联系</b><br><br>#}
 
-		 <button type="button" class="close btn btn-primary enter" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> Enter Website</button>
-		 </div>
 
+        {#		 <button type="button" class="close btn btn-primary enter" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> Enter Website</button>#}
+                 </div>
+
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-
-
-
-
 
 </body>
 </html>
