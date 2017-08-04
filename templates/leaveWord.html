@@ -31,10 +31,14 @@
                                     <div class="comment-actions">
                                         <div class="input-group input-group-sm chatMessageControls">
                                             <span class="input-group-addon" id="sizing-addon3">回复：</span>
-                                            <input type="text" class="form-control" placeholder="Type your message here.." aria-describedby="sizing-addon3">
-                                            <span class="input-group-btn">
+                                            <input type="text" class="form-control" :placeholder="isLogin==1?'Type your message here..':'登录之后方可回复'" aria-describedby="sizing-addon3">
+                                            <span class="input-group-btn" v-if="isLogin==1">
                                                 <button class="btn btn-default" type="button" onclick="$(this).parent().parent().children('input').eq(0).val('')"><i class="fa fa-undo"></i>清除</button>
                                                 <button class="btn btn-info" type="button" onclick="commentsApp.sendLeaveMsg(this, '{{ msg.id }}')"><i class="fa fa-paper-plane"></i>发送</button>
+                                            </span>
+                                            <span class="input-group-btn" v-else>
+                                                <button class="btn btn-default" type="button"><i class="fa fa-undo"></i>清除</button>
+                                                <button class="btn btn-info" type="button" onclick="layer.msg('登录之后方可回复', {icon: 6});"><i class="fa fa-paper-plane"></i>发送</button>
                                             </span>
                                         </div>
                                     </div>
@@ -72,10 +76,10 @@
 
     <div class="input-group input-group-sm chatMessageControls">
         <span class="input-group-addon" id="sizing-addon3">留言：</span>
-        <input type="text" class="form-control" placeholder="Type your message here.." aria-describedby="sizing-addon3">
+        <input type="text" class="form-control" placeholder="{% if user.is_authenticated %}Type your message here..{% else %}登录之后方可留言{% endif %}" aria-describedby="sizing-addon3">
         <span class="input-group-btn">
             <button id="clearMessageButton" class="btn btn-default" type="button" onclick="$(this).parent().parent().children('input').eq(0).val('')"><i class="fa fa-undo"></i>Clear</button>
-            <button id="sendMessageButton" class="btn btn-info" type="button" onclick="commentsApp.sendLeaveMsg(this, '0')"><i class="fa fa-paper-plane"></i>Send</button>
+            <button id="sendMessageButton" class="btn btn-info" type="button" {% if user.is_authenticated %}onclick="commentsApp.sendLeaveMsg(this, '0')"{% else %}onclick="layer.msg('登录之后方可留言', {icon: 6});"{% endif %}><i class="fa fa-paper-plane"></i>Send</button>
         </span>
     </div>
 </div>
@@ -98,7 +102,8 @@
             page: 1,
             msg_arr: new Array,
             previous: 'no',
-            next: 'no'
+            next: 'no',
+            isLogin: 0
         },
         methods: {
             getMoreMessage: function(p){
@@ -114,6 +119,7 @@
                         commentsApp.page = res.body.current_page;
                         commentsApp.previous = res.body.previous;
                         commentsApp.next = res.body.next;
+                        commentsApp.isLogin = res.body.is_login;
                         layer.closeAll('loading');
                     }
                 )

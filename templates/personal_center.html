@@ -65,10 +65,18 @@
                                             </p>
                                             <p>最近活跃时间: {{ user.date_joined }}</p>
                                             <p>粉丝数：<span :id="user.id">{{ user.fans }}</span>   发帖数：{{ user.posts }}</p>
-                                            <p v-if="user.email_notice == 1">邮件通知：<input :data-uid="user.id" type="radio" :name="user.id" checked="checked" onchange="userListApp.emailNoticeUser(this)" value="1">开 <input :data-uid="user.id" type="radio" :name="user.id" onchange="userListApp.emailNoticeUser(this)" value="0">关</p>
-                                            <p v-else>邮件通知：<input :data-uid="user.id" type="radio" :name="user.id" onchange="userListApp.emailNoticeUser(this)" value="1">开 <input :data-uid="user.id" type="radio" :name="user.id" checked="checked" onchange="userListApp.emailNoticeUser(this)" value="0">关</p>
-                                            <p v-if="user.attention === 'no'"><i onclick="userListApp.guanZhuUser(this)" :data-uid="user.id" class='fa fa-heart-o' style="float:right; margin-top: -160px;" title="关注"></i></p>
-                                            <p v-else><i onclick="userListApp.guanZhuUser(this)" :data-uid="user.id" class='fa fa-heart' style="float:right; margin-top: -160px;" title="取消关注"></i></p>
+
+                                            <p v-if="user.attention === 'yes'">
+                                                邮件通知：
+                                                <input :data-uid="user.id" type="radio" :name="user.id" :checked="user.email_notice == '1' ? true : false" @change="emailNoticeUser(user, 1)" value="1">开
+                                                <input :data-uid="user.id" type="radio" :name="user.id" :checked="user.email_notice == '0' ? true : false" @change="emailNoticeUser(user, 0)" value="0">关
+                                            </p>
+                                            <p v-else>
+                                                邮件通知：请先关注该用户
+                                            </p>
+
+                                            <p v-if="user.attention === 'no'"><i @click="guanZhuUser(user)" :data-uid="user.id" class='fa fa-heart-o' style="float:right; margin-top: -160px;" title="关注"></i></p>
+                                            <p v-else><i @click="guanZhuUser(user)" :data-uid="user.id" class='fa fa-heart' style="float:right; margin-top: -160px;" title="取消关注"></i></p>
                                         </div>
                                     </div>
                                 </div>
@@ -244,21 +252,18 @@
                 )
             },
             guanZhuUser: function (e) {
-                var url = '/guan_zhu_poster/?uid='+$(e).data('uid');
-                var fans = parseInt($('#'+$(e).data('uid')).text());
+                var url = '/guan_zhu_poster/?uid='+e.id;
                 this.$http.get(url).then(
                     function (res) {
                         if(res.body.status == 1){
                             if(res.body.attention == 1){
                                 layer.msg(res.body.msg, {icon: 1});
-                                $(e).attr('title', '取消关注');
-                                $(e).removeClass('fa fa-heart-o').addClass('fa fa-heart');
-                                $('#'+$(e).data('uid')).text(fans + 1);
+                                e.attention = 'yes';
+                                e.fans += 1;
                             }else{
                                 layer.msg(res.body.msg, {icon: 1});
-                                $(e).attr('title', '关注');
-                                $(e).removeClass('fa fa-heart').addClass('fa fa-heart-o');
-                                $('#'+$(e).data('uid')).text(fans - 1);
+                                e.attention = 'no';
+                                e.fans -= 1;
                             }
                         }else{
                             layer.msg(res.body.msg, {icon: 5})
@@ -266,8 +271,8 @@
                     }
                 )
             },
-            emailNoticeUser: function (e) {
-                var uid = $(e).data('uid');
+            emailNoticeUser: function (e, type) {
+                var uid = e.id;
                 var url = '/email_notice_user/?uid='+uid;
 {#                var old = $("input[name='email-notice-"+uid+"']:checked").val();#}
                 this.$http.get(url).then(

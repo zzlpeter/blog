@@ -43,7 +43,7 @@ def search(req, tmp_name='postList.html'):
         post = blog_models.Post.objects.filter(Q(title__icontains=q) | Q(summary__icontains=q) | Q(content__icontains=q))
         s_list.append(post)
     posts = chain.from_iterable(s_list)
-    posts = list(posts)
+    posts = list(set(posts))
 
     paginator = Paginator(posts, limit)  # 实例化一个分页对象
     try:

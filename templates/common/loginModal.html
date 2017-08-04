@@ -66,7 +66,7 @@
                         <div class="form-group">
                             <label for="email" class="col-md-3 control-label">邮箱</label>
                             <div class="col-md-9">
-                                <input type="email" class="form-control" name="email" placeholder="请输入邮箱，用于激活注册链接及找回密码" id="register-email">
+                                <input type="email" class="form-control" name="email" placeholder="请输入有效邮箱，用于激活注册链接及找回密码" id="register-email">
                             </div>
                         </div>
 {#                        <div class="form-group">#}
@@ -84,13 +84,13 @@
                         <div class="form-group">
                             <label for="password" class="col-md-3 control-label">密码</label>
                             <div class="col-md-9">
-                                <input type="password" class="form-control" name="passwd" placeholder="请设置密码，最少6位" id="register-pwd">
+                                <input type="password" class="form-control" name="passwd" placeholder="密码长度6-10位，以字母开头，只能输入字母、数字" id="register-pwd">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="password" class="col-md-3 control-label">确认密码</label>
                             <div class="col-md-9">
-                                <input type="password" class="form-control" name="passwd" placeholder="请再次设置密码" id="register-pwd-again">
+                                <input type="password" class="form-control" name="passwd" placeholder="密码长度6-10位，以字母开头，只能输入字母、数字" id="register-pwd-again">
                             </div>
                         </div>
 {#                        <div class="form-group">#}
@@ -102,9 +102,9 @@
                         <div class="form-group">
                             <!-- Button -->
                             <div class="col-md-offset-3 col-md-9">
-                                <button id="btn-signup" type="button" class="btn btn-info"><i class="icon-hand-right" onclick="userRegister()"></i> &nbsp 注册</button>
+                                <button id="btn-signup" onclick="userRegister()" type="button" class="btn btn-info"><i class="icon-hand-right"></i>注册</button>
                                 <span style="margin-left:8px;">or</span>
-                                <button id="btn-signup" type="button" class="btn btn-warning cancel-login-href"><i class="icon-hand-right"></i> &nbsp 取消</button>
+                                <button id="btn-signup-cancel" type="button" class="btn btn-warning cancel-login-href"><i class="icon-hand-right"></i>取消</button>
                             </div>
                         </div>
 {#                        <div style="border-top: 1px solid #999; padding-top:20px"  class="form-group">#}
@@ -155,11 +155,39 @@
         var email = $('#register-email').val();
         var username = $('#register-username').val();
         var pwd = $('#register-pwd').val();
-        var pwd_again = $('#register-pwd-again').val();
+        var confirm_pwd = $('#register-pwd-again').val();
         if(!username.trim()){
-            alert('请设置用户名！');
+            layer.msg('请设置用户名', {icon: 6});
             return false;
         }
+        if(pwd!=confirm_pwd){
+            layer.msg('两次输入密码不一致', {icon: 6});
+            return false;
+        }
+        if(!email.trim()){
+            layer.msg('请输入邮箱', {icon: 6});
+            return false;
+        }
+        $.ajax({
+            url: "{% url 'register_account' %}",
+            type: 'POST',
+            dataType: 'JSON',
+            data: {
+                'email': email,
+                'uname': username,
+                'pwd': pwd,
+                'confirm_pwd': confirm_pwd,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function (res) {
+                $("#btn-signup-cancel").click();
+                if(res.status==1){
+                    layer.msg(res.msg, {icon: 6});
+                }else{
+                    layer.msg(res.msg, {icon: 5});
+                }
+            }
+        })
     }
 
 </script>

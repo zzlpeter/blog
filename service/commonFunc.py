@@ -26,7 +26,7 @@ def set_avatar_rendom():
     id_list = Images.objects.filter(img_category__name='portrait').values_list('id')
     count = len(id_list)
     rand = random.randint(0, count - 1)
-    return id_list[rand]
+    return int(id_list[rand][0])
 
 # 获取用户等级
 def get_user_level(uid):

@@ -258,6 +258,7 @@ def leave_message(req, tmp_name='leaveWord.html'):
 
 def get_more_message(req):
     page = req.GET.get('page', 1)
+    is_login = 1 if req.user.is_authenticated() else 0
 
     limit = settings.PAGE_SIZE  # 每页显示的记录数
     msgs = blog_models.MessageLeave.objects.filter(level=1).order_by('-id')
@@ -295,7 +296,8 @@ def get_more_message(req):
         'msg_list': msg_list,
         'next': 'yes' if msgObj.has_next() else 'no',
         'previous': 'yes' if msgObj and msgObj.has_previous() else 'no',
-        'current_page': page
+        'current_page': page,
+        'is_login': is_login
     }
     return response_json(json_str)
 

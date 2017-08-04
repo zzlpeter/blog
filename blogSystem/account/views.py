@@ -5,7 +5,7 @@ from django.shortcuts import HttpResponseRedirect, render_to_response, RequestCo
 from blogSystem.common.views import response_json
 from django.contrib import messages
 from blogSystem import models as blog_models
-from service.commonFunc import get_user_ip
+from service.commonFunc import get_user_ip, set_avatar_rendom
 from service.commonKey import IMG_SAVE_ABSOLUTE_PATH
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -14,6 +14,7 @@ from django.db import transaction
 import re
 from service.decorator import is_authenticated
 from django.conf import settings
+from django.contrib.auth.models import User
 
 import logging
 
@@ -56,6 +57,7 @@ def user_auth_setting(req):
 def user_change_pwd(req):
     pass
 
+@login_required
 def personal_center(req, tmp_name='personal_center.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
@@ -177,3 +179,29 @@ def change_other(req):
         json_str = {'status': 0, 'msg': u'类型错误，请稍后重试'}
         return response_json(json_str)
 
+# 注册账号
+def register_account(req):
+    email = req.POST.get('email')
+    uname = req.POST.get('uname')
+    pwd = req.POST.get('pwd')
+    confirm_pwd = req.POST.get('confirm_pwd')
+    if pwd != confirm_pwd:
+        json_str = {'status': 0, 'msg': u'两次密码输入不一致，请重新输入'}
+        return response_json(json_str)
+    if not re.match('[a-zA-Z]\w{5,9}', pwd):
+        json_str = {'status': 0, 'msg': u'密码长度6-10位，以字母开头，只能输入字母、数字、下划线'}
+        return response_json(json_str)
+    if User.objects.filter(username=uname).exists():
+        json_str = {'status': 0, 'msg': u'该用户名已被注册，请更换'}
+        return response_json(json_str)
+    if User.objects.filter(email=email).exists():
+        json_str = {'status': 0, 'msg': u'该邮箱已被注册，请更换'}
+        return response_json(json_str)
+    json_str = {'status': 0, 'msg': u'系统异常，请稍后重试'}
+    with transaction.atomic():
+        user = User.objects.create_user(uname, email, pwd)
+        user.is_active = 0
+        user.userextend.portrait_id = set_avatar_rendom()
+        user.save()
+        json_str = {'status': 1, 'msg': u'激活链接已发送到邮箱，请激活'}
+    return response_json(json_str)
