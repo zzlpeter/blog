@@ -8,6 +8,7 @@
 	<head>
         {% load staticfiles %}
 		<title>Make The World Smarter</title>
+        <link rel="shortcut icon" href="/static/images/scenery/pic01.jpg">
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -441,71 +442,33 @@ body::-webkit-scrollbar-thumb{
 {#				</section>#}
 {#			</div>#}
         <div class="container">
-<h2>Trust Yourself Never Give Up </h2>
-    {% for p in posts1 %}
-	<div class="item ">
-        <a href="{{ p.href }}"><img src="{{ p.img }}"></a>
-        <p>{{ p.title }}</p>
-    </div>
+            <h2>Trust Yourself Never Give Up </h2>
+            {% for p in posts1 %}
+                <div class="item ">
+                    <a href="{{ p.href }}"><img src="{{ p.img }}"></a>
+                    <p>{{ p.title }}</p>
+                </div>
             {% endfor %}
-{#	<div class="item ">#}
-{#		<img src="https://9227-presscdn-0-11-pagely.netdna-ssl.com/wp-content/uploads/2015/11/Luxor-Egypt.jpg">#}
-{#	    <p>Luxor, EGYPT </p>#}
-{#	</div>#}
-{#    <div class="item ">#}
-{#        <img src="https://www.roughguides.com/wp-content/uploads/2012/11/1416684531-660x420.jpg">#}
-{#        <p class="ar">قلعة صلاح الدين </p>#}
-{#	</div>#}
-{#	<div class="item ">#}
-{#		<img src="http://egyptfuntours.com/images/stories/egypt_tours_hurghada_safari.jpg">#}
-{#	    <p> Safari Hurghada Desert </p>#}
-{#	</div>#}
-	<br>
-	<span>
-        {% for p in posts2 %}
-        <div class="item ">
-           <a href="{{ p.href }}"> <img src="{{ p.img }}"></a>
-            <p>{{ p.title }}</p>
-        </div>
-{% endfor %}
+            <br>
+            <span>
+            {% for p in posts2 %}
+                <div class="item ">
+                   <a href="{{ p.href }}"> <img src="{{ p.img }}"></a>
+                    <p>{{ p.title }}</p>
+                </div>
+            {% endfor %}
+            <span>
+            <br>
+            {% for p in posts3 %}
+            <div class="item ">
+                <a href="{{ p.href }}"> <img src="{{ p.img }}"></a>
+                <p>{{ p.title }}</p>
+            </div>
+            {% endfor %}
+            </span>
 
-{#        <div class="item ">#}
-{#            <img src="https://www.greenprophet.com/wp-content/uploads/Egyptian-Desert-Sand-Spiral-3.jpg">#}
-{#            <p>The Desert Breath </p>#}
-{#        </div>#}
-{##}
-{#        <div class="item ">#}
-{#            <img src="http://www.destination360.com/africa/egypt/images/s/safari-tours.jpg">#}
-{#            <p>Safari Egypt</p>#}
-{#        </div>#}
-    <span>
-    <br>
-
-
-{% for p in posts3 %}
-	<div class="item ">
-		<a href="{{ p.href }}"> <img src="{{ p.img }}"></a>
-	    <p>{{ p.title }}</p>
-    </div>
-{% endfor %}
-
-{#	<div class="item ">#}
-{#		<img src="http://www.holiday-designers.com/images/0/0/d8d31089-a92d-493c-8567-797c09efa98f.jpg">#}
-{#	    <p>Red Sea Diving Holidays </p>#}
-{#	</div>#}
-{##}
-{#    <div class="item ">#}
-{#        <img src="https://egyptianstreets.com/wp-content/uploads/2014/07/El-_Gouna_Architenturr_hotels_egypt.jpg">#}
-{#	    <p>GOUNA</p>#}
-{#	</div>#}
-{##}
-{#	<div class="item ">#}
-{#		<img src="https://egyptianstreets.com/wp-content/uploads/2014/07/01-Jaz_Oriental_014_default.jpg">#}
-{#	    <p> MARSA MATROUH </p>#}
-{#	</div>#}
-{#	</div>#}
         {#机器人对话框#}
-        {% include 'common/tuling.html' %}
+{#        {% include 'common/tuling.html' %}#}
         {#登录模态框#}
         {% include 'common/loginModal.html' %}
         <script>
