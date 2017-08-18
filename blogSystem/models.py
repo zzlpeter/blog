@@ -241,3 +241,17 @@ class UserMessageCenter(models.Model):
 
     class Meta:
         db_table = 'blog_user_message_center'
+
+
+class UUID(models.Model):
+    uuid_choice = (
+        ('register', u'注册账号'),
+        ('update', u'更换邮箱')
+    )
+    id = models.AutoField(primary_key=True)
+    uuid = models.CharField(max_length=32)
+    type = models.CharField(choices=uuid_choice, max_length=20)
+    insert_time = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User)
+    email = models.EmailField(blank=True, null=True)
+    is_valid = models.SmallIntegerField(default=1)

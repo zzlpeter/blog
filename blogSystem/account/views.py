@@ -5,7 +5,7 @@ from django.shortcuts import HttpResponseRedirect, render_to_response, RequestCo
 from blogSystem.common.views import response_json
 from django.contrib import messages
 from blogSystem import models as blog_models
-from service.commonFunc import get_user_ip, set_avatar_rendom
+from service.commonFunc import get_user_ip, set_avatar_rendom, send_email
 from service.commonKey import IMG_SAVE_ABSOLUTE_PATH
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -15,6 +15,7 @@ import re
 from service.decorator import is_authenticated
 from django.conf import settings
 from django.contrib.auth.models import User
+import uuid
 
 import logging
 
@@ -203,5 +204,28 @@ def register_account(req):
         user.is_active = 0
         user.userextend.portrait_id = set_avatar_rendom()
         user.save()
+        send_email('register', user)
         json_str = {'status': 1, 'msg': u'激活链接已发送到邮箱，请激活'}
+    return response_json(json_str)
+
+# 账号激活/修改邮箱
+def activate_account(req, uid):
+    try:
+        uidObj = blog_models.UUID.objects.get(uuid=uid)
+        # 检查该链接是否有效
+        if uidObj.is_valid == 0:
+            json_str = {'status': 0, 'msg': u'该链接无效'}
+        # 账号激活
+        elif uidObj.type == 'register':
+            uidObj.user.is_valid = 1
+            uidObj.save()
+            json_str = {'status': 1, 'msg': u'账号已激活，请登录'}
+        # 修改邮箱
+        elif uidObj.type == 'update':
+            uidObj.user.email = uidObj.email
+            uidObj.save()
+            json_str = {'status': 1, 'msg': u'邮箱已修改'}
+    except Exception, exc:
+        logger.error(exc, exc_info=True)
+        json_str = {'status': 0, 'msg': u'服务器异常，请稍后重试'}
     return response_json(json_str)

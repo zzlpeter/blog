@@ -24,7 +24,7 @@ from blogSystem.search import views as search_views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    url(r'^/?$', blog_views.index, name='index'),
+    url(r'^$', blog_views.index, name='index'),
     url(r'^postDetail/?$', blog_views.postDetail, name='postDetail'),
 
     url(r'^makePost/?$', blog_views.makePost, name='makePost'),
@@ -58,6 +58,7 @@ urlpatterns = [
     url(r'^accounts/change_pwd/?$', account_views.change_pwd, name='change_pwd'),
     url(r'^accounts/change_other/?$', account_views.change_other, name='change_other'),
     url(r'^accounts/register_account/?$', account_views.register_account, name='register_account'),
+    url(r'^accounts/activate_account/(?P<uuid>[a-f\d]{8}(-[a-f\d]{4}){3}-[a-f\d]{12}?)/?$', account_views.activate_account, name='activate_account'),
 
     # 帖子分类（一级和二级分类）
     url(r'^category/(?P<category1>\w+)/?$', blog_views.postList, name='category_by1'),

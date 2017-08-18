@@ -113,7 +113,110 @@ img:hover{
 }
 </style>
 
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Amiri|Aref+Ruqaa|Cairo|Changa|El+Messiri|Harmattan|Jomhuria|Lateef|Mirza|Rakkas|Lato|Source+Sans+Pro|Ubuntu');
+/* *{transition: 0.3s linear; padding:0;margin:0;} */
+body{
+    background-image: linear-gradient(-225deg, rgba(44, 216, 213, 0.45) 0%, #C5C1FF 56%, rgba(255, 186, 195, 0.71) 100%);
 
+
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+h2 {margin:2em; letter-spacing:0.2em; color: #EEE}
+.container{
+	margin: 3em auto;
+	width: 90%;
+	text-align: center;
+/* 	font-family: 'Aref Ruqaa', serif; */
+	font-family: 'Ubuntu', sans-serif;
+/* font-family: 'Lato', sans-serif; */
+font-family: 'Source Sans Pro', sans-serif;
+
+
+}
+.item {
+/* 	background: #FFF; */
+	margin: 2em;
+	display: inline-block;
+	width: 200px;
+	height: 200px;
+	border-radius: 20px;
+	transform: rotate(45deg);
+	position: relative;
+	overflow: hidden;
+	transition: all 0.3s ease-in-out;
+	padding:0;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	margin: 0 auto;
+}
+.item p {
+	position: absolute;
+	transform: rotate(-45deg);
+	top: 30%;
+	left: -20%;
+	background: rgba(0, 0, 0, 0.7);
+	padding: 10px 20px;
+	width:130%;
+	text-align:center;
+	color: #fff;
+	transition: all 0.3s ease-in-out;
+
+}
+
+.item:hover {
+	transform: none;
+	transform: scale(1.5);
+	z-index:2;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.item:hover > p {
+	transform: none;
+	top: 0;
+
+}
+
+
+img {
+	width: 100%;
+	height: 100%;
+	transition: 0.3s linear;
+	transform: rotate(-45deg) scale(1.4)
+
+
+}
+.item:hover > img {
+	transform: none;
+
+}
+
+p.ar {
+font-family: 'Rakkas', cursive;
+	font-size:1.1em;
+
+}
+
+
+
+
+body::-webkit-scrollbar
+{
+	width: 0.7em;
+	background-color: #EEE;
+}
+
+body::-webkit-scrollbar-thumb{
+/* 	background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%); */
+	background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);
+/* 	background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%); */
+/*   background: linear-gradient(to top, #2193b0, #6dd5ed);  */
+	border-radius:1em;
+}
+
+
+
+</style>
 {#        <style>#}
 {#            #footer {#}
 {#  position: absolute;#}
@@ -277,66 +380,130 @@ img:hover{
 {#				</section>#}
 {#			</div>#}
 {#        {% endverbatim %}#}
-            <div style="background-image: radial-gradient(mintcream 0%, lightgray 100%); height: 30%;margin-top: -70px;">
-                <h1 style="display: table;margin-top: 10px;margin: 5% auto 0;text-transform: uppercase;font-family: 'Anaheim', sans-serif;font-size: 4em;font-weight: 400;text-shadow: 0 1px white, 0 2px black;">Anything Fit Your Posture</h1>
-                <div class="container1" id="app-index">
-                    {% verbatim %}
-                    <div id="carousel">
-                        <figure v-for="item in items"><a :href="item.href"><img :src="item.img" style="height: 100px;width: 180px;" :title="item.summary" alt=""></a></figure>
-                    </div>
-                    {% endverbatim %}
-                </div>
-            </div>
+{#            <div style="background-image: radial-gradient(mintcream 0%, lightgray 100%); height: 30%;margin-top: -70px;">#}
+{#                <h1 style="display: table;margin-top: 10px;margin: 5% auto 0;text-transform: uppercase;font-family: 'Anaheim', sans-serif;font-size: 4em;font-weight: 400;text-shadow: 0 1px white, 0 2px black;">Anything Fit Your Posture</h1>#}
+{#                <div class="container1" id="app-index">#}
+{#                    {% verbatim %}#}
+{#                    <div id="carousel">#}
+{#                        <figure v-for="item in items"><a :href="item.href"><img :src="item.img" style="height: 100px;width: 180px;" :title="item.summary" alt=""></a></figure>#}
+{#                    </div>#}
+{#                    {% endverbatim %}#}
+{#                </div>#}
+{#            </div>#}
 
 
 
 		<!-- Main -->
-			<div id="main" class="wrapper style1" >
+{#			<div id="main" class="wrapper style1" >#}
 {#                <img src="http://cv.cuiqingcai.com/images/3.png" width="100%">#}
-				<section class="container">
-					<header class="major">
-						<h2>Nulla luctus eleifend</h2>
-						<span class="byline">Mauris vulputate dolor sit amet nibh</span>
-					</header>
-					<div class="row">
+{#				<section class="container">#}
+{#					<header class="major">#}
+{#						<h2>Nulla luctus eleifend</h2>#}
+{#						<span class="byline">Mauris vulputate dolor sit amet nibh</span>#}
+{#					</header>#}
+{#					<div class="row">#}
+{##}
+{#						<!-- Content -->#}
+{#							<div class="6u">#}
+{#								<section>#}
+{#									<ul class="style">#}
+{#										<li>#}
+{#											<span class="fa fa-wrench"></span>#}
+{#											<h3>Integer ultrices</h3>#}
+{#											<span>In posuere eleifend odio. Quisque semper augue mattis wisi. Maecenas ligula. Pellentesque viverra vulputate enim.</span>#}
+{#										</li>#}
+{#										<li>#}
+{#											<span class="fa fa-cloud"></span>#}
+{#											<h3>Aliquam luctus</h3>#}
+{#											<span>Pellentesque viverra vulputate enim. Aliquam erat volutpat. Maecenas condimentum enim tincidunt risus accumsan.</span>#}
+{#										</li>#}
+{#									</ul>#}
+{#								</section>#}
+{#							</div>#}
+{#							<div class="6u">#}
+{#								<section>#}
+{#									<ul class="style">#}
+{#										<li>#}
+{#											<span class="fa fa-cogs"></span>#}
+{#											<h3>Integer ultrices</h3>#}
+{#											<span>In posuere eleifend odio. Quisque semper augue mattis wisi. Maecenas ligula. Pellentesque viverra vulputate enim.</span>#}
+{#										</li>#}
+{#										<li>#}
+{#											<span class="fa fa-leaf"></span>#}
+{#											<h3>Aliquam luctus</h3>#}
+{#											<span>Pellentesque viverra vulputate enim. Aliquam erat volutpat. Maecenas condimentum enim tincidunt risus accumsan.</span>#}
+{#										</li>#}
+{#									</ul>#}
+{#								</section>#}
+{#							</div>#}
+{##}
+{#					</div>#}
+{#				</section>#}
+{#			</div>#}
+        <div class="container">
+<h2>Trust Yourself Never Give Up </h2>
+    {% for p in posts1 %}
+	<div class="item ">
+        <a href="{{ p.href }}"><img src="{{ p.img }}"></a>
+        <p>{{ p.title }}</p>
+    </div>
+            {% endfor %}
+{#	<div class="item ">#}
+{#		<img src="https://9227-presscdn-0-11-pagely.netdna-ssl.com/wp-content/uploads/2015/11/Luxor-Egypt.jpg">#}
+{#	    <p>Luxor, EGYPT </p>#}
+{#	</div>#}
+{#    <div class="item ">#}
+{#        <img src="https://www.roughguides.com/wp-content/uploads/2012/11/1416684531-660x420.jpg">#}
+{#        <p class="ar">قلعة صلاح الدين </p>#}
+{#	</div>#}
+{#	<div class="item ">#}
+{#		<img src="http://egyptfuntours.com/images/stories/egypt_tours_hurghada_safari.jpg">#}
+{#	    <p> Safari Hurghada Desert </p>#}
+{#	</div>#}
+	<br>
+	<span>
+        {% for p in posts2 %}
+        <div class="item ">
+           <a href="{{ p.href }}"> <img src="{{ p.img }}"></a>
+            <p>{{ p.title }}</p>
+        </div>
+{% endfor %}
 
-						<!-- Content -->
-							<div class="6u">
-								<section>
-									<ul class="style">
-										<li>
-											<span class="fa fa-wrench"></span>
-											<h3>Integer ultrices</h3>
-											<span>In posuere eleifend odio. Quisque semper augue mattis wisi. Maecenas ligula. Pellentesque viverra vulputate enim.</span>
-										</li>
-										<li>
-											<span class="fa fa-cloud"></span>
-											<h3>Aliquam luctus</h3>
-											<span>Pellentesque viverra vulputate enim. Aliquam erat volutpat. Maecenas condimentum enim tincidunt risus accumsan.</span>
-										</li>
-									</ul>
-								</section>
-							</div>
-							<div class="6u">
-								<section>
-									<ul class="style">
-										<li>
-											<span class="fa fa-cogs"></span>
-											<h3>Integer ultrices</h3>
-											<span>In posuere eleifend odio. Quisque semper augue mattis wisi. Maecenas ligula. Pellentesque viverra vulputate enim.</span>
-										</li>
-										<li>
-											<span class="fa fa-leaf"></span>
-											<h3>Aliquam luctus</h3>
-											<span>Pellentesque viverra vulputate enim. Aliquam erat volutpat. Maecenas condimentum enim tincidunt risus accumsan.</span>
-										</li>
-									</ul>
-								</section>
-							</div>
+{#        <div class="item ">#}
+{#            <img src="https://www.greenprophet.com/wp-content/uploads/Egyptian-Desert-Sand-Spiral-3.jpg">#}
+{#            <p>The Desert Breath </p>#}
+{#        </div>#}
+{##}
+{#        <div class="item ">#}
+{#            <img src="http://www.destination360.com/africa/egypt/images/s/safari-tours.jpg">#}
+{#            <p>Safari Egypt</p>#}
+{#        </div>#}
+    <span>
+    <br>
 
-					</div>
-				</section>
-			</div>
+
+{% for p in posts3 %}
+	<div class="item ">
+		<a href="{{ p.href }}"> <img src="{{ p.img }}"></a>
+	    <p>{{ p.title }}</p>
+    </div>
+{% endfor %}
+
+{#	<div class="item ">#}
+{#		<img src="http://www.holiday-designers.com/images/0/0/d8d31089-a92d-493c-8567-797c09efa98f.jpg">#}
+{#	    <p>Red Sea Diving Holidays </p>#}
+{#	</div>#}
+{##}
+{#    <div class="item ">#}
+{#        <img src="https://egyptianstreets.com/wp-content/uploads/2014/07/El-_Gouna_Architenturr_hotels_egypt.jpg">#}
+{#	    <p>GOUNA</p>#}
+{#	</div>#}
+{##}
+{#	<div class="item ">#}
+{#		<img src="https://egyptianstreets.com/wp-content/uploads/2014/07/01-Jaz_Oriental_014_default.jpg">#}
+{#	    <p> MARSA MATROUH </p>#}
+{#	</div>#}
+{#	</div>#}
         {#机器人对话框#}
         {% include 'common/tuling.html' %}
         {#登录模态框#}
@@ -349,7 +516,7 @@ img:hover{
                     hoverDelay: 0
                 });
 
-                app.getTopThreePost();
+{#                app.getTopThreePost();#}
 {#                setInterval(function(){#}
 {#                    app.counter += 1;#}
 {#                    app.getTopThreePost();#}

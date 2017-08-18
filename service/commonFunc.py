@@ -1,9 +1,11 @@
 # coding: utf-8
 
 import logging
-from blogSystem.models import Images, Post, PostComment
+from blogSystem.models import Images, Post, PostComment, UUID
 import random
 from service.commonKey import COMMENT_SCORE, POST_SCORE
+import uuid
+from service.emails import Email
 
 
 logger = logging.getLogger(__name__)
@@ -70,3 +72,30 @@ def get_user_level(uid):
             'no_star': 0
         }
     return level
+
+# 生成UUID1
+def uid1():
+    return uuid.uuid1()
+
+# 发送邮件
+def send_email(te, user, email=None):
+    # 首先插入UUID表记录
+    uid = UUID()
+    tmp_uuid = uid1()
+    uid.uuid = tmp_uuid
+    uid.type = te
+    uid.user = user
+    uid.is_valid = 1
+    if email:
+        uid.email = email
+    uid.save()
+    if te == 'register':
+        mail_content = '''
+                            <html>
+                                <h5>尊敬的用户您好</h5>
+                                <h5>欢迎注册伊诺的博客</h5>
+                                <h5>您的博客账号已开通，请点击以下链接激活账号：</h5>
+                                <h5><a href='http://47.93.226.92/accounts/activate_account/%s'>点我激活</a></h5>
+                            </html>
+                        '''%tmp_uuid
+    # em = Email()

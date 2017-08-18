@@ -25,7 +25,20 @@ logger = logging.getLogger(__name__)
 
 # 首页展示
 def index(req, tmp_name='index.html'):
-    return render_to_response(tmp_name, context_instance=RequestContext(req))
+    posts = blog_models.Post.objects.all().order_by('?')[0: 11]
+    post_list = [
+        {
+            'img': "/static/images/%s/%s" % (post.img.img_category.name, post.img.src),
+            'href': post.post_detail_path(),
+            'title': post.title
+        } for post in posts
+    ]
+    data = {
+        'posts1': post_list[0: 4],
+        'posts2': post_list[4: 7],
+        'posts3': post_list[7: 11]
+    }
+    return render_to_response(tmp_name, data, context_instance=RequestContext(req))
 
 # 帖子详情页面
 def postDetail(req, category1=None, category2=None, post_id=None, tmp_name='postDetail.html'):
