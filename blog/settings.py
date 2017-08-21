@@ -147,11 +147,7 @@ STATICFILES_FINDERS = (
 
 
 # 发邮件相关配置
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'liveme_cms_finance@conew.com'
-EMAIL_HOST_PASSWORD = 'wckckzuthxcgivop'
-EMAIL_PORT = 25
+
 
 
 # 每页数量
