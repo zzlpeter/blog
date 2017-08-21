@@ -149,35 +149,45 @@ def change_other(req):
     user = req.user
     type = req.POST.get('type')
     value = req.POST.get('value')
-    if type == 'name':
-        # 检查用户名是否被其他用户占用
-        if blog_models.User.objects.exclude(id=user.id).filter(username=value).exists():
-            json_str = {'status': 0, 'msg': u'该用户名已被占用，请更换！'}
-            return response_json(json_str)
+    try:
+        if type == 'name':
+            # 检查用户名是否被其他用户占用
+            if blog_models.User.objects.exclude(id=user.id).filter(username=value).exists():
+                json_str = {'status': 0, 'msg': u'该用户名已被占用，请更换！'}
+                return response_json(json_str)
+            else:
+                user.username = value
+                user.save()
+                json_str = {'status': 1, 'msg': u'您已成功修改用户名'}
+                return response_json(json_str)
+        elif type == 'nickName':
+            # 检查用户昵称是否被其他用户占用
+            if blog_models.UserExtend.objects.exclude(user=user).filter(nickname=value).exists():
+                json_str = {'status': 0, 'msg': u'该昵称已被占用，请更换！'}
+                return response_json(json_str)
+            else:
+                user.userextend.nickname = value
+                user.userextend.save()
+                json_str = {'status': 1, 'msg': u'您已成功修改昵称'}
+                return response_json(json_str)
+        elif type == 'email':
+            if '@' not in value:
+                json_str = {'status': 0, 'msg': u'请输入有效邮箱'}
+                return response_json(json_str)
+            elif value == user.email:
+                json_str = {'status': 0, 'msg': u'修改邮箱与原有邮箱一致'}
+                return response_json(json_str)
+            else:
+                # 给新邮箱发确认邮件
+                send_email('update', user, email=value)
+                json_str = {'status': 1, 'msg': u'邮件已发送，请检查邮箱'}
+                return response_json(json_str)
         else:
-            user.username = value
-            user.save()
-            json_str = {'status': 1, 'msg': u'您已成功修改用户名'}
+            json_str = {'status': 0, 'msg': u'类型错误，请稍后重试'}
             return response_json(json_str)
-    elif type == 'nickName':
-        # 检查用户昵称是否被其他用户占用
-        if blog_models.UserExtend.objects.exclude(user=user).filter(nickname=value).exists():
-            json_str = {'status': 0, 'msg': u'该昵称已被占用，请更换！'}
-            return response_json(json_str)
-        else:
-            user.userextend.nickname = value
-            user.userextend.save()
-            json_str = {'status': 1, 'msg': u'您已成功修改昵称'}
-            return response_json(json_str)
-    elif type == 'email':
-        if '@' not in value:
-            json_str = {'status': 0, 'msg': u'请输入有效邮箱'}
-            return response_json(json_str)
-        else:
-            # 给新邮箱发确认邮件
-            pass
-    else:
-        json_str = {'status': 0, 'msg': u'类型错误，请稍后重试'}
+    except Exception, exc:
+        logger.error(exc, exc_info=True)
+        json_str = {'status': 0, 'msg': u'服务器异常，请稍后重试'}
         return response_json(json_str)
 
 # 注册账号
@@ -210,22 +220,24 @@ def register_account(req):
 
 # 账号激活/修改邮箱
 def activate_account(req, uid):
+    json_str = {'status': 0, 'msg': u'This link is invalid'}
     try:
         uidObj = blog_models.UUID.objects.get(uuid=uid)
         # 检查该链接是否有效
         if uidObj.is_valid == 0:
-            json_str = {'status': 0, 'msg': u'该链接无效'}
+            json_str = {'status': 0, 'msg': u'This link is invalid'}
         # 账号激活
         elif uidObj.type == 'register':
             uidObj.user.is_valid = 1
             uidObj.save()
-            json_str = {'status': 1, 'msg': u'账号已激活，请登录'}
+            json_str = {'status': 1, 'msg': u'Your account has been activated, please log in'}
         # 修改邮箱
         elif uidObj.type == 'update':
             uidObj.user.email = uidObj.email
+            uidObj.user.save()
             uidObj.save()
-            json_str = {'status': 1, 'msg': u'邮箱已修改'}
+            json_str = {'status': 1, 'msg': u'Your email has been updated, thanks'}
     except Exception, exc:
         logger.error(exc, exc_info=True)
-        json_str = {'status': 0, 'msg': u'服务器异常，请稍后重试'}
+        json_str = {'status': 0, 'msg': u'This link is invalid'}
     return response_json(json_str)

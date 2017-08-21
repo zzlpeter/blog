@@ -58,7 +58,7 @@ urlpatterns = [
     url(r'^accounts/change_pwd/?$', account_views.change_pwd, name='change_pwd'),
     url(r'^accounts/change_other/?$', account_views.change_other, name='change_other'),
     url(r'^accounts/register_account/?$', account_views.register_account, name='register_account'),
-    url(r'^accounts/activate_account/(?P<uuid>[a-f\d]{8}(-[a-f\d]{4}){3}-[a-f\d]{12}?)/?$', account_views.activate_account, name='activate_account'),
+    url(r'^accounts/activate_account/(?P<uid>[a-f\d]{8}(-[a-f\d]{4}){3}-[a-f\d]{12}?)/?$', account_views.activate_account, name='activate_account'),
 
     # 帖子分类（一级和二级分类）
     url(r'^category/(?P<category1>\w+)/?$', blog_views.postList, name='category_by1'),
@@ -76,7 +76,7 @@ urlpatterns = [
     url(r'^get_user_post/?$', blog_views.get_user_post, name='get_user_post'),
 
 
-    url(r'^test/?$', blog_views.test),
+    # url(r'^test/?$', blog_views.test),
 
     url(r'^search/?$', search_views.search, name='search'),
 

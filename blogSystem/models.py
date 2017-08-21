@@ -249,9 +249,15 @@ class UUID(models.Model):
         ('update', u'更换邮箱')
     )
     id = models.AutoField(primary_key=True)
-    uuid = models.CharField(max_length=32)
+    uuid = models.CharField(max_length=36)
     type = models.CharField(choices=uuid_choice, max_length=20)
     insert_time = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
     email = models.EmailField(blank=True, null=True)
     is_valid = models.SmallIntegerField(default=1)
+
+    def __str__(self):
+        return self.id
+
+    class Meta:
+        db_table = 'blog_uuid'
