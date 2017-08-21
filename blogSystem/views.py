@@ -14,6 +14,7 @@ from django.http import Http404
 from datetime import datetime
 from service.decorator import is_authenticated
 from django.conf import settings
+from django.contrib.auth.decorators import permission_required
 
 import models as blog_models
 import json
@@ -76,6 +77,7 @@ def postDetail(req, category1=None, category2=None, post_id=None, tmp_name='post
 
 # 发帖页面
 @login_required
+@permission_required('blogSystem.add_post')
 def makePost(req, tmp_name='makePost.html'):
     category = blog_models.Category.objects.filter(level=2).order_by('-parent_level', 'id')
     return render_to_response(tmp_name, {'category': category}, context_instance=RequestContext(req))
