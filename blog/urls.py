@@ -22,7 +22,7 @@ from blogSystem.common import views as common_views
 from blogSystem.search import views as search_views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin_peter_zzl_test/', admin.site.urls),
 
     url(r'^$', blog_views.index, name='index'),
     url(r'^postDetail/?$', blog_views.postDetail, name='postDetail'),

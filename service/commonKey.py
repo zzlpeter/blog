@@ -24,4 +24,4 @@ COMMENT_SCORE = 5
 
 
 # 图片保存路径(绝对路径)
-IMG_SAVE_ABSOLUTE_PATH = '/Users/zhangzhiliang/git/blog/static/images/other'
+IMG_SAVE_ABSOLUTE_PATH = '/root/zzl/blog/static/images/other'

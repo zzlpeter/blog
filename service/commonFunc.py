@@ -95,7 +95,7 @@ def send_email(te, user, email=None):
                                 <h5>尊敬的用户您好</h5>
                                 <h5>欢迎注册伊诺的博客</h5>
                                 <h5>您的博客账号已开通，请点击以下链接激活账号：</h5>
-                                <h5><a href='http://47.93.226.92/accounts/activate_account/%s'>点我激活</a></h5>
+                                <h5><a href='http://zzl.papasecret.com/accounts/activate_account/%s'>点我激活</a></h5>
                             </html>
                         '''%tmp_uuid
         tmp_email = user.email
@@ -105,7 +105,7 @@ def send_email(te, user, email=None):
                                 <h5>尊敬的用户您好</h5>
                                 <h5>欢迎注册伊诺的博客</h5>
                                 <h5>请点击以下链接更新邮箱信息：</h5>
-                                <h5><a href='http://47.93.226.92/accounts/activate_account/%s'>点我更新</a></h5>
+                                <h5><a href='http://zzl.papasecret.com/accounts/activate_account/%s'>点我更新</a></h5>
                             </html>
                         ''' % tmp_uuid
         tmp_email = email

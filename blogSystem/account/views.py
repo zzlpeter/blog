@@ -179,8 +179,11 @@ def change_other(req):
                 return response_json(json_str)
             else:
                 # 给新邮箱发确认邮件
-                send_email('update', user, email=value)
-                json_str = {'status': 1, 'msg': u'邮件已发送，请检查邮箱'}
+                # send_email('update', user, email=value)
+                # json_str = {'status': 1, 'msg': u'邮件已发送，请检查邮箱'}
+                user.email = value
+                user.save()
+                json_str = {'status': 1, 'msg': u'修改成功'}
                 return response_json(json_str)
         else:
             json_str = {'status': 0, 'msg': u'类型错误，请稍后重试'}
@@ -211,11 +214,12 @@ def register_account(req):
     json_str = {'status': 0, 'msg': u'系统异常，请稍后重试'}
     with transaction.atomic():
         user = User.objects.create_user(uname, email, pwd)
-        user.is_active = 0
+        user.is_active = 1
         user.userextend.portrait_id = set_avatar_rendom()
         user.save()
-        send_email('register', user)
-        json_str = {'status': 1, 'msg': u'激活链接已发送到邮箱，请激活'}
+        # send_email('register', user)
+        # json_str = {'status': 1, 'msg': u'激活链接已发送到邮箱，请激活'}
+        json_str = {'status': 1, 'msg': u'注册成功，请登录'}
     return response_json(json_str)
 
 # 账号激活/修改邮箱

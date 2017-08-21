@@ -429,6 +429,7 @@
     // 修改其他信息
     function changeOther(type) {
         var value = $('#'+type).val();
+        layer.load();
         $.ajax({
             url: "{% url 'change_other' %}",
             dataType: 'JSON',
@@ -438,6 +439,7 @@
                 'value': value
             },
             success: function(res){
+                layer.closeAll('loading');
                 if(res.status == 1){
                     layer.msg(res.msg, {icon: 6});
                 }else{

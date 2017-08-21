@@ -168,6 +168,7 @@
             layer.msg('请输入邮箱', {icon: 6});
             return false;
         }
+        layer.load();
         $.ajax({
             url: "{% url 'register_account' %}",
             type: 'POST',
@@ -180,6 +181,7 @@
                 'csrfmiddlewaretoken': '{{ csrf_token }}'
             },
             success: function (res) {
+                layer.closeAll('loading');
                 $("#btn-signup-cancel").click();
                 if(res.status==1){
                     layer.msg(res.msg, {icon: 6});
