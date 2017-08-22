@@ -14,12 +14,15 @@
 
         <div class="comment-tabs">
             <ul class="nav nav-tabs" role="tablist">
+                {% if perms.blogSystem.add_post %}
                 <li class="active"><a href="#my-post-list" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">我的动态</h4></a></li>
+                {% endif %}
 {#                <li><a href="#my-msg-list" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">我的消息</h4></a></li>#}
-                <li><a href="#account-settings" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">账号设置</h4></a></li>
+                <li {% if not perms.blogSystem.add_post %} class="active" {% endif %}><a href="#account-settings" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">账号设置</h4></a></li>
                 <li><a href="#user-list" role="tab" data-toggle="tab"><h4 class="reviews text-capitalize">用户列表</h4></a></li>
             </ul>
             <div class="tab-content">
+                {% if perms.blogSystem.add_post %}
                 {% verbatim %}
                 <div class="tab-pane active" id="my-post-list">
                     <template v-if="post_arr.length!=0">
@@ -43,6 +46,7 @@
                     </template>
                 </div>
                 {% endverbatim %}
+                {% endif %}
                 {% verbatim %}
                 <div class="tab-pane" id="user-list">
                     <button style="float:right; margin-bottom: -10px; margin-top:-48px; margin-right: -13px; background-color: cadetblue; width: 34px;" class="btn btn-default">搜</button>
@@ -115,7 +119,7 @@
 {#                        </tbody>#}
 {#                    </table>#}
 {#                </div>#}
-                <div class="tab-pane" id="account-settings">
+                <div class="tab-pane {% if not perms.blogSystem.add_post %}active{% endif %}" id="account-settings">
                     <div class="row">
                         <div class="col-sm-3">
                             <a href="javascript:;" class="nav-tabs-dropdown btn btn-block btn-info">账号基本信息设置</a>
@@ -220,7 +224,9 @@
 
     $(function () {
         //页面加载完毕初始化数据
+        {% if perms.blogSystem.add_post %}
         postListApp.getPostList('1');
+        {% endif %}
         userListApp.initUserList();
     });
 
