@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response, RequestContext, HttpResponse, g
 from django.contrib.auth.decorators import login_required
 from blogSystem.common.views import response_json
 from service.commonKey import CATEGORY_DICT
-from service.commonFunc import get_user_level
+from service.commonFunc import get_user_level, set_post_img_random
 from django.db.models import F, Q
 from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
@@ -197,7 +197,7 @@ def makePostSummit(req):
     try:
         blog_models.Post.objects.create(content=content,
                                         author_id=user.id,
-                                        img_id=1,
+                                        img_id=set_post_img_random(),
                                         category_id=category,
                                         title=title,
                                         summary=summary)
