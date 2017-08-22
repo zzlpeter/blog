@@ -30,6 +30,13 @@ def set_avatar_rendom():
     rand = random.randint(0, count - 1)
     return int(id_list[rand][0])
 
+# 发帖时随机获取图片
+def set_post_img_random():
+    id_list = Images.objects.filter(img_category__name__in=['scenery', 'welfare', 'delicacy']).values_list('id')
+    count = len(id_list)
+    rand = random.randint(0, count - 1)
+    return int(id_list[rand][0])
+
 # 获取用户等级
 def get_user_level(uid):
     post_count = Post.objects.filter(author_id=uid).count()
