@@ -74,7 +74,7 @@ urlpatterns = [
     url(r'^get_user_list/?$', blog_views.get_user_list, name='get_user_list'),
     url(r'^email_notice_user/?$', blog_views.email_notice_user, name='email_notice_user'),
     url(r'^get_user_post/?$', blog_views.get_user_post, name='get_user_post'),
-
+    url(r'^get_label_list/?$', blog_views.get_label_list, name='get_label_list'),
 
     # url(r'^test/?$', blog_views.test),
 

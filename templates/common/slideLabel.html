@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<script src="{% static 'js/vue/vue.js' %}"></script>
+<script src="{% static 'js/vue/vue-resource.js' %}"></script>
+
+{% verbatim %}
+<div class="pagination pagination-lg" id="slide-label" style="float: right; width: 250px;">
+    标签云<br><br>
+
+    <a :href="lab.href" v-for="lab in labelList">
+        <button style="border-radius: 10px; margin-top: 10px;">{{ lab.name }}</button>
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+</div>
+{% endverbatim %}
+
+<script>
+
+    $(function () {
+        // 初始化页面数据
+        app.getLabels();
+    });
+
+    var app = new Vue({
+        el: '#slide-label',
+        data: {
+            labelList: []
+        },
+        methods: {
+            getLabels: function () {
+                var url = '/get_label_list';
+                this.$http.get(url).then(
+                    function (res) {
+                        console.log(res.body);
+                        this.labelList = res.body.labelList;
+                    }
+                )
+            }
+        }
+    })
+</script>

@@ -461,6 +461,20 @@ def get_user_post(req):
 def about_myself(req, tmp_name='myself.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
+# 获取所有标签分类
+def get_label_list(req):
+    try:
+        cats = blog_models.Category.objects.filter(level=2)
+        labelList = [
+            {
+                'href': '/category/%s/%s' % (blog_models.Category.objects.get(id=cat.parent_level).name, cat.name),
+                'name': cat.name
+            } for cat in cats
+        ]
+        return response_json({'labelList': labelList})
+    except Exception, exc:
+        logger.error(exc, exc_info=True)
+        return response_json({'labelList': []})
 
 
 

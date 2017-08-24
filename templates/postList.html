@@ -53,28 +53,15 @@
 {% endif %}
 <hr>
 <ul class="pagination pagination-lg">
-    <li><a {% if posts.number == 1 %} disabled="disabled" {% else %} href="?page=1{% if q %}&q={{ q }}{% endif %}" {% endif %}>首页</a></li>
-    <li><a {% if posts.has_previous %} href="?page={{ posts.previous_page_number }}{% if q %}&q={{ q }}{% endif %}" {% else %} disabled="disabled" {% endif %}> « </a></li>
-    <li><a {% if posts.has_next %} href="?page={{ posts.next_page_number }}{% if q %}&q={{ q }}{% endif %}" {% else %} disabled="disabled" {% endif %}> » </a></li>
-    <li><a {% if posts.number == posts.paginator.num_pages %} disabled="disabled" {% else %} href="?page={{ posts.paginator.num_pages }}{% if q %}&q={{ q }}{% endif %}" {% endif %}>末页</a></li>
+    <li><a {% if posts.number == 1 %} disabled="disabled" style="color: grey" {% else %} href="?page=1{% if q %}&q={{ q }}{% endif %}" {% endif %}>首页</a></li>
+    <li><a {% if posts.has_previous %} href="?page={{ posts.previous_page_number }}{% if q %}&q={{ q }}{% endif %}" {% else %} disabled="disabled" style="color: grey" {% endif %}> « </a></li>
+    <li><a {% if posts.has_next %} href="?page={{ posts.next_page_number }}{% if q %}&q={{ q }}{% endif %}" {% else %} disabled="disabled" style="color: grey" {% endif %}> » </a></li>
+    <li><a {% if posts.number == posts.paginator.num_pages %} disabled="disabled" style="color: grey" {% else %} href="?page={{ posts.paginator.num_pages }}{% if q %}&q={{ q }}{% endif %}" {% endif %}>末页</a></li>
 </ul>
 </div>
 
 {#侧边栏#}
-<div class="pagination pagination-lg">
-    标签云<br><br>
-    <a href="/category/skills/python"><button>Python</button></a>
-    <a href="/category/skills/js"><button>JS</button></a>
-    <a href="/category/skills/linux"><button>Linux</button></a>
-    <br><br>
-    <a href="/category/skills/c"><button>C</button></a>
-{#    <button>JS</button>#}
-{#    <button>Linux</button>#}
-{#    <br><br>#}
-{#    <button>Python</button>#}
-{#    <button>JS</button>#}
-{#    <button>Linux</button>#}
-</div>
+{% include 'common/slideLabel.html' %}
 
 {#相册弹出层#}
 {% include 'common/bootstrapGallery.html' %}
