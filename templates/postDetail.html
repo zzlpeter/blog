@@ -26,7 +26,7 @@
                         </div>
                         <div class="pull-left meta">
                             <div class="title h5">
-                                <a href="#"><strong>{{ postObj.author.user.username }} </strong></a>
+                                <a href="javascript:;" style="color: cadetblue;"><strong>{{ postObj.author.user.userextend.nickname }} </strong></a>
                                 发表该帖子.
                                 {% if user.is_authenticated %}
                                     {% if user|judge_user_attention:postObj.author_id == 'yes'  %}
