@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 # 首页展示
 def index(req, tmp_name='index.html'):
-    posts = blog_models.Post.objects.all().order_by('?')[0: 11]
+    posts = blog_models.Post.objects.filter(is_valid=1).order_by('?')[0: 11]
     post_list = [
         {
             'img': "/static/images/%s/%s" % (post.img.img_category.name, post.img.src),
@@ -87,10 +87,22 @@ def user_post(req, uid, nickname, tmp_name='postList.html'):
         {'location': u'首页', 'href': '/'},
         {'location': nickname}
     ]
+    limit = settings.PAGE_SIZE
+    page = req.GET.get('page', 1)
+
     if not blog_models.UserExtend.objects.filter(user_id=uid, nickname=nickname).exists():
         raise Http404()
 
-    posts = blog_models.Post.objects.filter(author__user__id=uid).order_by('-id')
+    posts = blog_models.Post.objects.filter(author__user__id=uid, is_valid=1).order_by('-id')
+
+    paginator = Paginator(posts, limit)  # 实例化一个分页对象
+    try:
+        posts = paginator.page(page)  # 获取某页对应的记录
+    except PageNotAnInteger:  # 如果页码不是个整数
+        posts = paginator.page(1)  # 取第一页的记录
+    except EmptyPage:  # 如果页码太大，没有相应的记录
+        posts = paginator.page(paginator.num_pages)  # 取最后一页的记录
+
     dic = {
         'breads': breads,
         'posts': posts

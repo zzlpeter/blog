@@ -40,7 +40,7 @@ def search(req, tmp_name='postList.html'):
     ]
     s_list = []
     for q in qs:
-        post = blog_models.Post.objects.filter(Q(title__icontains=q) | Q(summary__icontains=q) | Q(content__icontains=q))
+        post = blog_models.Post.objects.filter(is_valid=1).filter(Q(title__icontains=q) | Q(summary__icontains=q) | Q(content__icontains=q))
         s_list.append(post)
     posts = chain.from_iterable(s_list)
     posts = list(set(posts))
