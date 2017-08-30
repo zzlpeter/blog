@@ -445,7 +445,7 @@ def get_user_post(req):
     page = req.GET.get('page', 1)
 
     limit = settings.PAGE_SIZE  # 每页显示的记录数
-    posts = blog_models.Post.objects.filter(author__user__id=user.id).order_by('-id')
+    posts = blog_models.Post.objects.filter(author__user__id=user.id, is_valid=1).order_by('-id')
     paginator = Paginator(posts, limit)  # 实例化一个分页对象
 
     try:
