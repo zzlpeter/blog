@@ -1,10 +1,12 @@
         {% include 'common/head.html' %}
         {% load staticfiles %}
         {% load blog_extras %}
-        <script src="{% static 'js/share.js' %}"></script>
+        <script src="{% static 'js/share/src/js/social-share.js' %}"></script>
+        <script src="{% static 'js/share/src/js/qrcode.js' %}"></script>
         <script src="{% static 'js/layer/layer.js' %}"></script>
         <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
         <link rel="stylesheet" href="{% static 'css/comment.css' %}" />
+        <link rel="stylesheet" href="{% static 'js/share/dist/css/share.min.css' %}" />
 
         {#面包屑#}
         {% include 'common/breadcrumb.html' %}
@@ -15,7 +17,22 @@
 
         {#将view传过来的变量暂时存起来#}
         <input id="hidden_content" value="{{ postObj.content }}" type="hidden">
-
+        {#分享#}
+        <li class="row" style="margin-left: 39px; float: left;">
+            <div class="social-share" data-initialized="true">
+                <a href="javascript:;" onclick="clickPostType('{{ postObj.id }}', 'weibo')" class="social-share-icon icon-weibo"></a>
+                <a href="javascript:;" onclick="clickPostType('{{ postObj.id }}', 'qq')" class="social-share-icon icon-qq"></a>
+                <a href="javascript:;" onclick="clickPostType('{{ postObj.id }}', 'weixin')" class="social-share-icon icon-wechat"></a>
+                <a href="javascript:;" onclick="clickPostType('{{ postObj.id }}', 'tencent')" class="social-share-icon icon-tencent"></a>
+                <a href="javascript:;" onclick="clickPostType('{{ postObj.id }}', 'douban')" class="social-share-icon icon-douban"></a>
+                <a href="javascript:;" onclick="clickPostType('{{ postObj.id }}', 'qzone')" class="social-share-icon icon-qzone"></a>
+                <a href="javascript:;" onclick="clickPostType('{{ postObj.id }}', 'linkedin')" class="social-share-icon icon-linkedin"></a>
+                <a href="javascript:;" onclick="clickPostType('{{ postObj.id }}', 'diandian')" class="social-share-icon icon-diandian"></a>
+                <a href="javascript:;" onclick="clickPostType('{{ postObj.id }}', 'facebook')" class="social-share-icon icon-facebook"></a>
+                <a href="javascript:;" onclick="clickPostType('{{ postObj.id }}', 'twitter')" class="social-share-icon icon-twitter"></a>
+                <a href="javascript:;" onclick="clickPostType('{{ postObj.id }}', 'google')" class="social-share-icon icon-google"></a>
+            </div>
+        </li>
         {#评论区#}
         <div class="container" style="float:left; margin-left: 20px;">
             <div class="col-sm-8">
@@ -57,15 +74,15 @@
                                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-share icon"></i><span id="post-share-id">{% get_post_related_num postObj 'share' %}</span>
                                 </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <div class="bdsharebuttonbox">
-                                        <a href="javascript:;" class="bds_qzone" onclick="clickPostType('{{ postObj.id }}', 'qzone')" data-cmd="qzone"></a>
-                                        <a href="javascript:;" class="bds_tsina" onclick="clickPostType('{{ postObj.id }}', 'tsina')" data-cmd="tsina"></a>
-                                        <a href="javascript:;" class="bds_tqq" onclick="clickPostType('{{ postObj.id }}', 'tqq')" data-cmd="tqq"></a>
-                                        <a href="javascript:;" class="bds_renren" onclick="clickPostType('{{ postObj.id }}', 'renren')" data-cmd="renren"></a>
-                                        <a href="javascript:;" class="bds_weixin" onclick="clickPostType('{{ postObj.id }}', 'weixin')" data-cmd="weixin"></a>
-                                    </div>
-                                </ul>
+{#                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">#}
+{#                                    <div class="bdsharebuttonbox">#}
+{#                                        <a href="javascript:;" class="bds_qzone" onclick="clickPostType('{{ postObj.id }}', 'qzone')" data-cmd="qzone"></a>#}
+{#                                        <a href="javascript:;" class="bds_tsina" onclick="clickPostType('{{ postObj.id }}', 'tsina')" data-cmd="tsina"></a>#}
+{#                                        <a href="javascript:;" class="bds_tqq" onclick="clickPostType('{{ postObj.id }}', 'tqq')" data-cmd="tqq"></a>#}
+{#                                        <a href="javascript:;" class="bds_renren" onclick="clickPostType('{{ postObj.id }}', 'renren')" data-cmd="renren"></a>#}
+{#                                        <a href="javascript:;" class="bds_weixin" onclick="clickPostType('{{ postObj.id }}', 'weixin')" data-cmd="weixin"></a>#}
+{#                                    </div>#}
+{#                                </ul>#}
                             </div>
                         </div>
                     </div>

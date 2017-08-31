@@ -76,7 +76,7 @@ urlpatterns = [
     url(r'^get_user_post/?$', blog_views.get_user_post, name='get_user_post'),
     url(r'^get_label_list/?$', blog_views.get_label_list, name='get_label_list'),
 
-    url(r'^test/?$', blog_views.test),
+    # url(r'^test/?$', blog_views.test),
 
     url(r'^search/?$', search_views.search, name='search'),
 

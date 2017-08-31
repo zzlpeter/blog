@@ -169,11 +169,17 @@ class ThumbUpDown(models.Model):
 
 class PostShare(models.Model):
     dest_choice = (
-        ('qzone', u'QQ空间'),
-        ('tsina', u'新浪微博'),
-        ('tqq', u'腾讯微博'),
-        ('renren', u'人人'),
-        ('wechat', u'微信')
+        ('weibo', u'微博'),
+        ('qq', u'QQ'),
+        ('weixin', u'微信'),
+        ('tencent', u'腾讯'),
+        ('douban', u'豆瓣'),
+        ('qzone', u'QQ控件'),
+        ('linkedin', u'领英'),
+        ('diandian', u'点点'),
+        ('facebook', 'facebook'),
+        ('twitter', u'推特'),
+        ('google', u'谷歌')
     )
     id = models.AutoField(primary_key=True)
     share_time = models.DateTimeField(auto_now=True)

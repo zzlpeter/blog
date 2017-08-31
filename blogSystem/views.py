@@ -237,7 +237,7 @@ def up_down_share_post(req):
             )
             count = blog_models.ThumbUpDown.objects.filter(post_id=post_id, thumb_type=action_type).count()
             json_str = {'status': 1, 'count': count}
-    elif action_type in ('qzone', 'tsina', 'tqq', 'renren', 'weixin'):
+    elif action_type in ('weibo', 'qq', 'weixin', 'tencent', 'douban', 'qzone', 'linkedin', 'diandian', 'facebook', 'twitter', 'google'):
         blog_models.PostShare.objects.create(
             post_id=post_id,
             destination=action_type
@@ -361,7 +361,7 @@ def make_leave_comment_submit(req):
         json_str = {'status': 0, 'msg': u'留言异常，请稍后重试！'}
     return response_json(json_str)
 
-def test(req, tmp_name='test3.html'):
+def test(req, tmp_name='test2.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
 @login_required
