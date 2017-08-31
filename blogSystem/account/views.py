@@ -245,3 +245,37 @@ def activate_account(req, uid):
         logger.error(exc, exc_info=True)
         json_str = {'status': 0, 'msg': u'This link is invalid'}
     return response_json(json_str)
+
+# 忘记密码
+def forget_pwd(req, tmp_name='forget_pwd.html'):
+    return render_to_response(tmp_name, context_instance=RequestContext(req))
+
+# 重新设置密码
+def update_forget_pwd(req):
+    uname = req.POST.get('uname')
+    email = req.POST.get('email')
+    pwd = req.POST.get('pwd')
+    pwd_again = req.POST.get('pwd_again')
+
+    try:
+        user = User.objects.get(username=uname, email=email)
+        # 检查新密码是否符合规则
+        if pwd != pwd_again:
+            json_str = {'status': 0, 'msg': u'两次密码输入不一致，请重新输入'}
+            return response_json(json_str)
+        if not re.match('[a-zA-Z]\w{5,9}', pwd):
+            json_str = {'status': 0, 'msg': u'密码长度6-10位，以字母开头，只能输入字母、数字、下划线'}
+            return response_json(json_str)
+        # 保存新密码
+        user.set_password(pwd)
+        user.save()
+        json_str = {'status': 1, 'msg': u'新密码设置成功，请登录'}
+        return response_json(json_str)
+    except Exception, exc:
+        logger.error(exc, exc_info=True)
+        json_str = {'status': 0, 'msg': u'用户名与邮箱不匹配'}
+        return response_json(json_str)
+
+
+
+
