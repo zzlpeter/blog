@@ -1,191 +1,264 @@
+
 {% include 'common/head.html' %}
-
 <style>
-    @import url(https://fonts.googleapis.com/css?family=Arapey:400italic);
-body {
-  background: #dedede;
-  -webkit-font-smoothing: antialiased;
-  min-width: 1200px;
+    body {
+{#    margin-top:60px;#}
+    font-family: 'Montserrat',sans-serif;
+}
+/* this is just for the demo */
+
+
+
+
+
+.panel-heading:hover {
+    cursor:pointer;
+}
+.panel-heading {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-.grid {
-  padding: 60px;
-  margin: 0 auto;
-  max-width: 1200px;
-}
+.side-tab:hover {
+        cursor: pointer;
+    }
+    .panel.panel-default {
+        border: none;
+        box-shadow: none !important;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
 
-.grid--item {
-  position: relative;
-  margin-top: -90px;
-  margin-right: 5px;
-  margin-left: 5px;
-  width: calc(33.33% - 10px);
-  float: left;
-  transition: all 0.5s;
-  overflow: hidden;
-  -webkit-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-  -webkit-shape-outside: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-}
-.grid--item:before {
+    }
+    .panel-heading {
+        border: none;
+        background-color: #eee;
+
+    }
+    .panel-body {
+        background-color: #f5f5f5;
+    }
+    .panel-title {
+        font-weight: 400;
+        color: $white;
+    }
+
+/*----------------------------------
+    Macbook pro mockup from:
+    http://jaredhardy.com/minimal-devices/
+
+----------------------------------*/
+
+.md-macbook-pro {
   display: block;
-  padding-top: 112.5%;
-  content: '';
-}
-.grid--item:nth-child(1), .grid--item:nth-child(2) {
-  margin-top: 0;
-}
-.grid--item:nth-child(7n - 1), .grid--item:nth-child(1) {
-  margin-left: 185px;
-}
+  width: 55.3125em;
+  height: 31.875em;
+  font-size: 13px;
+  margin: 0 auto;
 
-.img {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-position: center center;
-  background-size: cover;
+  @media (max-width:1199px){
+    font-size: 11px;
+  }
+  @media (max-width:1024px){
+    font-size: 10px;
+  }
+
+  @media (max-width:767px){
+    font-size: 7px;
+  }
+
+  @media (max-width:320px){
+    font-size: 5px;
+  }
+
+}
+.md-macbook-pro .md-lid {
+  width: 45em;
+  height: 30.625em;
   overflow: hidden;
-  -webkit-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  margin: 0 auto;
+  position: relative;
+  border-radius: 1.875em;
+  border: solid 0.1875em #cdced1;
+  background: #131313;
 }
-.img:before, .img:after {
+.md-macbook-pro .md-camera {
+  width: 0.375em;
+  height: 0.375em;
+  margin: 0 auto;
+  position: relative;
+  top: 1.0625em;
+  background: #000;
+  border-radius: 100%;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.25);
+}
+.md-macbook-pro .md-camera:after {
+  content: "";
+  display: block;
+  width: 0.125em;
+  height: 0.125em;
+  position: absolute;
+  left: 0.125em;
+  top: 0.0625em;
+  background: #353542;
+  border-radius: 100%;
+}
+.md-macbook-pro .md-screen {
+  width: 42.25em;
+  height: 26.375em;
+  margin: 0 auto;
+  position: relative;
+  top: 2.0625em;
+  // background: #1d1d1d;
+  background: #fff;
+  overflow: hidden;
+}
+.md-macbook-pro .md-screen img {
+  width: 100%;
+}
+.md-macbook-pro .md-base {
+  width: 100%;
+  height: 0.9375em;
+  position: relative;
+  top: -0.75em;
+  background: #c6c7ca;
+}
+.md-macbook-pro .md-base:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0.5em;
+  margin: 0 auto;
+  position: relative;
+  bottom: -0.1875em;
+  background: #b9babe;
+  border-radius: 0 0 1.25em 1.25em;
+}
+.md-macbook-pro .md-base:before {
+  content: "";
+  display: block;
+  width: 7.6875em;
+  height: 0.625em;
+  margin: 0 auto;
+  position: relative;
+  background: #a6a8ad;
+  border-radius: 0 0 0.625em 0.625em;
+}
+.md-macbook-pro.md-glare .md-lid:after {
+  content: "";
+  display: block;
+  width: 50%;
+  height: 100%;
   position: absolute;
   top: 0;
   right: 0;
-  bottom: 0;
-  left: 0;
-  content: '';
-  opacity: 0;
-  transition: opacity 0.5s;
+  border-radius: 0 1.25em 0 0;
+  background: -webkit-linear-gradient(37deg, rgba(255, 255, 255, 0) 50%, rgba(247, 248, 240, 0.025) 50%, rgba(250, 245, 252, 0.08));
+  background: -moz-linear-gradient(37deg, rgba(255, 255, 255, 0) 50%, rgba(247, 248, 240, 0.025) 50%, rgba(250, 245, 252, 0.08));
+  background: -o-linear-gradient(37deg, rgba(255, 255, 255, 0) 50%, rgba(247, 248, 240, 0.025) 50%, rgba(250, 245, 252, 0.08));
+  background: linear-gradient(53deg, rgba(255, 255, 255, 0) 50%, rgba(247, 248, 240, 0.025) 50%, rgba(250, 245, 252, 0.08));
 }
-.img:before {
-  background: rgba(128, 0, 128, 0.25);
-}
-.img:after {
-  background: linear-gradient(to top, transparent, rgba(0, 0, 0, 0.5), transparent);
-}
-
-.container1 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  opacity: 0;
-  text-align: center;
-  color: white;
-  will-change: transform;
-  backface-visibility: hidden;
-  transform: translate(-50%, -50%) scale(0.9);
-  transition: all 0.5s;
-  -webkit-shape-outside: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-  shape-outside: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-}
-
-h1,
-h2 {
-  font-family: 'Arapey';
-  font-style: italic;
-  font-weight: 400;
-}
-
-h1 {
-  margin-top: 90px;
-  text-align: center;
-  font-size: 56px;
-  color: #242424;
-}
-
-h2 {
-  font-size: 32px;
-}
-h2:before, h2:after {
-  display: inline-block;
-  margin: 0 0.5em;
-  width: 0.75em;
-  height: 0.03em;
-  background: turquoise;
-  content: '';
-  vertical-align: middle;
-  transition: all 0.3s;
-}
-
-.desc {
-  margin: 1em 0 0;
-  font-family: 'ATC Overlook';
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 11px;
-  line-height: 1.5;
-  color: turquoise;
-}
-
-.grid--item:hover .img:before,
-.grid--item:hover .img:after,
-.grid--item:hover .container1 {
-  opacity: 1;
-}
-.grid--item:hover .container1 {
-  transform: translate(-50%, -50%) scale(1);
-}
-
 </style>
+<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 
-<h1>make the world smarter</h1>
-<div class='grid'>
-  <div class='grid--item'>
-    <div class='img' style='background-image: url(https://images.unsplash.com/photo-1417436026361-a033044d901f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&w=1080&fit=max&s=faa4e192f33e0d6b7ce0e54f15140e42);'></div>
-    <div class='container1'>
-      <h2>Snowy Hills</h2>
-      <div class='desc'>只要有信心什么事都能完成！</div>
-{#        <div class='desc'>Photo by Ales Krivec</div>#}
-{#        <div class='desc'>Photo by Ales Krivec</div>#}
-{#        <div class='desc'>Photo by Ales Krivec</div>#}
-    </div>
-  </div>
-  <div class='grid--item'>
-    <div class='img' style='background-image: url(https://images.unsplash.com/44/MIbCzcvxQdahamZSNQ26_12082014-IMG_3526.jpg?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&w=1080&fit=max&s=49dab7a5e4b2e28b5707bc2db974c94b);'></div>
-    <div class='container1'>
-      <h2>Bear</h2>
-      <div class='desc'>抬頭，微笑，告訴自己加油！</div>
-    </div>
-  </div>
-  <div class='grid--item'>
-    <div class='img' style='background-image: url(https://images.unsplash.com/photo-1425668273332-3a46ab26b161?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&w=1080&fit=max&s=d453ab3dec298c43415526458b360fa6);'></div>
-    <div class='container1'>
-      <h2>Owl</h2>
-      <div class='desc'>尊严来自实力，实力来自拼搏！</div>
-    </div>
-  </div>
-  <div class='grid--item'>
-    <div class='img' style='background-image: url(https://images.unsplash.com/photo-1423145369430-a9ea0de096cd?crop=entropy&fit=crop&fm=jpg&h=1375&ixjsv=2.1.0&ixlib=rb-0.3.5&q=80&w=1725);'></div>
-    <div class='container1'>
-      <h2>Horse</h2>
-      <div class='desc'>微笑转身，用背影让故事完结！</div>
-    </div>
-  </div>
-  <div class='grid--item'>
-    <div class='img' style='background-image: url(https://images.unsplash.com/photo-1432887382605-0abf9cc49e8f?crop=entropy&fit=crop&fm=jpg&h=1375&ixjsv=2.1.0&ixlib=rb-0.3.5&q=80&w=1725);'></div>
-    <div class='container1'>
-      <h2>Ice & Penguin</h2>
-      <div class='desc'>逆风的方向，更适合奋力飞翔！</div>
-    </div>
-  </div>
-  <div class='grid--item'>
-    <div class='img' style='background-image: url(https://images.unsplash.com/photo-1417026846249-f31f7e43fc35?crop=entropy&fit=crop&fm=jpg&h=1375&ixjsv=2.1.0&ixlib=rb-0.3.5&q=80&w=1725);'></div>
-    <div class='container1'>
-      <h2>Pile of Logs</h2>
-      <div class='desc'>生命是一张弓，那弓弦是梦想！</div>
-    </div>
-  </div>
-  <div class='grid--item'>
-    <div class='img' style='background-image: url(https://images.unsplash.com/uploads/14122811862445bc266cf/931448f2?crop=entropy&fit=crop&fm=jpg&h=1375&ixjsv=2.1.0&ixlib=rb-0.3.5&q=80&w=1725);'></div>
-    <div class='container1'>
-      <h2>Winter Tree</h2>
-      <div class='desc'>用微笑来证明你自己，我可以！</div>
-    </div>
-  </div>
-</div>
+
+<div class="container" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col-md-4">
+            <!-- begin panel group -->
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+                <!-- panel 1 -->
+                <div class="panel panel-default">
+                    <!--wrap panel heading in span to trigger image change as well as collapse -->
+                    <span class="side-tab" data-target="#tab1" data-toggle="tab" role="tab" aria-expanded="false">
+                        <div class="panel-heading" role="tab" id="headingOne"data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <h4 class="panel-title">相信自己</h4>
+                        </div>
+                    </span>
+
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                        <!-- Tab content goes here -->
+                            纽约时间比加州时间早三个小时<br>但加州时间并没有变慢<br>有人22岁就毕业了<br>但等了五年才找到好的工作<br>有人25岁就当上CEO<br>却在50岁去世<br>也有人迟到50岁才当上CEO<br>然后活到90岁<br>
+                            有人依然单身<br>同时也有人已婚<br>奥巴马55岁就退休<br>川普70岁才开始当总统<br>世上每个人本来就有自己的发展时区<br>身边有些人看似走在你前面<br>也有人看似走在你后面<br>但其实每个人在自己的时区有自己的步程<br>
+                              不用嫉妒或嘲笑他们<br>他们都在自己的时区里，你也是<br>生命就是等待正确的行动时机<br>所以，放轻松<br>你没有落后<br>你没有领先<br>在命运为你安排的属于自己的时区里，一切都准时
+                        </div>
+                    </div>
+                </div>
+                <!-- / panel 1 -->
+
+                <!-- panel 2 -->
+                <div class="panel panel-default">
+                    <!--wrap panel heading in span to trigger image change as well as collapse -->
+                    <span class="side-tab" data-target="#tab2" data-toggle="tab" role="tab" aria-expanded="false">
+                        <div class="panel-heading" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <h4 class="panel-title collapsed">热爱生活</h4>
+                        </div>
+                    </span>
+
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body">
+                        <!-- Tab content goes here -->
+                        生命是盛开的花朵<br>它绽放得美丽，舒展，绚丽多资<br>生命是精美的小诗<br>清新流畅，意蕴悠长<br>生命是优美的乐曲<br>音律和谐，宛转悠扬<br>生命是流淌的江河<br>奔流不息，滚滚向前
+                        </div>
+                    </div>
+                </div>
+                <!-- / panel 2 -->
+
+                <!--  panel 3 -->
+                <div class="panel panel-default">
+                    <!--wrap panel heading in span to trigger image change as well as collapse -->
+                    <span class="side-tab" data-target="#tab3" data-toggle="tab" role="tab" aria-expanded="false">
+                        <div class="panel-heading" role="tab" id="headingThree"  class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <h4 class="panel-title">梦想、奋斗</h4>
+                        </div>
+                    </span>
+
+                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                          <div class="panel-body">
+                          <!-- tab content goes here -->
+                           紧紧抓住梦想<br>梦想若是消亡<br>生命就象鸟儿折了翅膀<br>再也不能飞翔<br>紧紧抓住梦想<br>梦想若是消丧<br>生命就象贫瘠的荒野<br>雪覆冰封，万物不再生长
+                          </div>
+                        </div>
+                      </div>
+            </div> <!-- / panel-group -->
+
+        </div> <!-- /col-md-4 -->
+
+        <div class="col-md-8">
+            <!-- begin macbook pro mockup -->
+            <div class="md-macbook-pro md-glare">
+                <div class="md-lid">
+                    <div class="md-camera"></div>
+                    <div class="md-screen">
+                    <!-- content goes here -->
+                        <div class="tab-featured-image">
+                            <div class="tab-content">
+                                <div class="tab-pane  in active" id="tab1">
+                                        <img src="/static/images/other/tercel.jpeg" alt="tab1" class="img img-responsive">
+                                </div>
+                                <div class="tab-pane " id="tab2">
+
+                                        <img src="/static/images/other/love_life.jpeg">
+
+                                </div>
+                                <div class="tab-pane fade" id="tab3">
+
+                                        <img src="/static/images/other/strive.jpeg" alt="tab1" class="img img-responsive">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md-base"></div>
+            </div> <!-- end macbook pro mockup -->
+
+
+
+        </div> <!-- / .col-md-8 -->
+    </div> <!--/ .row -->
+</div> <!-- end sidetab container -->

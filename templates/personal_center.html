@@ -55,11 +55,11 @@
                     </div>
                     <div class="container" id="tourpackages-carousel">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" v-for="user in user_arr|filterBy filter_name in 'nickname' ">
+                            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" v-for="user in user_arr|filterBy filter_name in 'nickname' 'username' ">
                                 <div class="thumbnail" style="height: 186px;">
                                     <div class="caption">
                                         <div class='col-lg-12'>
-                                            <img width="50px" height="50px" class="img-circle" :src="user.portrait"> <span>{{ user.nickname }}</span>
+                                            <img width="50px" height="50px" class="img-circle" :src="user.portrait"> <span>{{ user.username }}（{{ user.nickname }}）</span>
                                         </div>
                                         <div class='col-lg-12'>
                                             <p>活跃指数：

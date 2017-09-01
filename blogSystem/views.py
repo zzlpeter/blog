@@ -409,7 +409,8 @@ def get_user_list(req):
             'posts': blog_models.Post.objects.filter(author_id=user.id).count(),
             'attention': 'yes' if blog_models.UserAttention.objects.filter(guan_zhu=req.user.id, bei_guan_zhu=user.id).exists() else 'no',
             'id': user.id,
-            'email_notice': email_switch(user.id)
+            'email_notice': email_switch(user.id),
+            'username': user.username
         } for user in userObj
     ]
     json_str = {
