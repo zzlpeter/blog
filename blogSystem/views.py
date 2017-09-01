@@ -488,9 +488,3 @@ def get_label_list(req):
     except Exception, exc:
         logger.error(exc, exc_info=True)
         return response_json({'labelList': []})
-
-
-
-
-
-

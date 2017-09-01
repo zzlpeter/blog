@@ -43,7 +43,7 @@ def check_permission(p):
     def check_per(func):
         def check(req):
             if req.user.has_perm(p):
-                pass
+                return func(req)
             else:
                 return HttpResponse(status=403)
         return check
