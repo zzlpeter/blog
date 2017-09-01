@@ -81,6 +81,7 @@ urlpatterns = [
 
     # url(r'^test/?$', blog_views.test),
 
+
     url(r'^search/?$', search_views.search, name='search'),
 
 
