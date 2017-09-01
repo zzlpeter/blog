@@ -182,8 +182,8 @@
             },
             success: function (res) {
                 layer.closeAll('loading');
-                $("#btn-signup-cancel").click();
                 if(res.status==1){
+                    $("#btn-signup-cancel").click();
                     layer.msg(res.msg, {icon: 6});
                 }else{
                     layer.msg(res.msg, {icon: 5});
