@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 import os
 from django.db import transaction
 import re
-from service.decorator import is_authenticated
+from service.decorator import is_authenticated, is_can_register
 from django.conf import settings
 from django.contrib.auth.models import User
 import uuid
@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 # 用户登出
+@login_required(login_url='/accounts/log_in')
 def user_logout(req):
     logout(req)
     messages.add_message(req, messages.INFO, u'您已成功退出！')
@@ -46,6 +47,9 @@ def user_login(req):
             ip = get_user_ip(req)
             blog_models.UserExtend.objects.filter(user=user).update(login_ip=ip)
             json_str = {'status': 1, 'msg': u'您已成功登陆！'}
+            # 一周之内保持登录状态
+            if str(remember) == '1':
+                req.session.set_expiry(60 * 60 * 24 * 7)
     else:
         json_str = {'status': 0, 'msg': u'用户名与密码不匹配，请检查！'}
     return response_json(json_str)
@@ -58,7 +62,7 @@ def user_auth_setting(req):
 def user_change_pwd(req):
     pass
 
-@login_required
+@login_required(login_url='/accounts/log_in')
 def personal_center(req, tmp_name='personal_center.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
@@ -75,7 +79,7 @@ def set_nickname(req):
     return response_json(json_str)
 
 # 上传头像
-@login_required
+@is_authenticated
 @csrf_exempt
 def upload_avatar(req):
     user = req.user
@@ -119,7 +123,7 @@ def upload_avatar(req):
         return response_json(json_str)
 
 
-@login_required
+@is_authenticated
 @csrf_exempt
 def change_pwd(req):
     old_pwd = req.POST.get('old_pwd')
@@ -143,7 +147,7 @@ def change_pwd(req):
     return response_json(json_str)
 
 
-@login_required
+@is_authenticated
 @csrf_exempt
 def change_other(req):
     user = req.user
@@ -194,6 +198,7 @@ def change_other(req):
         return response_json(json_str)
 
 # 注册账号
+@is_can_register
 def register_account(req):
     email = req.POST.get('email')
     uname = req.POST.get('uname')
@@ -276,6 +281,8 @@ def update_forget_pwd(req):
         json_str = {'status': 0, 'msg': u'用户名与邮箱不匹配'}
         return response_json(json_str)
 
-
+# 登录页面
+def log_in(req, tmp_name='logIn.html'):
+    return render_to_response(tmp_name, context_instance=RequestContext(req))
 
 

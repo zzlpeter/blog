@@ -32,3 +32,19 @@ def is_can_register(func=None):
         else:
             return Http404
     return dec
+
+
+def check_permission(p):
+    '''
+    检查用户是否有权限
+    :param p: 
+    :return: 
+    '''
+    def check_per(func):
+        def check(req):
+            if req.user.has_perm(p):
+                pass
+            else:
+                return HttpResponse(status=403)
+        return check
+    return check_per

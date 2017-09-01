@@ -60,6 +60,7 @@ urlpatterns = [
     url(r'^accounts/update_forget_pwd/?$', account_views.update_forget_pwd, name='update_forget_pwd'),
     url(r'^accounts/change_other/?$', account_views.change_other, name='change_other'),
     url(r'^accounts/register_account/?$', account_views.register_account, name='register_account'),
+    url(r'^accounts/log_in/?$', account_views.log_in, name='log_in'),
     url(r'^accounts/activate_account/(?P<uid>[a-f\d]{8}(-[a-f\d]{4}){3}-[a-f\d]{12}?)/?$', account_views.activate_account, name='activate_account'),
 
     # 帖子分类（一级和二级分类）

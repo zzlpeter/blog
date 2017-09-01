@@ -12,9 +12,9 @@ from django.core.paginator import PageNotAnInteger
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from datetime import datetime
-from service.decorator import is_authenticated
+from service.decorator import is_authenticated, check_permission
 from django.conf import settings
-from django.contrib.auth.decorators import permission_required
+# from django.contrib.auth.decorators import permission_required
 
 import models as blog_models
 import json
@@ -76,8 +76,8 @@ def postDetail(req, category1=None, category2=None, post_id=None, tmp_name='post
     return render_to_response(tmp_name, dic, context_instance=RequestContext(req))
 
 # 发帖页面
-@login_required
-@permission_required('blogSystem.add_post')
+@login_required(login_url='/accounts/log_in')
+@check_permission('blogSystem.add_post')
 def makePost(req, tmp_name='makePost.html'):
     category = blog_models.Category.objects.filter(level=2).order_by('-parent_level', 'id')
     return render_to_response(tmp_name, {'category': category}, context_instance=RequestContext(req))
@@ -248,7 +248,7 @@ def up_down_share_post(req):
         json_str = {'status': 0, 'msg': u'未知类型的操作'}
     return response_json(json_str)
 
-@login_required
+@is_authenticated
 def make_post_comment(req):
     post_id = req.POST.get('post_id')
     comment = req.POST.get('comment')
@@ -329,7 +329,7 @@ def get_more_message(req):
     return response_json(json_str)
 
 # vue.js post时参数放在body中
-@login_required
+@is_authenticated
 @csrf_exempt
 def make_leave_comment_submit(req):
     body = json.loads(req.body)
@@ -364,7 +364,7 @@ def make_leave_comment_submit(req):
 def test(req, tmp_name='test2.html'):
     return render_to_response(tmp_name, context_instance=RequestContext(req))
 
-@login_required
+@is_authenticated
 def guan_zhu_poster(req):
     uid = req.GET.get('uid')
     user = req.user
@@ -384,7 +384,7 @@ def guan_zhu_poster(req):
         json_str = {'status': 0, 'msg': u'服务器异常，请稍后重试'}
     return response_json(json_str)
 
-@login_required
+@is_authenticated
 def get_user_list(req):
     page = req.GET.get('page', 1)
     limit = settings.PAGE_SIZE  # 每页显示的记录数
@@ -440,7 +440,7 @@ def email_notice_user(req):
         json_str = {'status': 0, 'msg': u'服务器异常，请稍后重试'}
     return response_json(json_str)
 
-@login_required
+@is_authenticated
 def get_user_post(req):
     user = req.user
     page = req.GET.get('page', 1)
