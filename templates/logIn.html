@@ -4513,14 +4513,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                                 </p>
                                 <p class="keeplogin">
 									<input type="checkbox" name="loginkeeping" id="login-remember1" value="" />
-									<label for="loginkeeping">记住我一周</label>
+									<label for="loginkeeping">记住我一周</label> 
+                                    <a style="float: right;" href="{% url 'forget_pwd' %}">忘记密码？</a>
 								</p>
                                 <p class="login button" onclick="userLogin()">
                                    -> 登录
 								</p>
                                 <p class="change_link">
 									Not a member yet ?
-									<a href="#toregister" class="to_register">注册</a>
+									<a href="#toregister" class="to_register">Register</a>
 								</p>
                             </form>
                         </div>

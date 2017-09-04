@@ -96,7 +96,7 @@
 									</ul>
 								</li>
                                 {% else %}
-                                <li style="float: right;" id="head-login-li"><a href="javascript:;" class="show-login-href" onclick="showLoginForm()">登录</a></li>
+                                <li style="float: right;" id="head-login-li"><a href="{% url 'log_in' %}" class="show-login-href">登录</a></li>
                                 {% endif %}
                                 <li style="border-radius: 10px" id="category-leave-id"><a href="{% url 'leave_message' %}">给我留言</a></li>
 							</ul>

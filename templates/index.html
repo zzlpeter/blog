@@ -353,7 +353,7 @@ body::-webkit-scrollbar-thumb{
 										<span class="byline">追梦的路上，永远不会感觉孤独；生命的广阔，只要努力就一定可以看到！</span>
 									</header>
                                     {% if not user.is_authenticated %}
-									<a href="javascript:;" class="button alt show-login-href">登 录</a>
+									<a href="{% url 'log_in' %}" class="button alt show-login-href">登 录</a>
                                     {% endif %}
                                     {% if messages %}
                                         {% for message in messages %}
